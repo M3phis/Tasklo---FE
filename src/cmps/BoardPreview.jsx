@@ -18,16 +18,20 @@ export function BoardPreview({ board }) {
         <h3>{title}</h3>
         <div className="board-preview-info">
           {isStarred && <span className="star">★</span>}
-          {members.length > 0 && (
+          {members && members.length > 0 && (
             <div className="members">
-              {members.slice(0, 3).map((member) => (
-                <img
-                  key={member._id}
-                  src={member.imgUrl}
-                  alt={member.fullname}
-                  title={member.fullname}
-                />
-              ))}
+              {members
+                .slice(0, 3)
+                .map((member) =>
+                  member && member.imgUrl ? (
+                    <img
+                      key={member._id}
+                      src={member.imgUrl}
+                      alt={member.fullname || 'Member'}
+                      title={member.fullname || 'Member'}
+                    />
+                  ) : null
+                )}
               {members.length > 3 && <span>+{members.length - 3}</span>}
             </div>
           )}
