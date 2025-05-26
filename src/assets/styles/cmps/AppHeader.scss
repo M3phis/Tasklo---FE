@@ -1,56 +1,149 @@
 .app-header {
-    min-height: 5rem;
-    background-color: $clr4;
-    nav {
-        display: flex;
-        width: 100%;
-        align-items: center;
-        gap: 1em;
+  min-height: 5rem;
+  background-color: $clr4;
+  nav {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 1em;
 
-        font-size: 0.8em;
+    font-size: 0.8em;
 
-        .active {
-            color: $clr1;
-        }
-
-        .logo {
-            font-size: 1.4em;
-            font-weight: bold;
-            margin-inline-end: 2em;
-        }
-
-        .login-link {
-            margin-inline-start: auto;
-        }
-
-        button {
-            margin-inline-end: 0;
-        }
+    .active {
+      color: $clr1;
     }
 
-    .user-info {
-        display: flex;
-        align-items: center;
-        margin-inline-start: auto;
-        color: $clr1;
-
-        .score {
-            padding: 8px;
-            background-color: $clr2;
-            border-radius: 50%;
-            margin: 10px;
-
-            color: $clr6;
-        }
-
-        img {
-            width: 32px;
-            aspect-ratio: 1;
-            border-radius: 50%;
-        }
-
-        .btn-link {
-            color: $clr2;
-        }
+    .logo {
+      font-size: 1.4em;
+      font-weight: bold;
+      margin-inline-end: 2em;
     }
+
+    .login-link {
+      margin-inline-start: auto;
+    }
+
+    button {
+      margin-inline-end: 0;
+    }
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    margin-inline-start: auto;
+    color: $clr1;
+
+    .score {
+      padding: 8px;
+      background-color: $clr2;
+      border-radius: 50%;
+      margin: 10px;
+
+      color: $clr6;
+    }
+
+    img {
+      width: 32px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+    }
+
+    .btn-link {
+      color: $clr2;
+    }
+  }
+}
+
+.logo {
+  text-decoration: none !important;
+  border-bottom: none !important;
+
+  &:hover {
+    border-bottom: none !important;
+    text-decoration: none !important;
+  }
+
+  &.active {
+    border-bottom: none !important;
+    text-decoration: none !important;
+  }
+}
+
+.tasklo-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 16px 20px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  border: none;
+
+  * {
+    text-decoration: none;
+  }
+
+  &:hover {
+    .bar-left {
+      animation: bar-shrink 0.3s ease-in-out infinite alternate;
+    }
+
+    .bar-right {
+      animation: bar-grow 0.3s ease-in-out infinite alternate;
+    }
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 24px;
+    background-color: #0052cc;
+    border-radius: 3px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    padding: 3px;
+    box-sizing: border-box;
+
+    .bar {
+      width: 8px;
+      background-color: white;
+      border-radius: 1px;
+      transition: height 0.4s ease-in-out;
+
+      &.bar-left {
+        height: 16px;
+      }
+
+      &.bar-right {
+        height: 10px;
+      }
+    }
+  }
+
+  .logo-text {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0052cc;
+    letter-spacing: -0.5px;
+  }
+}
+
+@keyframes bar-shrink {
+  0% {
+    height: 16px;
+  }
+  100% {
+    height: 10px;
+  }
+}
+
+@keyframes bar-grow {
+  0% {
+    height: 10px;
+  }
+  100% {
+    height: 16px;
+  }
 }
