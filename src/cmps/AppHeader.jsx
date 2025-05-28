@@ -1,39 +1,46 @@
-import { Link, NavLink } from "react-router-dom";
-import { useNavigate } from "react-router";
-import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
-import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service";
-import { logout } from "../store/user.actions";
-import { BoardFilter } from "../cmps/BoardFilter.jsx";
-import { loadBoards } from "../store/board.actions";
+import { Link, NavLink } from 'react-router-dom'
+import { useNavigate } from 'react-router'
+import { useSelector } from 'react-redux'
+import { useState, useEffect } from 'react'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
+import { logout } from '../store/user.actions'
+import { BoardFilter } from '../cmps/BoardFilter.jsx'
+import { loadBoards } from '../store/board.actions'
+import menuButton from '../svg/menu.svg'
+import megaphoneButton from '../svg/megaphone.svg'
+import bellButton from '../svg/bell.svg'
+import qmakrButton from '../svg/qmark.svg'
 
 export function AppHeader() {
-  const user = useSelector((storeState) => storeState.userModule.user);
-  const [filterBy, setFilterBy] = useState(boardService.getEmptyFilter());
-  const navigate = useNavigate();
+  const user = useSelector((storeState) => storeState.userModule.user)
+  const [filterBy, setFilterBy] = useState(boardService.getEmptyFilter())
+  const navigate = useNavigate()
 
   useEffect(() => {
-    loadBoards(filterBy);
-  }, [filterBy]);
+    loadBoards(filterBy)
+  }, [filterBy])
 
   function onSetFilterBy(filterBy) {
-    setFilterBy((prevFilterBy) => ({ ...prevFilterBy, ...filterBy }));
+    setFilterBy((prevFilterBy) => ({ ...prevFilterBy, ...filterBy }))
   }
 
   async function onLogout() {
     try {
-      await logout();
-      navigate("/");
-      showSuccessMsg(`Bye now`);
+      await logout()
+      navigate('/')
+      showSuccessMsg(`Bye now`)
     } catch (err) {
-      showErrorMsg("Cannot logout");
+      showErrorMsg('Cannot logout')
     }
   }
 
   return (
     <header className="app-header main-container full">
       <nav className="">
-        <NavLink to="/" className="logo">
+        <button className="menu-button">
+          <img src={menuButton} alt="Menu Button" />
+        </button>
+        <NavLink to="/board" className="logo">
           <div className="tasklo-logo">
             <div className="logo-icon">
               <div className="bar bar-left"></div>
@@ -42,19 +49,28 @@ export function AppHeader() {
             <div className="logo-text">Tasklo</div>
           </div>
         </NavLink>
-        <NavLink to="/about">About</NavLink>
-        <NavLink to="/board">Boards</NavLink>
-        <NavLink to="/chat">Chat</NavLink>
-        <NavLink to="/review">Review</NavLink>
-        {user?.isAdmin && <NavLink to="/admin">Admin</NavLink>}
+
         <BoardFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
 
-        {!user && (
-          <NavLink to="login" className="login-link">
-            Login
-          </NavLink>
-        )}
+        <div className="nav-buttons">
+          <button>
+            <img src={megaphoneButton} alt="contect us" />
+          </button>
 
+          <button>
+            <img src={bellButton} alt="Notifications" />
+          </button>
+
+          <button>
+            <img src={qmakrButton} alt="" />
+          </button>
+
+          {!user && (
+            <NavLink to="login" className="login-link">
+              Login
+            </NavLink>
+          )}
+        </div>
         {user && (
           <div className="user-info">
             <Link to={`user/${user._id}`}>
@@ -67,5 +83,5 @@ export function AppHeader() {
         )}
       </nav>
     </header>
-  );
+  )
 }

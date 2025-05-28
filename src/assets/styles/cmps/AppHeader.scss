@@ -1,6 +1,7 @@
 .app-header {
+  background-color: var(--dynamic-background, #ffffff);
   min-height: 5rem;
-  background-color: $clr4;
+
   nav {
     display: flex;
     width: 100%;
@@ -55,6 +56,57 @@
   }
 }
 
+.menu-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+
+  @media (max-width: $mobile-breakpoint) {
+    display: block;
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
+    fill: $clr1;
+    transition: fill 0.2s ease;
+
+    &:hover {
+      background-color: var(--header-btn-hover, rgba(166, 197, 226, 0.29));
+    }
+  }
+}
+
+.nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+
+  button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    background-color: transparent;
+    color: $clr1;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    img {
+      width: 24px;
+      height: 24px;
+    }
+    &:hover {
+      background-color: var(--header-btn-hover, rgba(166, 197, 226, 0.29));
+    }
+
+    &.active {
+      background-color: $clr1;
+      color: $clr6;
+    }
+  }
+}
+
 .logo {
   text-decoration: none !important;
   border-bottom: none !important;
@@ -86,6 +138,7 @@
   }
 
   &:hover {
+    background-color: var(--header-btn-hover, rgba(255, 255, 255, 0.3));
     .bar-left {
       animation: bar-shrink 0.3s ease-in-out infinite alternate;
     }
