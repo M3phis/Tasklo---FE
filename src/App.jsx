@@ -9,9 +9,6 @@ import { AppHeader } from './cmps/AppHeader'
 import { AppFooter } from './cmps/AppFooter'
 import { HomePage } from './pages/HomePage'
 import { AboutPage } from './pages/AboutPage'
-import { CarIndex } from './pages/CarIndex'
-import { CarDetails } from './pages/CarDetails'
-import { CarEdit } from './pages/CarEdit'
 import { BoardIndex } from './pages/BoardIndex'
 import { BoardDetails } from './pages/BoardDetails'
 import { BoardEdit } from './pages/BoardEdit'
@@ -30,9 +27,6 @@ export function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutPage />} />
-              <Route path="/car" element={<CarIndex />} />
-              <Route path="/car/:carId" element={<CarDetails />} />
-              <Route path="/car/edit/:carId" element={<CarEdit />} />
               <Route path="/board" element={<BoardIndex />} />
               <Route path="/board/:boardId" element={<BoardDetails />} />
               <Route path="/board/edit/:boardId" element={<BoardEdit />} />

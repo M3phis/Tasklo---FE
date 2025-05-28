@@ -4,14 +4,12 @@ import { Routes, Route, Navigate } from 'react-router'
 import { userService } from './services/user'
 import { HomePage } from './pages/HomePage'
 import { AboutUs, AboutTeam, AboutVision } from './pages/AboutUs'
-import { CarIndex } from './pages/CarIndex.jsx'
 import { BoardIndex } from './pages/BoardIndex.jsx'
 import { BoardDetails } from './pages/BoardDetails.jsx'
 import { ReviewIndex } from './pages/ReviewIndex.jsx'
 import { ChatApp } from './pages/Chat.jsx'
 import { AdminIndex } from './pages/AdminIndex.jsx'
 
-import { CarDetails } from './pages/CarDetails'
 import { UserDetails } from './pages/UserDetails'
 
 import { AppHeader } from './cmps/AppHeader'
@@ -36,8 +34,6 @@ export function RootCmp() {
           </Route>
           <Route path="board" element={<BoardIndex />} />
           <Route path="board/:boardId" element={<BoardDetails />} />
-          <Route path="car" element={<CarIndex />} />
-          <Route path="car/:carId" element={<CarDetails />} />
           <Route path="user/:id" element={<UserDetails />} />
           <Route path="review" element={<ReviewIndex />} />
           <Route path="chat" element={<ChatApp />} />

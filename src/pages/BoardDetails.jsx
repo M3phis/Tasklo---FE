@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { loadBoard, updateBoard } from '../store/board.actions'
-import { List } from '../cmps/List'
+import { GroupList } from '../cmps/GroupList'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 
 export function BoardDetails() {
@@ -93,7 +93,7 @@ export function BoardDetails() {
       <div className="board-content">
         <div className="lists-container">
           {board.groups.map((list) => (
-            <List
+            <GroupList
               key={list.id}
               list={list}
               onUpdateList={handleUpdateList}

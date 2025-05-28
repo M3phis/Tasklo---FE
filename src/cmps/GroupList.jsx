@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export function List({ list, onUpdateList, onRemoveList }) {
+export function GroupList({ list, onUpdateList, onRemoveList }) {
   const [isAddingTask, setIsAddingTask] = useState(false)
   const [taskTitle, setTaskTitle] = useState('')
 
@@ -32,17 +32,17 @@ export function List({ list, onUpdateList, onRemoveList }) {
   }
 
   return (
-    <div className="list">
-      <div className="list-header">
+    <div className="group-list">
+      <div className="group-list-header">
         <h3>{list.title}</h3>
         <button
-          className="remove-list-btn"
+          className="remove-group-list-btn"
           onClick={() => onRemoveList(list.id)}
         >
           ×
         </button>
       </div>
-      <div className="list-content">
+      <div className="group-list-content">
         {list.tasks.map((task) => (
           <div key={task.id} className="task-card">
             <p>{task.title}</p>
