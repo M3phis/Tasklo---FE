@@ -1,3 +1,13 @@
 .board-details {
-    top: 0px
+  top: 0px;
+}
+
+.lists-container {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  padding: 1rem;
+  background-color: #f9fafb;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
