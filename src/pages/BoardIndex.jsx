@@ -15,6 +15,7 @@ export function BoardIndex() {
   const dispatch = useDispatch()
   const boards = useSelector((storeState) => storeState.boardModule.boards)
   const [filterBy, setFilterBy] = useState(boardService.getEmptyFilter())
+  const starredBoards = boards.filter((board) => board.isStarred)
 
   useEffect(() => {
     loadBoards()
@@ -58,6 +59,17 @@ export function BoardIndex() {
       showErrorMsg('Cannot add board')
     }
   }
+  async function onToggleStarred(boardId) {
+    const board = boards.find((board) => board._id === boardId)
+    if (!board) return
+    const updatedBoard = { ...board, isStarred: !board.isStarred }
+    try {
+      await updateBoard(updatedBoard)
+      showSuccessMsg('Toggled star!')
+    } catch {
+      showErrorMsg('Failed to toggle star')
+    }
+  }
 
   function onSetFilter(filterBy) {
     setFilterBy((prevFilter) => ({ ...prevFilter, ...filterBy }))
@@ -67,6 +79,18 @@ export function BoardIndex() {
 
   return (
     <section className="board-index">
+      {starredBoards.length > 0 && (
+        <div className="starred-board-list">
+          <h3>Starred Boards</h3>
+          <BoardList
+            boards={starredBoards}
+            onRemoveBoard={onRemoveBoard}
+            onUpdateBoard={onEditBoard}
+            onToggleStarred={onToggleStarred}
+          />
+        </div>
+      )}
+
       <div className="board-index-container">
         <header>
           <h2>Boards</h2>
@@ -76,6 +100,7 @@ export function BoardIndex() {
           boards={boards}
           onRemoveBoard={onRemoveBoard}
           onEditBoard={onEditBoard}
+          onToggleStarred={onToggleStarred}
         />
       </div>
     </section>

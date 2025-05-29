@@ -20,3 +20,29 @@
     }
   }
 }
+
+.board-preview-wrapper {
+  position: relative;
+  display: inline-block;
+
+  &:hover .toggle-starred {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+}
+
+.toggle-starred {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: none;
+  border: none;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: translateX(10px);
+  z-index: 2;
+  cursor: pointer;
+}

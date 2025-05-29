@@ -1163,7 +1163,7 @@
         }
       }
     ],
-    "isStarred": true
+    "isStarred": false
   },
   {
     "_id": "62e25d9ab530b64caf3c5d1b",
@@ -2145,7 +2145,7 @@
         }
       }
     ],
-    "isStarred": true
+    "isStarred": false
   },
   {
     "_id": "62e25ea2b530b64caf3c5d1c",
@@ -2299,6 +2299,7 @@
           "imgUrl": "http://res.cloudinary.com/donatello-cloud/image/upload/v1659001393/556721_3736951076153_141936854_n_n5upkz.jpg"
         }
       }
-    ]
+    ],
+    "isStarred": false
   }
 ]

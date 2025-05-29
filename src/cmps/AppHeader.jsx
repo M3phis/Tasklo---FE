@@ -6,10 +6,10 @@ import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { logout } from '../store/user.actions'
 import { BoardFilter } from '../cmps/BoardFilter.jsx'
 import { loadBoards } from '../store/board.actions'
-import menuButton from '../svg/menu.svg'
-import megaphoneButton from '../svg/megaphone.svg'
-import bellButton from '../svg/bell.svg'
-import qmakrButton from '../svg/qmark.svg'
+import MegaphoneIcon from '@atlaskit/icon/core/megaphone'
+import QuestionCircleIcon from '@atlaskit/icon/core/question-circle'
+import NotificationIcon from '@atlaskit/icon/core/migration/notification--notification-direct'
+import AppSwitcherIcon from '@atlaskit/icon/core/app-switcher'
 
 export function AppHeader() {
   const user = useSelector((storeState) => storeState.userModule.user)
@@ -38,7 +38,7 @@ export function AppHeader() {
     <header className="app-header main-container full">
       <nav className="">
         <button className="menu-button">
-          <img src={menuButton} alt="Menu Button" />
+          <AppSwitcherIcon label="" color="#9fadbc" />
         </button>
         <NavLink to="/board" className="logo">
           <div className="tasklo-logo">
@@ -54,15 +54,15 @@ export function AppHeader() {
 
         <div className="nav-buttons">
           <button>
-            <img src={megaphoneButton} alt="contect us" />
+            <MegaphoneIcon label="" color="#9fadbc" />
           </button>
 
           <button>
-            <img src={bellButton} alt="Notifications" />
+            <NotificationIcon label="" color="#9fadbc" />
           </button>
 
           <button>
-            <img src={qmakrButton} alt="" />
+            <QuestionCircleIcon label="" color="#9fadbc" />
           </button>
 
           {!user && (
