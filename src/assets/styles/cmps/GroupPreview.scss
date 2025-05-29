@@ -24,3 +24,11 @@
   align-items: flex-start;
   transition: box-shadow 0.2s ease;
 }
+
+body.dragging {
+  cursor: grabbing !important;
+}
+
+body.dragging * {
+  cursor: grabbing !important;
+}
