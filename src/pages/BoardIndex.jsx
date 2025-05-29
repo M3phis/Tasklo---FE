@@ -79,30 +79,38 @@ export function BoardIndex() {
 
   return (
     <section className="board-index">
-      {starredBoards.length > 0 && (
-        <div className="starred-board-list">
-          <h3>Starred Boards</h3>
+      <li className="home-sidebar">
+        <ul>Boards</ul>
+        <ul>Templates</ul>
+        <ul>Home</ul>
+      </li>
+
+      <section className="boards-view">
+        {starredBoards.length > 0 && (
+          <div className="starred-board-list">
+            <h3>Starred Boards</h3>
+            <BoardList
+              boards={starredBoards}
+              onRemoveBoard={onRemoveBoard}
+              onUpdateBoard={onEditBoard}
+              onToggleStarred={onToggleStarred}
+            />
+          </div>
+        )}
+
+        <div className="board-index-container">
+          <header>
+            <h2>Boards</h2>
+            <button onClick={onAddBoard}>Add a Board</button>
+          </header>
           <BoardList
-            boards={starredBoards}
+            boards={boards}
             onRemoveBoard={onRemoveBoard}
-            onUpdateBoard={onEditBoard}
+            onEditBoard={onEditBoard}
             onToggleStarred={onToggleStarred}
           />
         </div>
-      )}
-
-      <div className="board-index-container">
-        <header>
-          <h2>Boards</h2>
-          <button onClick={onAddBoard}>Add a Board</button>
-        </header>
-        <BoardList
-          boards={boards}
-          onRemoveBoard={onRemoveBoard}
-          onEditBoard={onEditBoard}
-          onToggleStarred={onToggleStarred}
-        />
-      </div>
+      </section>
     </section>
   )
 }
