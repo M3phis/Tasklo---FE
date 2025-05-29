@@ -9,8 +9,8 @@ export function BoardDetails() {
   const { boardId } = useParams()
   const board = useSelector((storeState) => storeState.boardModule.board)
   const [isLoading, setIsLoading] = useState(true)
-  const [isAddingList, setIsAddingList] = useState(false)
-  const [listTitle, setListTitle] = useState('')
+  // const [isAddingList, setIsAddingList] = useState(false)
+  // const [listTitle, setListTitle] = useState('')
 
   useEffect(() => {
     loadBoard(boardId)
@@ -21,30 +21,45 @@ export function BoardDetails() {
       })
   }, [boardId])
 
-  function handleAddList(ev) {
-    ev.preventDefault()
-    if (!listTitle.trim()) return
+  // function handleAddList(ev) {
+  //   ev.preventDefault()
+  //   if (!listTitle.trim()) return
 
-    const newList = {
-      id: Date.now().toString(),
-      title: listTitle,
-      tasks: [],
-    }
+  //   const newList = {
+  //     id: Date.now().toString(),
+  //     title: listTitle,
+  //     tasks: [],
+  //   }
 
+  // const updatedBoard = {
+  //   ...board,
+  //   groups: [...board.groups, newList],
+  // }
+
+  //   updateBoard(updatedBoard)
+  //     .then(() => {
+  //       showSuccessMsg('List added')
+  //       setListTitle('')
+  //       setIsAddingList(false)
+  //     })
+  //     .catch((err) => {
+  //       console.log('err', err)
+  //       showErrorMsg('Cannot add list')
+  //     })
+  // }
+
+  function handleAddGroup(newGroup) {
     const updatedBoard = {
       ...board,
-      groups: [...board.groups, newList],
+      groups: [...board.groups, newGroup],
     }
 
-    updateBoard(updatedBoard)
-      .then(() => {
-        showSuccessMsg('List added')
-        setListTitle('')
-        setIsAddingList(false)
-      })
+    return updateBoard(updatedBoard)
+      .then(() => showSuccessMsg('List added successfully'))
       .catch((err) => {
-        console.log('err', err)
-        showErrorMsg('Cannot add list')
+        console.error('Error adding list:', err)
+        showErrorMsg('Failed to add list')
+        throw err
       })
   }
 
@@ -82,6 +97,49 @@ export function BoardDetails() {
       })
   }
 
+  function handleUpdateTask(updatedGroup) {
+    const updatedGroups = board.groups.map((group) =>
+      group.id === updatedGroup.id ? updatedGroup : group
+    );
+
+    const updatedBoard = {
+      ...board,
+      groups: updatedGroups,
+    };
+
+    return updateBoard(updatedBoard)
+      .then(() => showSuccessMsg('Task updated'))
+      .catch((err) => {
+        console.log('err', err)
+        showErrorMsg('Cannot update task')
+        throw err
+      })
+  }
+
+  function handleRemoveTask(groupId, taskId) {
+    const updatedGroups = board.groups.map((group) => {
+      if (group.id === groupId) {
+        return {
+          ...group,
+          tasks: group.tasks.filter((task) => task.id !== taskId),
+        }
+      }
+      return group
+    })
+    const updatedBoard = {
+      ...board,
+      groups: updatedGroups,
+    }
+
+    return updateBoard(updatedBoard)
+      .then(() => showSuccessMsg('Task removed successfully'))
+      .catch((err) => {
+        console.log('Error removing task:', err)
+        showErrorMsg('Cannot remove task')
+        throw err
+      })
+  }
+
   if (isLoading) return <div>Loading...</div>
   if (!board) return <div>Board not found</div>
 
@@ -92,46 +150,14 @@ export function BoardDetails() {
       </div>
       <div className="board-content">
         <div className="lists-container">
-          {board.groups.map((list) => (
-            <GroupList
-              key={list.id}
-              list={list}
-              onUpdateList={handleUpdateList}
-              onRemoveList={handleRemoveList}
-            />
-          ))}
-          {isAddingList ? (
-            <form onSubmit={handleAddList} className="add-list">
-              <input
-                type="text"
-                value={listTitle}
-                onChange={(ev) => setListTitle(ev.target.value)}
-                placeholder="Enter list title..."
-                autoFocus
-              />
-              <div className="add-list-actions">
-                <button type="submit" className="add-btn">
-                  Add List
-                </button>
-                <button
-                  type="button"
-                  className="cancel-btn"
-                  onClick={() => setIsAddingList(false)}
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          ) : (
-            <div className="add-list">
-              <button
-                className="add-list-btn"
-                onClick={() => setIsAddingList(true)}
-              >
-                + Add a list
-              </button>
-            </div>
-          )}
+          <GroupList
+            board={board}
+            onAddGroup={handleAddGroup}
+            onUpdateList={handleUpdateList}
+            onRemoveList={handleRemoveList}
+            onUpdateTask={handleUpdateTask}
+            onRemoveTask={handleRemoveTask}
+          />
         </div>
       </div>
     </section>
