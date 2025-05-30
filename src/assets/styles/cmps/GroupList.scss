@@ -3,4 +3,93 @@
   gap: 1rem;
   padding: 0;
   list-style: none;
+  margin: 0;
+
+  .group-list-content {
+    flex: 0 0 auto;
+    width: 272px;
+  }
+
+  .group-list-header {
+    width: 272px;
+
+    .add-group-btn {
+      background: rgba(9, 30, 66, 0.04);
+      border: none;
+      border-radius: 3px;
+      color: #6b778c;
+      padding: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+      transition: background-color 0.1s ease-in-out;
+
+      &:hover {
+        background-color: rgba(9, 30, 66, 0.08);
+      }
+
+       svg { 
+        width: 16px;
+        height: 16px;
+        color: #9fadbc; 
+      }
+    }
+
+    .add-group-form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background-color: #ebecf0;
+      padding: 8px;
+      border-radius: 3px;
+      box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+
+      .group-input {
+        padding: 8px;
+        border: 2px solid #026aa7;
+        border-radius: 3px;
+        font-size: 14px;
+        outline: none;
+        background-color: white;
+
+        &:focus {
+          box-shadow: 0 0 0 2px rgba(38, 132, 255, 0.2);
+        }
+      }
+
+      .add-group-actions {
+        display: flex;
+        gap: 8px;
+
+        .add-btn {
+          background-color: #026aa7;
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 3px;
+          cursor: pointer;
+          font-size: 14px;
+
+          &:hover {
+            background-color: #055a8c;
+          }
+        }
+
+        .cancel-btn {
+          background: none;
+          border: none;
+          color: #6b778c;
+          padding: 8px;
+          border-radius: 3px;
+          cursor: pointer;
+          font-size: 14px;
+
+          &:hover {
+            background-color: rgba(9, 30, 66, 0.08);
+          }
+        }
+      }
+    }
+  }
 }

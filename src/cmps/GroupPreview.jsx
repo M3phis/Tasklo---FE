@@ -1,6 +1,10 @@
 import { useState, useRef } from 'react'
 import ContentEditable from 'react-contenteditable'
 import { Card } from './Card'
+import { GroupListMenu } from './DynamicCmps.jsx/GroupListMenu'
+import EditorCollapseIcon from '@atlaskit/icon/glyph/editor/collapse'
+import AddIcon from '@atlaskit/icon/glyph/add'
+import MoreIcon from '@atlaskit/icon/glyph/more'
 
 export function GroupPreview({
   group,
@@ -13,7 +17,9 @@ export function GroupPreview({
   const [titleValue, setTitleValue] = useState(group.title)
   const [taskTitle, setTaskTitle] = useState('')
   const [isEditing, setIsEditing] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const contentEditableRef = useRef(null)
+  const menuTriggerRef = useRef(null)
 
   function handleAddTask(ev) {
     ev.preventDefault()
@@ -54,7 +60,6 @@ export function GroupPreview({
   function handleFocus() {
     setIsEditing(true)
 
-    // Select all text when clicking (exact Trello behavior)
     setTimeout(() => {
       if (contentEditableRef.current) {
         const range = document.createRange()
@@ -89,8 +94,19 @@ export function GroupPreview({
     }
   }
 
+  function handleChangeColor(color) {
+    const updatedGroup = {
+      ...group,
+      style: { backgroundColor: color },
+    }
+    onUpdateList(updatedGroup)
+  }
+
   return (
-    <div className="group-preview">
+    <div
+      className="group-preview"
+      style={{ backgroundColor: group.style.backgroundColor || '#ebecf0' }}
+    >
       <div className="group-header">
         <div className="group-title">
           <ContentEditable
@@ -103,29 +119,7 @@ export function GroupPreview({
             onKeyDown={handleKeyDown}
             tagName="h3"
             suppressContentEditableWarning={true}
-            style={{
-              cursor: 'pointer',
-              margin: 0,
-              padding: isEditing ? '4px 8px' : '6px 8px',
-              borderRadius: '3px',
-              outline: 'none',
-              fontSize: '14px',
-              fontWeight: '600',
-              lineHeight: '20px',
-              minHeight: '28px',
-              display: 'inline-block',
-              minWidth: '120px',
-              maxWidth: '300px',
-              wordWrap: 'break-word',
-              whiteSpace: 'pre-wrap',
-              backgroundColor: isEditing ? 'white' : 'transparent',
-              color: isEditing ? '#black' : '#172b4d',
-              border: isEditing ? '2px solid #026aa7' : '2px solid transparent',
-              boxShadow: isEditing
-                ? '0 0 0 2px rgba(38, 132, 255, 0.2)'
-                : 'none',
-              transition: 'all 0.1s ease-in-out',
-            }}
+            className={`group-title-editable ${isEditing ? 'editing' : ''}`}
             onMouseEnter={(e) => {
               if (!isEditing) {
                 e.target.style.backgroundColor = 'rgba(9, 30, 66, 0.04)'
@@ -138,10 +132,26 @@ export function GroupPreview({
             }}
           />
         </div>
-        <button className="collapse-btn">collapse</button>
-        <button className="options-btn">***</button>
+        <button className="collapse-btn">
+          <EditorCollapseIcon label="" color="#9fadbc" />
+        </button>
+        <button
+          ref={menuTriggerRef}
+          className="options-btn"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <MoreIcon label="" color="#9fadbc" />
+        </button>
       </div>
 
+      <div className="task-list">
+        {group.tasks.map((task) => (
+          <div key={task.id} className="task-card">
+            <p>{task.title}</p>
+            {/* <button className="remove-task-btn" onClick={() => onRemoveTask(group.id, task.id)}>X</button> */}
+          </div>
+        ))}
+      </div>
       <div className="task-list">
         {group.tasks.map((task) => (
           <Card
@@ -162,7 +172,7 @@ export function GroupPreview({
               onChange={(ev) => setTaskTitle(ev.target.value)}
               placeholder="Enter a title for this card..."
               autoFocus
-              aria-label="Task title"
+              className="task-input"
             />
             <div className="add-task-actions">
               <button type="submit" className="add-btn">
@@ -176,7 +186,6 @@ export function GroupPreview({
                   setTaskTitle('')
                 }}
               >
-                {' '}
                 Cancel
               </button>
             </div>
@@ -186,10 +195,20 @@ export function GroupPreview({
             className="add-task-btn"
             onClick={() => setIsAddingTask(true)}
           >
-            + Add a card
+            <AddIcon label="" color="#9fadbc" /> Add a card
           </button>
         )}
       </div>
+
+      <GroupListMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        onAddCard={() => setIsAddingTask(true)}
+        onDeleteList={() => onRemoveList(group.id)}
+        onChangeColor={handleChangeColor}
+        currentColor={group.style?.backgroundColor}
+        triggerRef={menuTriggerRef}
+      />
     </div>
   )
 }

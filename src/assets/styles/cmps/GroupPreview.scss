@@ -1,34 +1,183 @@
 .group-preview {
-  background-color: #f4f5f7;
-  border-radius: 8px;
-  width: 270px;
-  flex-shrink: 0;
-  padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+  border-radius: 12px;
+  padding: 8px;
+  min-width: 272px;
+  position: relative;
 
-.group-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
+  .group-header {
+    display: flex;
+    align-items: center;
 
-.task-card {
-  background-color: #fff;
-  border-radius: 6px;
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  transition: box-shadow 0.2s ease;
-}
+    .group-title {
+      flex-grow: 1;
 
-body.dragging {
-  cursor: grabbing !important;
-}
+      .group-title-editable {
+        cursor: pointer;
+        margin: 0;
+        padding: 6px 8px;
+        border-radius: 3px;
+        outline: none;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+        min-height: 28px;
+        display: inline-block;
+        min-width: 120px;
+        max-width: 300px;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        color: #172b4d;
+        border: 2px solid transparent;
+        transition: all 0.1s ease-in-out;
 
-body.dragging * {
-  cursor: grabbing !important;
+        &.editing {
+          padding: 4px 8px;
+          background-color: white;
+          color: black;
+          border: 2px solid #026aa7;
+          box-shadow: 0 0 0 2px rgba(38, 132, 255, 0.2);
+        }
+      }
+    }
+
+    .collapse-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(9, 30, 66, 0.08);
+      }
+
+      svg {
+        width: 16px;
+        height: 16px;
+        color: #9fadbc;
+      }
+    }
+
+    .options-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(9, 30, 66, 0.08);
+      }
+
+      svg {
+        width: 16px;
+        height: 16px;
+        color: #9fadbc;
+      }
+    }
+  }
+
+  .task-list {
+    margin: 8px 0;
+
+    .task-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: white;
+      padding: 8px;
+      margin-bottom: 8px;
+      border-radius: 3px;
+      box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+
+      p {
+        margin: 0;
+        flex-grow: 1;
+      }
+
+      .remove-task-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #6b778c;
+        font-size: 14px;
+        padding: 4px;
+
+        &:hover {
+          color: #eb5a46;
+        }
+      }
+    }
+  }
+
+  .add-task-section {
+    .add-task-form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      .task-input {
+        padding: 8px;
+        border: 2px solid #026aa7;
+        border-radius: 3px;
+        font-size: 14px;
+        outline: none;
+
+        &:focus {
+          box-shadow: 0 0 0 2px rgba(38, 132, 255, 0.2);
+        }
+      }
+
+      .add-task-actions {
+        display: flex;
+        gap: 8px;
+
+        .add-btn {
+          background-color: #026aa7;
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 3px;
+          cursor: pointer;
+          font-size: 14px;
+
+          &:hover {
+            background-color: #055a8c;
+          }
+        }
+
+        .cancel-btn {
+          background: none;
+          border: none;
+          color: #6b778c;
+          padding: 8px;
+          border-radius: 3px;
+          cursor: pointer;
+          font-size: 14px;
+
+          &:hover {
+            background-color: rgba(9, 30, 66, 0.08);
+          }
+        }
+      }
+    }
+
+    .add-task-btn {
+      background: none;
+      border: none;
+      color: #6b778c;
+      padding: 8px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 14px;
+      width: 100%;
+      text-align: left;
+
+      &:hover {
+        background-color: rgba(9, 30, 66, 0.08);
+      }
+
+      svg {
+        width: 16px;
+        height: 16px;
+        color: #9fadbc;
+      }
+    }
+  }
 }
