@@ -6,15 +6,17 @@ import {
   dropTargetForElements,
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter'
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine'
+import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview'
 import { moveCard } from '../store/board.actions'
 import { useDispatch } from 'react-redux'
+import { createPortal } from 'react-dom'
 
 export function Card({ task, onRemoveTask, group }) {
   const [isDragging, setIsDragging] = useState(false)
   const ref = useRef(null)
   const { boardId } = useParams()
   const dispatch = useDispatch()
-
+  const [preview, setPreview] = useState(null)
   useEffect(() => {
     const element = ref.current
     if (!element) return
@@ -33,6 +35,15 @@ export function Card({ task, onRemoveTask, group }) {
         },
         onDrop() {
           setIsDragging(false)
+          setPreview(null)
+        },
+        onGenerateDragPreview({ nativeSetDragImage }) {
+          setCustomNativeDragPreview({
+            nativeSetDragImage,
+            render({ container }) {
+              setPreview(container)
+            },
+          })
         },
       }),
       dropTargetForElements({
@@ -70,6 +81,11 @@ export function Card({ task, onRemoveTask, group }) {
       >
         X
       </button>
+      {preview && createPortal(<CardPreveiw card={task} />, preview)}
     </div>
   )
+}
+
+const CardPreveiw = ({ card }) => {
+  return <div className="card-preview">{<p>{card.title}</p>}</div>
 }
