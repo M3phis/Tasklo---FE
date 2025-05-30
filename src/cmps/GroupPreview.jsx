@@ -146,14 +146,6 @@ export function GroupPreview({
 
       <div className="task-list">
         {group.tasks.map((task) => (
-          <div key={task.id} className="task-card">
-            <p>{task.title}</p>
-            {/* <button className="remove-task-btn" onClick={() => onRemoveTask(group.id, task.id)}>X</button> */}
-          </div>
-        ))}
-      </div>
-      <div className="task-list">
-        {group.tasks.map((task) => (
           <Card
             group={group}
             key={task.id}
