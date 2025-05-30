@@ -181,3 +181,33 @@
     }
   }
 }
+
+.card-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+  width: 240px;
+  transform: rotate(3deg);
+  p {
+    margin: 0;
+    flex-grow: 1;
+  }
+
+  .remove-task-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6b778c;
+    font-size: 14px;
+    padding: 4px;
+
+    &:hover {
+      color: #eb5a46;
+    }
+  }
+}
