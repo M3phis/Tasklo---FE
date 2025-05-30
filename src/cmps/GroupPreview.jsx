@@ -3,6 +3,7 @@ import ContentEditable from 'react-contenteditable'
 import { GroupListMenu } from './DynamicCmps.jsx/GroupListMenu'
 import EditorCollapseIcon from '@atlaskit/icon/glyph/editor/collapse'
 import AddIcon from '@atlaskit/icon/glyph/add'
+import MoreIcon from '@atlaskit/icon/glyph/more';
 
 
 export function GroupPreview({ group, onUpdateList, onRemoveList, onUpdateTask, onRemoveTask }) {
@@ -125,7 +126,7 @@ export function GroupPreview({ group, onUpdateList, onRemoveList, onUpdateTask, 
                     />
                 </div>
                 <button className="collapse-btn">< EditorCollapseIcon label="" color="#9fadbc" /></button>
-                <button ref={menuTriggerRef} className="options-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}> ⋯ </button>
+                <button ref={menuTriggerRef} className="options-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}><MoreIcon label="" color="#9fadbc"/></button>
             </div>
 
             <div className="task-list">

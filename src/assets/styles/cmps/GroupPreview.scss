@@ -44,13 +44,15 @@
       background: none;
       border: none;
       cursor: pointer;
-      font-size: 14px;
-      color: #6b778c;
-      padding: 4px 8px;
-      border-radius: 3px;
 
       &:hover {
         background-color: rgba(9, 30, 66, 0.08);
+      }
+
+      svg {
+        width: 16px;
+        height: 16px;
+        color: #9fadbc;
       }
     }
 
@@ -58,14 +60,15 @@
       background: none;
       border: none;
       cursor: pointer;
-      font-size: 16px;
-      color: #6b778c;
-      padding: 4px 8px;
-      border-radius: 3px;
-      margin-left: 8px;
 
       &:hover {
         background-color: rgba(9, 30, 66, 0.08);
+      }
+
+      svg {
+        width: 16px;
+        height: 16px;
+        color: #9fadbc;
       }
     }
   }
