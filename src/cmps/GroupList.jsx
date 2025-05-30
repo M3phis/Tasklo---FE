@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { GroupPreview } from './GroupPreview'
+import AddIcon from '@atlaskit/icon/glyph/add'
 
 export function GroupList({ board, onAddGroup, onUpdateList, onRemoveList, onUpdateTask, onRemoveTask }) {
   const [isAddingGroup, setIsAddingGroup] = useState(false)
@@ -44,18 +45,17 @@ export function GroupList({ board, onAddGroup, onUpdateList, onRemoveList, onUpd
       <li>
         <div className="group-list-header">
           {!isAddingGroup ? (
-            <button className="add-group-btn" onClick={() => setIsAddingGroup(true)} aria-label="Add another group">+ Add List</button>
+            <button className="add-group-btn" onClick={() => setIsAddingGroup(true)} ><AddIcon label="" color="#9fadbc"/> Add another List</button>
           ) : (
             <form onSubmit={handleAddGroup} className="add-group-form">
               <input type="text" value={groupTitle} onChange={(ev) => setGroupTitle(ev.target.value)} placeholder="Enter list title..." autoFocus aria-label="List title" />
               <div className="add-group-actions">
-                <button type="submit" className="add-btn" aria-label="Add new group">Add List</button>
+                <button type="submit" className="add-btn" aria-label="Add new list">Add List</button>
                 <button className="cancel-btn"
                   onClick={() => {
                     setIsAddingGroup(false)
                     setGroupTitle('')
                   }}
-                  aria-label="Cancel adding group"
                 >Cancel</button>
               </div>
             </form>
