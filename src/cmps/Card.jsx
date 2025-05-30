@@ -1,31 +1,61 @@
+import { boardService } from '../services/board/board.service.local'
+import { useParams } from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react'
-import { draggable } from '@atlaskit/pragmatic-drag-and-drop/element/adapter'
+import {
+  draggable,
+  dropTargetForElements,
+} from '@atlaskit/pragmatic-drag-and-drop/element/adapter'
+import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine'
+import { moveCard } from '../store/board.actions'
+import { useDispatch } from 'react-redux'
 
 export function Card({ task, onRemoveTask, group }) {
   const [isDragging, setIsDragging] = useState(false)
   const ref = useRef(null)
+  const { boardId } = useParams()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const element = ref.current
     if (!element) return
 
-    return draggable({
-      element,
-      onDragStart(event) {
-        setIsDragging(true)
-        console.log(event)
-        document.body.classList.add('dragging')
-      },
-      onDragOver(event) {
-        event.preventDefault()
-      },
+    return combine(
+      draggable({
+        element,
+        getInitialData() {
+          return { ...task, groupId: group.id }
+        },
+        onDragStart(event) {
+          setIsDragging(true)
+        },
+        onDragOver(event) {
+          event.preventDefault()
+        },
+        onDrop() {
+          setIsDragging(false)
+        },
+      }),
+      dropTargetForElements({
+        element,
+        getData() {
+          return { ...task, groupId: group.id }
+        },
+        onDrop: async ({ source, self }) => {
+          try {
+            await moveCard(
+              boardId,
+              source.data.groupId,
+              source.data.id,
+              self.data.groupId
+            )
+          } catch (error) {
+            console.error('Failed to move card:', error)
+          }
+        },
+      })
+    )
+  }, [boardId, group.id, task, dispatch])
 
-      onDrop() {
-        setIsDragging(false)
-        document.body.classList.remove('dragging')
-      },
-    })
-  }, [])
   return (
     <div
       key={task.id}
