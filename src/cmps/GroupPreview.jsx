@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react'
 import ContentEditable from 'react-contenteditable'
-// import { Card } from './Card'
 import { GroupListMenu } from './DynamicCmps.jsx/GroupListMenu'
 import { TaskList } from './TaskList'
 
