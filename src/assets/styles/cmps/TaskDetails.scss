@@ -1,0 +1,75 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content.task-details-modal {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  min-width: 400px;
+  min-height: 300px;
+  position: relative;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.18);
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.task-details-header {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.task-details-labels {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.task-label {
+  border-radius: 3px;
+  width: 32px;
+  height: 24px;
+  display: inline-block;
+  margin: 0 4px;
+}
+
+.task-details-description {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.task-details-description textarea {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  resize: vertical;
+}
+
+.task-details-members {
+  margin-top: 1rem;
+}
+
+.task-member {
+  margin: 0 8px;
+  display: inline-block;
+}

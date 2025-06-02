@@ -1,51 +1,51 @@
 // Setup
-@import "setup/variables";
-@import "setup/functions";
-@import "setup/mixins";
-@import "setup/typography";
+@import 'setup/variables';
+@import 'setup/functions';
+@import 'setup/mixins';
+@import 'setup/typography';
 
 // Basics
-@import "basics/helpers";
-@import "basics/layout";
-@import "basics/base";
-@import "basics/links";
-@import "basics/forms";
-
+@import 'basics/helpers';
+@import 'basics/layout';
+@import 'basics/base';
+@import 'basics/links';
+@import 'basics/forms';
 
 // pages
-@import "RootCmp";
+@import 'RootCmp';
 
-@import "pages/HomePage";
-@import "pages/AboutUs";
+@import 'pages/HomePage';
+@import 'pages/AboutUs';
 
-@import "pages/BoardIndex";
-@import "pages/BoardDetails";
+@import 'pages/BoardIndex';
+@import 'pages/BoardDetails';
 
-@import "pages/UserDetails";
-@import "pages/AdminIndex";
-@import "pages/LoginSignup";
+@import 'pages/UserDetails';
+@import 'pages/AdminIndex';
+@import 'pages/LoginSignup';
 
-@import "pages/ReviewIndex";
-@import "pages/Chat";
-
+@import 'pages/ReviewIndex';
+@import 'pages/Chat';
 
 // Components
 
-@import "cmps/AppHeader";
-@import "cmps/AppFooter";
-@import "cmps/UserMsg";
+@import 'cmps/AppHeader';
+@import 'cmps/AppFooter';
+@import 'cmps/UserMsg';
 
-@import "cmps/BoardFilter";
-@import "cmps/BoardList";
-@import "cmps/BoardPreview";
+@import 'cmps/BoardFilter';
+@import 'cmps/BoardList';
+@import 'cmps/BoardPreview';
 
-@import "cmps/GroupList";
-@import "cmps/GroupPreview";
-@import "cmps/GroupListMenu";
+@import 'cmps/GroupList';
+@import 'cmps/GroupPreview';
+@import 'cmps/GroupListMenu';
 
-@import "cmps/TaskList";
-@import "cmps/TaskPreview";
+@import 'cmps/TaskList';
+@import 'cmps/TaskPreview';
 
-@import "cmps/ReviewEdit";
-@import "cmps/ReviewList";
-@import "cmps/ReviewPreview";
+@import 'cmps/ReviewEdit';
+@import 'cmps/ReviewList';
+@import 'cmps/ReviewPreview';
+
+@import 'cmps/TaskDetails';

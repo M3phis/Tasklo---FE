@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { loadBoard, updateBoard } from '../store/board.actions'
 import { GroupList } from '../cmps/GroupList'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
+import { Outlet } from 'react-router-dom'
 
 export function BoardDetails() {
   const { boardId } = useParams()
@@ -47,6 +48,7 @@ export function BoardDetails() {
   //       showErrorMsg('Cannot add list')
   //     })
   // }
+  let taskIsOpen = true
 
   function handleAddGroup(newGroup) {
     const updatedBoard = {
@@ -100,12 +102,12 @@ export function BoardDetails() {
   function handleUpdateTask(updatedGroup) {
     const updatedGroups = board.groups.map((group) =>
       group.id === updatedGroup.id ? updatedGroup : group
-    );
+    )
 
     const updatedBoard = {
       ...board,
       groups: updatedGroups,
-    };
+    }
 
     return updateBoard(updatedBoard)
       .then(() => showSuccessMsg('Task updated'))
@@ -161,6 +163,7 @@ export function BoardDetails() {
           />
         </div>
       </div>
+      {<Outlet />}
     </section>
   )
 }
