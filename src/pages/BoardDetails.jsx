@@ -152,6 +152,7 @@ export function BoardDetails() {
         <div className="lists-container">
           <GroupList
             board={board}
+            boardId={boardId}
             onAddGroup={handleAddGroup}
             onUpdateList={handleUpdateList}
             onRemoveList={handleRemoveList}

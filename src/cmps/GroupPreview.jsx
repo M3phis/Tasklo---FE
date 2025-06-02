@@ -1,18 +1,15 @@
 import { useState, useRef } from 'react'
 import ContentEditable from 'react-contenteditable'
-import { Card } from './Card'
+// import { Card } from './Card'
 import { GroupListMenu } from './DynamicCmps.jsx/GroupListMenu'
+import { TaskList } from './TaskList'
+
 import EditorCollapseIcon from '@atlaskit/icon/glyph/editor/collapse'
 import AddIcon from '@atlaskit/icon/glyph/add'
 import MoreIcon from '@atlaskit/icon/glyph/more'
+import CrossIcon from '@atlaskit/icon/glyph/cross'
 
-export function GroupPreview({
-  group,
-  onUpdateList,
-  onRemoveList,
-  onUpdateTask,
-  onRemoveTask,
-}) {
+export function GroupPreview({ group, boardId, onUpdateList, onRemoveList, onUpdateTask, onRemoveTask }) {
   const [isAddingTask, setIsAddingTask] = useState(false)
   const [titleValue, setTitleValue] = useState(group.title)
   const [taskTitle, setTaskTitle] = useState('')
@@ -132,63 +129,28 @@ export function GroupPreview({
             }}
           />
         </div>
-        <button className="collapse-btn">
-          <EditorCollapseIcon label="" color="#9fadbc" />
-        </button>
-        <button
-          ref={menuTriggerRef}
-          className="options-btn"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          <MoreIcon label="" color="#9fadbc" />
-        </button>
+        <button className="collapse-btn"> <EditorCollapseIcon label="" color="#9fadbc" /></button>
+        <button ref={menuTriggerRef} className="options-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}><MoreIcon label="" color="#9fadbc" /></button>
       </div>
 
-      <div className="task-list">
-        {group.tasks.map((task) => (
-          <Card
-            group={group}
-            key={task.id}
-            task={task}
-            onRemoveTask={onRemoveTask}
-          />
-        ))}
-      </div>
+      <TaskList boardId={boardId} tasks={group.tasks} group={group} onRemoveTask={onRemoveTask} onUpdateTask={onUpdateTask} />
 
       <div className="add-task-section">
         {isAddingTask ? (
           <form onSubmit={handleAddTask} className="add-task-form">
-            <input
-              type="text"
-              value={taskTitle}
-              onChange={(ev) => setTaskTitle(ev.target.value)}
-              placeholder="Enter a title for this card..."
-              autoFocus
-              className="task-input"
-            />
+            <input type="text" value={taskTitle} onChange={(ev) => setTaskTitle(ev.target.value)} placeholder="Enter a title for this card..." autoFocus className="task-input" />
             <div className="add-task-actions">
-              <button type="submit" className="add-btn">
-                Add Card
-              </button>
-              <button
-                type="button"
-                className="cancel-btn"
+              <button type="submit" className="add-btn"> Add card </button>
+              <button type="button" className="cancel-btn"
                 onClick={() => {
                   setIsAddingTask(false)
                   setTaskTitle('')
                 }}
-              >
-                Cancel
-              </button>
+              ><CrossIcon label="" color="#9fadbc" /></button>
             </div>
           </form>
         ) : (
-          <button
-            className="add-task-btn"
-            onClick={() => setIsAddingTask(true)}
-          >
-            <AddIcon label="" color="#9fadbc" /> Add a card
-          </button>
+          <button className="add-task-btn" onClick={() => setIsAddingTask(true)}><AddIcon label="" color="#9fadbc" /> Add a card </button>
         )}
       </div>
 
