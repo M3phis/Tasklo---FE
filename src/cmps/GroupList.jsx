@@ -1,8 +1,10 @@
 import { useState, useRef } from 'react'
 import { GroupPreview } from './GroupPreview'
-import AddIcon from '@atlaskit/icon/glyph/add'
 
-export function GroupList({ board, onAddGroup, onUpdateList, onRemoveList, onUpdateTask, onRemoveTask }) {
+import AddIcon from '@atlaskit/icon/glyph/add'
+import CrossIcon from '@atlaskit/icon/glyph/cross'
+
+export function GroupList({ board, boardId, onAddGroup, onUpdateList, onRemoveList, onUpdateTask, onRemoveTask }) {
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [groupTitle, setGroupTitle] = useState('')
   const { groups } = board
@@ -35,6 +37,7 @@ export function GroupList({ board, onAddGroup, onUpdateList, onRemoveList, onUpd
           <GroupPreview
             group={group}
             board={board}
+            boardId={boardId}
             onUpdateList={onUpdateList}
             onRemoveList={onRemoveList}
             onUpdateTask={onUpdateTask}
@@ -45,7 +48,7 @@ export function GroupList({ board, onAddGroup, onUpdateList, onRemoveList, onUpd
       <li>
         <div className="group-list-header">
           {!isAddingGroup ? (
-            <button className="add-group-btn" onClick={() => setIsAddingGroup(true)} ><AddIcon label="" color="#9fadbc"/> Add another List</button>
+            <button className="add-group-btn" onClick={() => setIsAddingGroup(true)} ><AddIcon label="" color="#9fadbc" /> Add another List</button>
           ) : (
             <form onSubmit={handleAddGroup} className="add-group-form">
               <input type="text" value={groupTitle} onChange={(ev) => setGroupTitle(ev.target.value)} placeholder="Enter list title..." autoFocus aria-label="List title" />
@@ -56,7 +59,7 @@ export function GroupList({ board, onAddGroup, onUpdateList, onRemoveList, onUpd
                     setIsAddingGroup(false)
                     setGroupTitle('')
                   }}
-                >Cancel</button>
+                ><CrossIcon label="" color="#9fadbc" /></button>
               </div>
             </form>
           )}
