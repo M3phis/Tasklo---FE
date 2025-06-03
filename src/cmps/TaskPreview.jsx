@@ -12,6 +12,9 @@ import { moveCard } from '../store/board.actions'
 import { useDispatch } from 'react-redux'
 import { createPortal } from 'react-dom'
 import EditIcon from '@atlaskit/icon/glyph/edit'
+import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle'
+import MediaServicesPreselectedIcon from '@atlaskit/icon/glyph/media-services/preselected'
+import editpenSvg from '../svg/editpen.svg'
 
 export function TaskPreview({ task, group, onRemoveTask, onUpdateTask, onOpenQuickEdit, isEmptyPlaceholder = false }) {
     const [isDragging, setIsDragging] = useState(false)
@@ -21,6 +24,7 @@ export function TaskPreview({ task, group, onRemoveTask, onUpdateTask, onOpenQui
     const { boardId } = useParams()
     const dispatch = useDispatch()
     const ref = useRef(null)
+    const isDone = task?.status === 'done'
 
     useEffect(() => {
         const element = ref.current
@@ -114,7 +118,7 @@ export function TaskPreview({ task, group, onRemoveTask, onUpdateTask, onOpenQui
 
     function handleTaskClick(e) {
         if (isEmptyPlaceholder) return
-        if (e.target.closest('.task-edit-btn') || e.target.closest('.remove-task-btn')) {
+        if (e.target.closest('.task-edit-btn') || e.target.closest('.remove-task-btn') || e.target.closest('.task-done-btn')) {
             return
         }
         console.log('Open task details for:', task.title)
@@ -125,8 +129,27 @@ export function TaskPreview({ task, group, onRemoveTask, onUpdateTask, onOpenQui
             onOpenQuickEdit(task, group.id)
         }
     }
-    
- if (isEmptyPlaceholder) {
+
+    function handleDoneToggle(e) {
+        e.stopPropagation()
+
+        const updatedTask = {
+            ...task,
+            status: isDone ? 'in-progress' : 'done',
+            ...(isDone ? {} : { completedAt: new Date().toISOString() })
+        }
+
+        const updatedGroup = {
+            ...group,
+            tasks: group.tasks.map(t =>
+                t.id === task.id ? updatedTask : t
+            )
+        }
+
+        onUpdateTask(updatedGroup)
+    }
+
+    if (isEmptyPlaceholder) {
         return (
             <div
                 ref={ref}
@@ -151,41 +174,39 @@ export function TaskPreview({ task, group, onRemoveTask, onUpdateTask, onOpenQui
                     cursor: isDragging ? 'grabbing' : 'pointer'
                 }}
             >
-                <div className='task-preview'>
-                    {(task.style?.backgroundImage || task.style?.backgroundColor) && (
-                        <div
-                            className="task-cover"
-                            style={{
-                                backgroundColor: task.style.backgroundColor,
-                                backgroundImage: task.style.backgroundImage ? `url(${task.style.backgroundImage})` : 'none'
-                            }}
-                        >
-                            {task.style.backgroundImage && (
-                                <img src={task.style.backgroundImage} alt="" className="cover-image" />
-                            )}
-                        </div>
-                    )}
 
+
+                <div className={`task-preview ${isDone ? 'task-done' : ''}`}>
                     <div className="task-content">
                         {isHovered && (
-                            <button className="task-edit-btn" onClick={handleEditClick} title="Quick edit"><EditIcon label="" size="small" /></button>
+                            <button className="task-edit-btn" onClick={handleEditClick} title="Quick edit"> <img src={editpenSvg} alt="Edit" width="14" height="14" /></button>
                         )}
 
-                        <div className="task-title">
-                            {task.title}
+                        <div className="task-header">
+                            {(isDone || isHovered) && (
+                                <button className="task-done-btn" onClick={handleDoneToggle} title={isDone ? "Mark as undone" : "Mark as done"}>
+                                    {isDone ? (
+                                        <CheckCircleIcon label="Mark as undone" size="small" primaryColor="#00875A" />
+                                    ) : (
+                                        <MediaServicesPreselectedIcon label="Mark as done" size="small" />
+                                    )}
+                                </button>
+                            )}
+
+                            <div className="task-title">{task.title}</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {preview && createPortal(<TaskPreviewDrag task={task} />, preview)}
+            {preview && createPortal(<TaskPreviewDrag task={task} isDone={isDone} />, preview)}
         </>
     )
 }
 
-const TaskPreviewDrag = ({ task }) => {
+const TaskPreviewDrag = ({ task, isDone }) => {
     return (
-        <div className="task-preview-drag">
+        <div className={`task-preview-drag ${isDone ? 'task-done' : ''}`}>
             <p>{task.title}</p>
         </div>
     )
