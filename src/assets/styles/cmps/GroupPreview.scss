@@ -1,213 +1,182 @@
 .group-preview {
-  border-radius: 12px;
-  padding: 8px;
-  min-width: 272px;
-  position: relative;
+  @include group-font-base;
+  background: $group-bg-primary;
+  color: $group-text-secondary;
+  width: $group-width;
+  border-radius: rem(12px);////check
+  padding-bottom: rem(4px);
+}
 
-  .group-header {
-    display: flex;
-    align-items: center;
+.group-header {
+  @include group-font-base;
+  background: $group-bg-primary;
+  color: $group-text-primary;
+  width: 100%;
+  height: $group-header-height;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: rem(8px) rem(8px) 0;
+}
 
-    .group-title {
-      flex-grow: 1;
+.group-title-editable {
+  @include group-font-base;
+  background: $group-bg-primary;
+  color: $group-text-primary;
+  font-weight: $group-font-weight-semibold;
+  flex-grow: 1;
+  width: rem(272px);
+  height: rem(32px);
+  font-size: rem(14px);
+  line-height: rem(20px);
+  padding: rem(4px) rem(8px) rem(6px) rem(12px);
+  margin: 0;
+  outline: none;
 
-      .group-title-editable {
-        cursor: pointer;
-        margin: 0;
-        padding: 6px 8px;
-        border-radius: 3px;
-        outline: none;
-        font-size: 14px;
-        font-weight: 600;
-        line-height: 20px;
-        min-height: 28px;
-        display: inline-block;
-        min-width: 120px;
-        max-width: 300px;
-        word-wrap: break-word;
-        white-space: pre-wrap;
-        color: #172b4d;
-        border: 2px solid transparent;
-        transition: all 0.1s ease-in-out;
+  &.editing {
+    background: $group-bg-secondary;
+    box-shadow: inset 0 0 0 2px $group-accent-blue;
+  }
+}
 
-        &.editing {
-          padding: 4px 8px;
-          background-color: white;
-          color: black;
-          border: 2px solid #026aa7;
-          box-shadow: 0 0 0 2px rgba(38, 132, 255, 0.2);
-        }
-      }
-    }
+.collapse-btn,
+.options-btn {
+  @include group-button-base;
+  font-weight: $group-font-weight-medium;
+  color: $group-text-primary;
+  width: $group-button-size;
+  height: $group-button-size;
+  background-color: $group-bg-primary;
+  border-radius: $group-border-radius-medium;
+  margin: 0;
+  padding: rem(8px);
 
-    .collapse-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-
-      &:hover {
-        background-color: rgba(9, 30, 66, 0.08);
-      }
-
-      svg {
-        width: 16px;
-        height: 16px;
-        color: #9fadbc;
-      }
-    }
-
-    .options-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-
-      &:hover {
-        background-color: rgba(9, 30, 66, 0.08);
-      }
-
-      svg {
-        width: 16px;
-        height: 16px;
-        color: #9fadbc;
-      }
-    }
+  svg {
+    width: $group-icon-size-large;
+    height: $group-icon-size-large;
   }
 
-  .task-list {
-    margin: 8px 0;
-
-    .task-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background-color: white;
-      padding: 8px;
-      margin-bottom: 8px;
-      border-radius: 3px;
-      box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
-
-      p {
-        margin: 0;
-        flex-grow: 1;
-      }
-
-      .remove-task-btn {
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: #6b778c;
-        font-size: 14px;
-        padding: 4px;
-
-        &:hover {
-          color: #eb5a46;
-        }
-      }
-    }
+  &:hover {
+    background:$group-hover-bg;
   }
+}
 
-  .add-task-section {
-    .add-task-form {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+.options-btn svg {
+  width: $group-icon-size-small;
+  height: $group-icon-size-small;
+  fill: $group-text-primary;
+  color: $group-text-primary;
+}
 
-      .task-input {
-        padding: 8px;
-        border: 2px solid #026aa7;
-        border-radius: 3px;
-        font-size: 14px;
-        outline: none;
+// .add-task-section {
+//   margin-top: 8px;
+// }
 
-        &:focus {
-          box-shadow: 0 0 0 2px rgba(38, 132, 255, 0.2);
-        }
-      }
+.add-task-form {
+  @include group-font-base;
+  background: $group-bg-primary;
+  color: $group-text-primary;
+  width: rem(246px);
+  height: rem(96px);
+  border-radius: $group-border-radius-medium;
 
-      .add-task-actions {
-        display: flex;
-        gap: 8px;
+  .task-input {
+    @include group-font-base;
+    background: $group-bg-secondary;
+    color: $group-text-primary;
+    width: 100%;
+    height: rem(56px);
+    border: 0 solid transparent;
+    border-radius: $group-border-radius-medium;
+    padding: rem(8px) rem(12px);
+    box-sizing: border-box;
+    resize: vertical;
+    margin: 0;
+    box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
 
-        .add-btn {
-          background-color: #026aa7;
-          color: white;
-          border: none;
-          padding: 8px 16px;
-          border-radius: 3px;
-          cursor: pointer;
-          font-size: 14px;
-
-          &:hover {
-            background-color: #055a8c;
-          }
-        }
-
-        .cancel-btn {
-          background: none;
-          border: none;
-          color: #6b778c;
-          padding: 8px;
-          border-radius: 3px;
-          cursor: pointer;
-          font-size: 14px;
-
-          &:hover {
-            background-color: rgba(9, 30, 66, 0.08);
-          }
-        }
-      }
+    &:focus {
+      outline: none;
     }
 
-    .add-task-btn {
-      background: none;
-      border: none;
-      color: #6b778c;
-      padding: 8px;
-      border-radius: 3px;
-      cursor: pointer;
-      font-size: 14px;
-      width: 100%;
-      text-align: left;
-
-      &:hover {
-        background-color: rgba(9, 30, 66, 0.08);
-      }
-
-      svg {
-        width: 16px;
-        height: 16px;
-        color: #9fadbc;
-      }
+    &::placeholder {
+      color: $group-text-muted;
     }
   }
 }
 
-.card-preview {
+.add-task-actions {
+  @include group-font-base;
+  background: $group-bg-primary;
+  color: $group-text-primary;
+  width: rem(246px);
+  height: $group-header-height;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background-color: white;
-  padding: 8px;
-  margin-bottom: 8px;
-  border-radius: 3px;
-  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
-  width: 240px;
-  transform: rotate(3deg);
-  p {
-    margin: 0;
-    flex-grow: 1;
+  gap: rem(4px);
+  margin-top: rem(8px);
+}
+
+.add-btn {
+  @include group-font-base;
+  font-weight: $group-font-weight-medium;
+  color: $group-bg-secondary;
+  background: $group-accent-blue;
+  width: rem(81.5px);
+  height: rem(32px);
+  border: none;
+  border-radius: $group-border-radius-small;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin: 0;
+  padding: rem(6px) rem(12px);
+
+  &:hover {
+    background: #0052CC;
+  }
+}
+
+.cancel-btn {
+  @include group-button-base;
+  background: transparent;
+  color: $group-text-primary;
+  padding: rem(6px);
+  margin: 0;
+
+  &:hover {
+    background:$group-hover-bg;
+    border-radius: $group-border-radius-small;
   }
 
-  .remove-task-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #6b778c;
-    font-size: 14px;
-    padding: 4px;
+  svg {
+    width: $group-icon-size-medium;
+    height: $group-icon-size-medium;
+  }
+}
 
-    &:hover {
-      color: #eb5a46;
-    }
+.add-task-btn {
+  @include group-font-base;
+  font-weight: $group-font-weight-medium;
+  background: transparent;
+  color: $group-text-secondary;
+  border: none;
+  padding: rem(4px) rem(8px);
+  border-radius: $group-border-radius-medium;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: rem(6px);
+  width: 100%;
+  height: rem(40px);
+  transition: background-color 0.2s ease, color 0.2s ease;
+  margin: 0;
+
+  &:hover {
+    background:$group-hover-bg;
+    color: $group-text-primary;
+  }
+
+  svg {
+    width: $group-icon-size-small;
+    height: $group-icon-size-small;
   }
 }

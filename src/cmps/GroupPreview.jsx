@@ -99,12 +99,9 @@ export function GroupPreview({ group, boardId, onUpdateList, onRemoveList, onUpd
   }
 
   return (
-    <div
-      className="group-preview"
-      style={{ backgroundColor: group.style.backgroundColor || '#ebecf0' }}
-    >
+    <div className="group-preview">
       <div className="group-header">
-        <div className="group-title">
+        {/* <div className="group-title"> */}
           <ContentEditable
             innerRef={contentEditableRef}
             html={titleValue}
@@ -113,23 +110,13 @@ export function GroupPreview({ group, boardId, onUpdateList, onRemoveList, onUpd
             onFocus={handleFocus}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
-            tagName="h3"
+            tagName="h2"
             suppressContentEditableWarning={true}
             className={`group-title-editable ${isEditing ? 'editing' : ''}`}
-            onMouseEnter={(e) => {
-              if (!isEditing) {
-                e.target.style.backgroundColor = 'rgba(9, 30, 66, 0.04)'
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!isEditing) {
-                e.target.style.backgroundColor = 'transparent'
-              }
-            }}
           />
-        </div>
-        <button className="collapse-btn"> <EditorCollapseIcon label="" color="#9fadbc" /></button>
-        <button ref={menuTriggerRef} className="options-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}><MoreIcon label="" color="#9fadbc" /></button>
+        {/* </div> */}
+        {/* <button className="collapse-btn"> <EditorCollapseIcon label="" color="#9fadbc" /></button> */}
+        <button ref={menuTriggerRef} className="options-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}><MoreIcon label="" color="#172B4D" /></button>
       </div>
 
       <TaskList boardId={boardId} tasks={group.tasks} group={group} onRemoveTask={onRemoveTask} onUpdateTask={onUpdateTask} />
@@ -137,7 +124,7 @@ export function GroupPreview({ group, boardId, onUpdateList, onRemoveList, onUpd
       <div className="add-task-section">
         {isAddingTask ? (
           <form onSubmit={handleAddTask} className="add-task-form">
-            <input type="text" value={taskTitle} onChange={(ev) => setTaskTitle(ev.target.value)} placeholder="Enter a title for this card..." autoFocus className="task-input" />
+            <input type="text" value={taskTitle} onChange={(ev) => setTaskTitle(ev.target.value)} placeholder="Enter a title..." autoFocus className="task-input" />
             <div className="add-task-actions">
               <button type="submit" className="add-btn"> Add card </button>
               <button type="button" className="cancel-btn"
@@ -145,7 +132,7 @@ export function GroupPreview({ group, boardId, onUpdateList, onRemoveList, onUpd
                   setIsAddingTask(false)
                   setTaskTitle('')
                 }}
-              ><CrossIcon label="" color="#9fadbc" /></button>
+              ><CrossIcon label="" color="#172B4D" /></button>
             </div>
           </form>
         ) : (
