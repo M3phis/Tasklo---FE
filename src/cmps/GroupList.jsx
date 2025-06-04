@@ -33,7 +33,7 @@ export function GroupList({ board, boardId, onAddGroup, onUpdateList, onRemoveLi
   return (
     <ul className="group-list">
       {groups?.map((group) => (
-        <li key={group.id} className="group-list-contant">
+        <li key={group.id} className="group-list-content">
           <GroupPreview
             group={group}
             board={board}
@@ -48,18 +48,18 @@ export function GroupList({ board, boardId, onAddGroup, onUpdateList, onRemoveLi
       <li>
         <div className="group-list-header">
           {!isAddingGroup ? (
-            <button className="add-group-btn" onClick={() => setIsAddingGroup(true)} ><AddIcon label="" color="#9fadbc" /> Add another List</button>
+            <button className="add-group-btn" onClick={() => setIsAddingGroup(true)} ><AddIcon label="" color="#9fadbc" /> Add another list</button>
           ) : (
             <form onSubmit={handleAddGroup} className="add-group-form">
-              <input type="text" value={groupTitle} onChange={(ev) => setGroupTitle(ev.target.value)} placeholder="Enter list title..." autoFocus aria-label="List title" />
+              <input className='group-input' type="text" value={groupTitle} onChange={(ev) => setGroupTitle(ev.target.value)} placeholder="Enter list name..." aria-label="List title" />
               <div className="add-group-actions">
-                <button type="submit" className="add-btn" aria-label="Add new list">Add List</button>
+                <button type="submit" className="add-btn" aria-label="Add new list">Add list</button>
                 <button className="cancel-btn"
                   onClick={() => {
                     setIsAddingGroup(false)
                     setGroupTitle('')
                   }}
-                ><CrossIcon label="" color="#9fadbc" /></button>
+                ><CrossIcon label="" color="#172B4D" /></button>
               </div>
             </form>
           )}
