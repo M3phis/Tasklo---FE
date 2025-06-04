@@ -90,17 +90,20 @@ export function GroupPreview({ group, boardId, onUpdateList, onRemoveList, onUpd
     }
   }
 
-  function handleChangeColor(color) {
-    const updatedGroup = {
-      ...group,
-      style: { backgroundColor: color },
-    }
-    onUpdateList(updatedGroup)
+function handleChangeColor(color) {
+  const updatedGroup = {
+    ...group,
+    style: { 
+      ...group.style,  
+      backgroundColor: color 
+    },
   }
+  onUpdateList(updatedGroup)
+}
 
   return (
     <div className="group-preview">
-      <div className="group-header">
+      <div className="group-header" style={group.style}>
         {/* <div className="group-title"> */}
           <ContentEditable
             innerRef={contentEditableRef}
@@ -110,13 +113,14 @@ export function GroupPreview({ group, boardId, onUpdateList, onRemoveList, onUpd
             onFocus={handleFocus}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
-            tagName="h2"
+            tagName="h3"
             suppressContentEditableWarning={true}
-            className={`group-title-editable ${isEditing ? 'editing' : ''}`}
+            className={`group-title-editable  ${isEditing ? 'editing' : ''}` }
+            style={group.style}
           />
         {/* </div> */}
         {/* <button className="collapse-btn"> <EditorCollapseIcon label="" color="#9fadbc" /></button> */}
-        <button ref={menuTriggerRef} className="options-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}><MoreIcon label="" color="#172B4D" /></button>
+        <button ref={menuTriggerRef} className="options-btn" onClick={() => setIsMenuOpen(!isMenuOpen)} style={group.style}><MoreIcon label="" color="#172B4D" /></button>
       </div>
 
       <TaskList boardId={boardId} tasks={group.tasks} group={group} onRemoveTask={onRemoveTask} onUpdateTask={onUpdateTask} />
