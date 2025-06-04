@@ -338,3 +338,36 @@
     }
   }
 }
+
+.description-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.save-description-btn,
+.cancel-description-btn {
+  padding: 6px 12px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.save-description-btn {
+  background-color: #0079bf;
+  color: white;
+
+  &:hover {
+    background-color: #026aa7;
+  }
+}
+
+.cancel-description-btn {
+  background-color: #e4e6eb;
+  color: #172b4d;
+
+  &:hover {
+    background-color: #d8dce2;
+  }
+}

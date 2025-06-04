@@ -1,5 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { useState } from 'react'
+import { boardService } from '../services/board'
+import { loadBoard, updateBoard } from '../store/board.actions'
 
 export function TaskDetails() {
   const { boardId, groupId, taskId } = useParams()
@@ -7,6 +10,10 @@ export function TaskDetails() {
   const board = useSelector((state) => state.boardModule.board)
   const group = board?.groups?.find((g) => g.id === groupId)
   const task = group?.tasks?.find((t) => t.id === taskId)
+
+  // Add state for description
+  const [description, setDescription] = useState(task?.description || '')
+  const [isEditing, setIsEditing] = useState(false)
 
   if (!board || !group || !task) {
     return (
@@ -16,7 +23,6 @@ export function TaskDetails() {
     )
   }
 
-  const description = task.description || ''
   const taskLabels =
     board.labels?.filter((label) => task.labelIds?.includes(label.id)) || []
   const members = task.members || []
@@ -24,6 +30,44 @@ export function TaskDetails() {
   const handleClose = () => navigate(-1)
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) navigate(-1)
+  }
+
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value)
+    setIsEditing(true)
+  }
+
+  const handleSaveDescription = async () => {
+    try {
+      const updatedTask = {
+        ...task,
+        description,
+      }
+
+      // Create activity for the change
+      const activity = {
+        id: 1,
+        type: 'description',
+        text: 'updated the description',
+        createdAt: Date.now(),
+        byMember: {
+          id: 'current-user-id', // You'll need to get this from your user service
+          name: 'Current User',
+        },
+      }
+
+      await boardService.saveTask(boardId, groupId, updatedTask, activity)
+      setIsEditing(false)
+      loadBoard(boardId)
+    } catch (err) {
+      console.error('Failed to save description:', err)
+      // You might want to show an error message to the user here
+    }
+  }
+
+  const handleCancel = () => {
+    setDescription(task.description || '')
+    setIsEditing(false)
   }
 
   return (
@@ -85,11 +129,27 @@ export function TaskDetails() {
               <span className="section-title">Description</span>
               <textarea
                 className="task-description-input"
-                defaultValue={description}
+                value={description}
+                onChange={handleDescriptionChange}
                 placeholder="Add a more detailed description..."
                 rows={4}
               />
-              <button className="save-description-btn">Save</button>
+              {isEditing && (
+                <div className="description-actions">
+                  <button
+                    className="save-description-btn"
+                    onClick={handleSaveDescription}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className="cancel-description-btn"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
