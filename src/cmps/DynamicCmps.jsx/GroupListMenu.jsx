@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react'
+import CrossIcon from '@atlaskit/icon/glyph/cross'
 
 export function GroupListMenu({
     isOpen,
@@ -52,18 +53,11 @@ export function GroupListMenu({
 
     return (
         <div ref={menuRef} className="group-list-menu">
-            {/* Header */}
             <div className="menu-header">
                 <span className="menu-title">List actions</span>
-                <button
-                    onClick={onClose}
-                    className="close-button"
-                >
-                    ×
-                </button>
+                <button onClick={onClose} className="close-button"><CrossIcon label="" color="#172B4D" /></button>
             </div>
 
-            {/* Main Menu */}
             <div className="menu-content">
                 <button
                     onClick={() => {
@@ -75,11 +69,7 @@ export function GroupListMenu({
                     Add card
                 </button>
 
-                <button
-                    className="menu-button disabled"
-                >
-                    Change list color
-                </button>
+                <button className="menu-button">Change list color</button>
 
                 <div className="color-picker">
                     <div className="color-grid">
@@ -104,9 +94,7 @@ export function GroupListMenu({
                         }}
                         className="remove-color-button"
                     >
-                        <span className="remove-icon">×</span>
-                        Remove color
-                    </button>
+                        <span className="remove-icon"><CrossIcon label="" color="#172B4D" /></span>Remove color</button>
                 </div>
 
                 <button
