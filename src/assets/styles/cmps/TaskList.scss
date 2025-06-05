@@ -1,1 +1,14 @@
-//To Do//
+.task-list {
+  display: flex;
+  width: rem(264px);
+  flex: 1 1 auto;
+  flex-direction: column;
+  margin: 0 rem(4px);
+//   margin-top: rem(-4px);
+  padding: rem(4px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  list-style: none;
+  row-gap:rem(8px);
+  
+}
