@@ -123,10 +123,10 @@ export function TaskPreview({ task, group, onRemoveTask, onUpdateTask, onOpenQui
         }
         console.log('Open task details for:', task.title)
     }
-    function handleEditClick(e) {
+    function handleRemoveClick(e) {
         e.stopPropagation()
-        if (onOpenQuickEdit) {
-            onOpenQuickEdit(task, group.id)
+        if (onRemoveTask) {
+            onRemoveTask(group.id, task.id)
         }
     }
 
@@ -179,16 +179,16 @@ export function TaskPreview({ task, group, onRemoveTask, onUpdateTask, onOpenQui
                 <div className={`task-preview ${isDone ? 'task-done' : ''}`}>
                     <div className="task-content">
                         {isHovered && (
-                            <button className="task-edit-btn" onClick={handleEditClick} title="Quick edit"> <img src={editpenSvg} alt="Edit" width="14" height="14" /></button>
+                            <button className="task-edit-btn" onClick={handleRemoveClick} title="Quick edit"> <img src={editpenSvg} alt="Edit" width="14" height="14" /></button>
                         )}
 
                         <div className="task-header">
                             {(isDone || isHovered) && (
                                 <button className="task-done-btn" onClick={handleDoneToggle} title={isDone ? "Mark as undone" : "Mark as done"}>
                                     {isDone ? (
-                                        <CheckCircleIcon label="Mark as undone" size="small" primaryColor="#00875A" />
+                                        <CheckCircleIcon label="Mark as incomplete" primaryColor="#00875A" />
                                     ) : (
-                                        <MediaServicesPreselectedIcon label="Mark as done" size="small" />
+                                        <MediaServicesPreselectedIcon label="Mark as complete" />
                                     )}
                                 </button>
                             )}
