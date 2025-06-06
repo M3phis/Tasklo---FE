@@ -28,8 +28,11 @@ export function TaskDetails() {
   const members = task.members || []
 
   const handleClose = () => navigate(-1)
-  const handleOverlayClick = (e) => {
-    if (e.target === e.currentTarget) navigate(-1)
+  const handleOverlayClick = (ev) => {
+    // Only handle clicks directly on the overlay, not its children
+    if (ev.target === ev.currentTarget) {
+      navigate(`/board/${boardId}`)
+    }
   }
 
   const handleDescriptionChange = (e) => {

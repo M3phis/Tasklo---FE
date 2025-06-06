@@ -64,7 +64,7 @@
     padding: rem(6px) rem(12px);
     box-sizing: border-box;
     margin: 0;
-    box-shadow: inset 0 0 0 1px #8590A2;
+    box-shadow: inset 0 0 0 1px #8590a2;
 
     &:focus {
       outline: none;
@@ -106,7 +106,7 @@
   margin: 0;
 
   &:hover {
-    background: #0052CC;
+    background: #0052cc;
   }
 }
 
@@ -124,5 +124,13 @@
   svg {
     width: $group-icon-size-medium;
     height: $group-icon-size-medium;
+  }
+}
+
+.task-list-item,
+.group-list-item {
+  &.dragging {
+    opacity: 0.6;
+    cursor: grabbing;
   }
 }

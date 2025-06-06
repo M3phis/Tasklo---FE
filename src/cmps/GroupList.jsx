@@ -18,7 +18,10 @@ export function GroupList({
 }) {
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [groupTitle, setGroupTitle] = useState('')
-  const { groups } = board
+
+  // Add null checks
+  if (!board) return null
+  const { groups = [] } = board
 
   function handleAddGroup(ev) {
     ev.preventDefault()
@@ -43,22 +46,37 @@ export function GroupList({
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="groups" direction="horizontal" type="group">
-        {(provided, snapshot) => (
+        {(provided) => (
           <ul
             className="group-list"
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
-            {groups?.map((group, idx) => (
+            {groups.map((group, idx) => (
               <Draggable key={group.id} draggableId={group.id} index={idx}>
                 {(provided, snapshot) => (
                   <li
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    className={`group-list-content ${
-                      snapshot.isDragging ? 'dragging' : ''
+                    className={`group-list-item ${
+                      snapshot.isDragging && !snapshot.isDropAnimating
+                        ? 'dragging'
+                        : ''
                     }`}
+                    style={
+                      snapshot.isDragging && !snapshot.isDropAnimating
+                        ? {
+                            ...provided.draggableProps?.style,
+                            opacity: 0.6,
+                            transform: `${provided.draggableProps?.style?.transform} rotate(6deg)`,
+                          }
+                        : {
+                            ...provided.draggableProps?.style,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                          }
+                    }
                   >
                     <GroupPreview
                       group={group}

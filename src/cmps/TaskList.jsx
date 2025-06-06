@@ -12,6 +12,9 @@ export function TaskList({
 }) {
   const navigate = useNavigate()
 
+  // Add null checks
+  if (!group || !board) return null
+
   return (
     <Droppable droppableId={group.id} type="task" direction="vertical">
       {(provided) => (
@@ -24,22 +27,25 @@ export function TaskList({
             <Draggable key={task.id} draggableId={task.id} index={idx}>
               {(provided, snapshot) => (
                 <li
-                  key={task.id}
                   ref={provided.innerRef}
                   {...provided.draggableProps}
                   {...provided.dragHandleProps}
-                  isDragging={snapshot.isDragging && !snapshot.isDropAnimating}
+                  className={`task-list-item ${
+                    snapshot.isDragging && !snapshot.isDropAnimating
+                      ? 'dragging'
+                      : ''
+                  }`}
                   style={
                     snapshot.isDragging && !snapshot.isDropAnimating
                       ? {
                           ...provided.draggableProps?.style,
                           opacity: 0.6,
-                          rotate: '6deg',
+                          transform: `${provided.draggableProps?.style?.transform} rotate(6deg)`,
                         }
                       : {
                           ...provided.draggableProps?.style,
                           cursor: 'pointer',
-                          transitionDuration: '0.2s',
+                          transition: 'all 0.2s ease',
                         }
                   }
                   onClick={() =>
@@ -54,24 +60,12 @@ export function TaskList({
                     onUpdateTask={onUpdateTask}
                     onOpenQuickEdit={onOpenQuickEdit}
                     isEmptyPlaceholder={false}
+                    board={board}
                   />
                 </li>
               )}
             </Draggable>
           ))}
-
-          {tasks.length === 0 && (
-            <TaskPreview
-              key={`empty-${group.id}`}
-              task={null}
-              group={group}
-              onRemoveTask={onRemoveTask}
-              onUpdateTask={onUpdateTask}
-              onOpenQuickEdit={onOpenQuickEdit}
-              isEmptyPlaceholder={true}
-            />
-          )}
-
           {provided.placeholder}
         </ul>
       )}
