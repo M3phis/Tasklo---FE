@@ -96,7 +96,7 @@
     }
 
     &::placeholder {
-      color: $group-text-muted;
+      color: var(--ds-text-subtlest);
     }
   }
 }
