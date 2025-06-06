@@ -1,0 +1,24 @@
+.nav-bar-boards {
+  color: $clr8;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 1em;
+  flex-wrap: nowrap;
+
+  a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--button-background, #091e420f);
+    padding: 6px 12px 6px 6px;
+    width: 75px;
+  }
+}
+
+.nav-bar-boards a span {
+  text-align: center;
+  color: $clr8;
+  font-weight: $group-font-weight-semibold;
+  font-size: $group-font-size-base;
+  line-height: $group-line-height-base;
+}
