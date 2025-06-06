@@ -45,11 +45,19 @@ export function TaskPreview({
 
   const handleDoneToggle = (ev) => {
     ev.stopPropagation()
+
     const updatedTask = {
       ...task,
-      status: isDone ? 'todo' : 'done',
+      status: isDone ? 'in-progress' : 'done',
+      ...(isDone ? {} : { completedAt: new Date().toISOString() }),
     }
-    onUpdateTask(updatedTask, group.id)
+
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+
+    onUpdateTask(updatedGroup)
   }
 
   if (isEmptyPlaceholder) {
@@ -94,7 +102,7 @@ export function TaskPreview({
             onClick={handleEditClick}
             title="Quick edit"
           >
-            <EditIcon label="" size="small" />
+            <img src={editpenSvg} alt="Edit" width="14" height="14" />
           </button>
         )}
 
