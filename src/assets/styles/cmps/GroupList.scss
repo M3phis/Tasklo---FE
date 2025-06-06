@@ -1,95 +1,128 @@
 .group-list {
   display: flex;
-  gap: 1rem;
-  padding: 0;
+  gap: rem(12px);
   list-style: none;
+  padding: 0;
   margin: 0;
 
   .group-list-content {
-    flex: 0 0 auto;
-    width: 272px;
+    flex-shrink: 0;
+  }
+}
+
+.group-list-header {
+  width: $group-width;
+}
+
+.add-group-btn {
+  @include group-font-base;
+  font-weight: $group-font-weight-medium;
+  color: $group-text-primary;
+  background-color: $group-bg-primary;
+  width: $group-width;
+  height: $group-add-group-height;
+  border: none;
+  border-radius: $group-border-radius-large;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: rem(8px);
+  padding: rem(12px);
+  transition: background-color 0.2s ease;
+  margin: 0;
+
+  svg {
+    width: $group-icon-size-small;
+    height: $group-icon-size-small;
   }
 
-  .group-list-header {
-    width: 272px;
+  &:hover {
+    background: $group-hover-bg;
+  }
+}
 
-    .add-group-btn {
-      background: rgba(9, 30, 66, 0.04);
-      border: none;
-      border-radius: 3px;
-      color: #6b778c;
-      padding: 8px;
-      font-size: 14px;
-      cursor: pointer;
-      width: 100%;
-      text-align: left;
-      transition: background-color 0.1s ease-in-out;
+.add-group-form {
+  @include group-font-base;
+  background: $group-bg-primary;
+  color: $group-text-primary;
+  width: $group-width;
+  height: $group-form-height;
+  border-radius: $group-border-radius-large;
+  padding: rem(8px);
+  box-sizing: border-box;
 
-      &:hover {
-        background-color: rgba(9, 30, 66, 0.08);
-      }
+  .group-input {
+    @include group-font-base;
+    font-weight: $group-font-weight-semibold;
+    background: $group-bg-secondary;
+    color: $group-text-primary;
+    width: $group-input-width;
+    height: rem(32px);
+    border: 0 solid transparent;
+    border-radius: $group-border-radius-mini;
+    padding: rem(6px) rem(12px);
+    box-sizing: border-box;
+    margin: 0;
+    box-shadow: inset 0 0 0 1px #8590A2;
 
-       svg { 
-        width: 16px;
-        height: 16px;
-        color: #9fadbc; 
-      }
+    &:focus {
+      outline: none;
+      box-shadow: inset 0 0 0 2px $group-accent-blue;
     }
+  }
 
-    .add-group-form {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      background-color: #ebecf0;
-      padding: 8px;
-      border-radius: 3px;
-      box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+  &::placeholder {
+    color: $group-text-muted;
+  }
+}
 
-      .group-input {
-        padding: 8px;
-        border: 2px solid #026aa7;
-        border-radius: 3px;
-        font-size: 14px;
-        outline: none;
-        background-color: white;
+.add-group-actions {
+  @include group-font-base;
+  background: $group-bg-primary;
+  color: $group-text-primary;
+  width: $group-input-width;
+  height: rem(32px);
+  border-radius: $group-border-radius-mini;
+  display: flex;
+  align-items: center;
+  gap: rem(4px);
+  box-sizing: border-box;
+  margin-top: 8px;
+}
 
-        &:focus {
-          box-shadow: 0 0 0 2px rgba(38, 132, 255, 0.2);
-        }
-      }
+.add-group-form .add-btn {
+  @include group-button-base;
+  font-weight: $group-font-weight-medium;
+  color: $group-bg-secondary;
+  background: $group-accent-blue;
+  width: 73px;
+  height: rem(32px);
+  border: none;
+  border-radius: $group-border-radius-small;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  padding: rem(6px) rem(12px);
+  margin: 0;
 
-      .add-group-actions {
-        display: flex;
-        gap: 8px;
+  &:hover {
+    background: #0052CC;
+  }
+}
 
-        .add-btn {
-          background-color: #026aa7;
-          color: white;
-          border: none;
-          padding: 8px 16px;
-          border-radius: 3px;
-          cursor: pointer;
-          font-size: 14px;
+.add-group-form .cancel-btn {
+  @include group-font-base;
+  background: transparent;
+  color: $group-text-primary;
+  padding: rem(6px);
 
-          &:hover {
-            background-color: #055a8c;
-          }
-        }
+  &:hover {
+    background: $group-hover-bg;
+    border-radius: 3px;
+  }
 
-        .cancel-btn {
-          background: none;
-          border: none;
-          color: #6b778c;
-          padding: 8px;
-          border-radius: 3px;
-          cursor: pointer;
-          font-size: 14px;
-
-          &:hover {
-            background-color: rgba(9, 30, 66, 0.08);
-          }
-        }
-      }
-    }
+  svg {
+    width: $group-icon-size-medium;
+    height: $group-icon-size-medium;
   }
 }

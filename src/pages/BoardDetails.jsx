@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { loadBoard, updateBoard } from '../store/board.actions'
+import {
+  loadBoard,
+  updateBoard,
+  updateBoardOptimistic,
+} from '../store/board.actions'
 import { GroupList } from '../cmps/GroupList'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { Outlet } from 'react-router-dom'
@@ -21,6 +25,36 @@ export function BoardDetails() {
         setIsLoading(false)
       })
   }, [boardId])
+
+  function onDragEnd(result) {
+    console.log('result', result)
+    if (!result.destination) {
+      return
+    }
+
+    const { groups } = board
+
+    const startIdx = result.source.index
+    const endIdx = result.destination.index
+
+    if (result.type === 'group') {
+      const [group] = groups.splice(startIdx, 1)
+      groups.splice(endIdx, 0, group)
+      updateBoardOptimistic({ ...board, groups })
+    }
+
+    if (result.type === 'task') {
+      const groupStart = groups.find(
+        (group) => group.id === result.source.droppableId
+      )
+      const groupEnd = groups.find(
+        (group) => group.id === result.destination.droppableId
+      )
+      const [task] = groupStart.tasks.splice(startIdx, 1)
+      groupEnd.tasks.splice(endIdx, 0, task)
+      updateBoardOptimistic({ ...board, groups })
+    }
+  }
 
   // function handleAddList(ev) {
   //   ev.preventDefault()
@@ -160,6 +194,7 @@ export function BoardDetails() {
             onRemoveList={handleRemoveList}
             onUpdateTask={handleUpdateTask}
             onRemoveTask={handleRemoveTask}
+            onDragEnd={onDragEnd}
           />
         </div>
       </div>

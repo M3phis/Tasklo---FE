@@ -16,6 +16,7 @@
     "@atlaskit/pragmatic-drag-and-drop": "^1.7.0",
     "axios": "^1.5.0",
     "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-contenteditable": "^3.3.7",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.2",
