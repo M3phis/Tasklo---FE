@@ -71,7 +71,7 @@
 @mixin group-button-base {
   @include group-font-base;
   font-family: inherit;
-  background: $group-bg-secondary;
+  background: var(--ds-background-input);
   border: none;
   border-radius: $group-border-radius-medium;
   cursor: pointer;
@@ -81,6 +81,6 @@
   transition: background-color 0.2s ease;
 
   &:hover {
-    background: $group-hover-bg;
+    background: var(--ds-background-neutral-hovered);
   }
 }

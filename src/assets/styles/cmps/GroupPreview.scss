@@ -1,16 +1,16 @@
 .group-preview {
   @include group-font-base;
-  background: $group-bg-primary;
-  color: $group-text-secondary;
+  background: var(--ds-background-accent-gray-subtlest);
+  color: var(--ds-text-subtle);
   width: $group-width;
-  border-radius: rem(12px);////check
+  border-radius: rem(12px); ////check
   padding-bottom: rem(4px);
 }
 
 .group-header {
   @include group-font-base;
-  background: $group-bg-primary;
-  color: $group-text-primary;
+  background: var(--ds-background-accent-gray-subtlest);
+  color: var(--ds-text);
   width: 100%;
   height: $group-header-height;
   display: flex;
@@ -22,8 +22,8 @@
 
 .group-title-editable {
   @include group-font-base;
-  background: $group-bg-primary;
-  color: $group-text-primary;
+  background: var(--ds-background-accent-gray-subtlest);
+  color: var(--ds-text);
   font-weight: $group-font-weight-semibold;
   flex-grow: 1;
   width: rem(272px);
@@ -35,8 +35,8 @@
   outline: none;
 
   &.editing {
-    background: $group-bg-secondary;
-    box-shadow: inset 0 0 0 2px $group-accent-blue;
+    background: var(--ds-background-input);
+    box-shadow: inset 0 0 0 2px var(--ds-border-focused);
   }
 }
 
@@ -44,10 +44,10 @@
 .options-btn {
   @include group-button-base;
   font-weight: $group-font-weight-medium;
-  color: $group-text-primary;
+  color: var(--ds-text);
+  background-color: var(--ds-background-accent-gray-subtlest);
   width: $group-button-size;
   height: $group-button-size;
-  background-color: $group-bg-primary;
   border-radius: $group-border-radius-medium;
   margin: 0;
   padding: rem(8px);
@@ -58,29 +58,29 @@
   }
 
   &:hover {
-    background:$group-hover-bg;
+    background: var(--ds-background-neutral-hovered);
   }
 }
 
 .options-btn svg {
   width: $group-icon-size-small;
   height: $group-icon-size-small;
-  fill: $group-text-primary;
-  color: $group-text-primary;
+  fill: var(--ds-text);
+  color: var(--ds-text);
 }
 
 .add-task-form {
   @include group-font-base;
-  background: $group-bg-primary;
-  color: $group-text-primary;
+  background: var(--ds-background-accent-gray-subtlest);
+  color: var(--ds-text);
   width: rem(246px);
   height: rem(96px);
   border-radius: $group-border-radius-medium;
 
   .task-input {
     @include group-font-base;
-    background: $group-bg-secondary;
-    color: $group-text-primary;
+    background: var(--ds-background-input);
+    color: var(--ds-text);
     width: 100%;
     height: rem(56px);
     border: 0 solid transparent;
@@ -89,7 +89,7 @@
     box-sizing: border-box;
     resize: vertical;
     margin: 0;
-    box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
+    box-shadow: 0px 1px 1px var(--ds-border), 0px 0px 1px var(--ds-border-disabled);
 
     &:focus {
       outline: none;
@@ -103,8 +103,8 @@
 
 .add-task-actions {
   @include group-font-base;
-  background: $group-bg-primary;
-  color: $group-text-primary;
+  background: var(--ds-background-accent-gray-subtlest);
+  color: var(--ds-text);
   width: rem(246px);
   height: $group-header-height;
   display: flex;
@@ -116,8 +116,8 @@
 .add-btn {
   @include group-font-base;
   font-weight: $group-font-weight-medium;
-  color: $group-bg-secondary;
-  background: $group-accent-blue;
+  color: var(--ds-text-inverse);
+  background: var(--ds-background-accent-blue-bolder);
   width: rem(81.5px);
   height: rem(32px);
   border: none;
@@ -128,19 +128,19 @@
   padding: rem(6px) rem(12px);
 
   &:hover {
-    background: #0052CC;
+    background: var(--ds-background-accent-blue-bolder-hovered);
   }
 }
 
 .cancel-btn {
   @include group-button-base;
   background: transparent;
-  color: $group-text-primary;
+  color: var(--ds-text);
   padding: rem(6px);
   margin: 0;
 
   &:hover {
-    background:$group-hover-bg;
+    background: var(--ds-background-neutral-hovered);
     border-radius: $group-border-radius-small;
   }
 
@@ -154,7 +154,7 @@
   @include group-font-base;
   font-weight: $group-font-weight-medium;
   background: transparent;
-  color: $group-text-secondary;
+  color: var(--ds-text-subtle);
   border: none;
   padding: rem(4px) rem(8px);
   border-radius: $group-border-radius-medium;
@@ -168,8 +168,8 @@
   margin: 0;
 
   &:hover {
-    background:$group-hover-bg;
-    color: $group-text-primary;
+    background: var(--ds-background-neutral-hovered);
+    color: var(--ds-text);
   }
 
   svg {
