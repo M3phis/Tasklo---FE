@@ -23,7 +23,6 @@
   height: $group-add-group-height;
   border: none;
   border-radius: $group-border-radius-large;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -89,6 +88,7 @@
   gap: rem(4px);
   box-sizing: border-box;
   margin-top: 8px;
+  margin-bottom: 0;
 }
 
 .add-group-form .add-btn {
@@ -113,12 +113,13 @@
 .add-group-form .cancel-btn {
   @include group-font-base;
   background: transparent;
+  font-weight: $group-font-weight-medium;
+  border-radius:$group-border-radius-small;
   color: var(--ds-text);
   padding: rem(6px);
 
   &:hover {
     background: var(--ds-background-neutral-hovered);
-    border-radius: 3px;
   }
 
   svg {

@@ -48,7 +48,7 @@ export function GroupList({ board, boardId, onAddGroup, onUpdateList, onRemoveLi
       <li>
         <div className="group-list-header">
           {!isAddingGroup ? (
-            <button className="add-group-btn" onClick={() => setIsAddingGroup(true)} ><AddIcon label="" color="#9fadbc" /> Add another list</button>
+            <button className="add-group-btn" onClick={() => setIsAddingGroup(true)} ><AddIcon label="" primaryColor="#42526E" /> Add another list</button>
           ) : (
             <form onSubmit={handleAddGroup} className="add-group-form">
               <input className='group-input' type="text" value={groupTitle} onChange={(ev) => setGroupTitle(ev.target.value)} placeholder="Enter list name..." aria-label="List title" />
@@ -59,7 +59,7 @@ export function GroupList({ board, boardId, onAddGroup, onUpdateList, onRemoveLi
                     setIsAddingGroup(false)
                     setGroupTitle('')
                   }}
-                ><CrossIcon label="" color="#172B4D" /></button>
+                ><CrossIcon label="" primaryColor="#091E42"/></button>
               </div>
             </form>
           )}
