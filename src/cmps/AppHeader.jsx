@@ -52,6 +52,8 @@ export function AppHeader() {
 
         <BoardFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
 
+        <button className="create-btn">Create</button>
+
         <div className="nav-buttons">
           <button>
             <MegaphoneIcon label="" color="#9fadbc" />

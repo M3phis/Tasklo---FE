@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BoardList } from '../cmps/BoardList'
+import StarUnstarredIcon from '@atlaskit/icon/core/star-unstarred'
 import { BoardFilter } from '../cmps/BoardFilter'
 import {
   loadBoards,
@@ -10,6 +11,7 @@ import {
 } from '../store/board.actions'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { boardService } from '../services/board'
+import { NavBarBoards } from '../cmps/NavBarBoards'
 
 export function BoardIndex() {
   const dispatch = useDispatch()
@@ -23,9 +25,7 @@ export function BoardIndex() {
 
   function onRemoveBoard(boardId) {
     removeBoard(boardId)
-      .then(() => {
-        showSuccessMsg('Board removed')
-      })
+      .then(() => showSuccessMsg('Board removed'))
       .catch((err) => {
         console.log('err', err)
         showErrorMsg('Cannot remove board')
@@ -36,9 +36,7 @@ export function BoardIndex() {
     const title = prompt('New title?', board.title)
     if (title && title !== board.title) {
       updateBoard({ ...board, title })
-        .then((updatedBoard) => {
-          showSuccessMsg('Board updated')
-        })
+        .then(() => showSuccessMsg('Board updated'))
         .catch((err) => {
           console.log('err', err)
           showErrorMsg('Cannot update board')
@@ -59,6 +57,7 @@ export function BoardIndex() {
       showErrorMsg('Cannot add board')
     }
   }
+
   async function onToggleStarred(boardId) {
     const board = boards.find((board) => board._id === boardId)
     if (!board) return
@@ -79,38 +78,55 @@ export function BoardIndex() {
 
   return (
     <section className="board-index">
-      <li className="home-sidebar">
-        <ul>Boards</ul>
-        <ul>Templates</ul>
-        <ul>Home</ul>
-      </li>
+      <aside className="home-sidebar">
+        <div className="sidebar-section">
+          <div className="sidebar-title">Boards</div>
+          <ul>
+            <li className="active">Boards</li>
+            <li>Templates</li>
+            <li>Home</li>
+          </ul>
+        </div>
+      </aside>
 
-      <section className="boards-view">
+      <main className="boards-view">
+        <header className="boards-header">
+          <div>
+            <h2>Workspace</h2>
+            <div className="workspace-type">Private</div>
+          </div>
+        </header>
+
         {starredBoards.length > 0 && (
-          <div className="starred-board-list">
-            <h3>Starred Boards</h3>
+          <section className="starred-board-list">
+            <h3>
+              <StarUnstarredIcon /> Starred Boards
+            </h3>
             <BoardList
               boards={starredBoards}
               onRemoveBoard={onRemoveBoard}
               onUpdateBoard={onEditBoard}
               onToggleStarred={onToggleStarred}
             />
-          </div>
+          </section>
         )}
 
-        <div className="board-index-container">
-          <header>
-            <h2>Boards</h2>
-            <button onClick={onAddBoard}>Add a Board</button>
-          </header>
-          <BoardList
-            boards={boards}
-            onRemoveBoard={onRemoveBoard}
-            onEditBoard={onEditBoard}
-            onToggleStarred={onToggleStarred}
-          />
-        </div>
-      </section>
+        <section className="board-index-container">
+          <h3>YOUR WORKSPACES</h3>
+          <div className="board-list-row">
+            <NavBarBoards />
+            <BoardList
+              boards={filteredBoards}
+              onRemoveBoard={onRemoveBoard}
+              onEditBoard={onEditBoard}
+              onToggleStarred={onToggleStarred}
+            />
+            <div className="create-board-preview" onClick={onAddBoard}>
+              Create new board
+            </div>
+          </div>
+        </section>
+      </main>
     </section>
   )
 }

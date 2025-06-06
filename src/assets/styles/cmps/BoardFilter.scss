@@ -1,66 +1,70 @@
 .board-filter {
-    display: grid;
-    grid-template-columns: 1fr 5em 5em auto;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  flex: 1 1 auto;
+  margin-inline: 0 1em;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+
+  .filter-form {
+    position: relative;
+    display: flex;
     align-items: center;
-    gap: 0 .5em;
+    width: 100%;
+  }
 
-    background-color: $clr4;
-    padding: .5em;
+  input[type='text'] {
+    padding: 8px 16px 8px 36px;
+    width: 100%;
+    background-color: var(--border-background, #ffffff);
+    border: 1px solid #dfe1e6;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #172b4d;
+    transition: all 0.2s ease;
+    box-shadow: none;
+    font-family: inherit;
 
-    h3 {
-        grid-column: 1 / -1;
-        font-size: rem(14px);
-        margin: 0;
+    &:focus {
+      outline: none;
+      border-color: #0079bf;
+      box-shadow: 0 0 0 2px rgba(0, 121, 191, 0.2);
     }
 
-    & :not(h3) {
-        cursor: pointer;
+    &::placeholder {
+      color: #8c9bad;
     }
+  }
 
-    input:is([type="text"], [type="number"]){
-        height: 1.8em;
-        border: none;
-        border-block-end: 1px solid $gray1;
-    
-        &:focus {
-            outline: none;
-            background-color: $gray1;
-        }
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    color: #8c9bad;
+    font-size: 14px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .btn-clear {
+    position: absolute;
+    right: 8px;
+    background: none;
+    border: none;
+    color: #8c9bad;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: #5e6c84;
+      background-color: #f4f5f7;
     }
-
-
-    .btn-clear {
-        grid-column: 4;
-    }
-
-    .sort-field, .sort-dir {
-        display: flex;
-        align-items: center;
-        gap: 1em;
-
-        // margin-inline-start: .4em;
-
-        font-size: .8em;
-    }
-
-    .sort-dir {
-        grid-column: 2 / 3;
-    }
-
-    input[type="radio"] {
-        display: none;
-    }
-
-    label {
-        span {
-            font-size: .9em;
-            padding: 0.1em 0.3em;
-            outline: 1px solid $gray1;
-        }
-
-        &:has(:checked) span  {
-            background-color: $clr3;
-            color: $gray1;
-        }
-    }
+  }
 }
