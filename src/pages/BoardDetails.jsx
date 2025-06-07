@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useOutletContext } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import {
   loadBoard,
@@ -198,7 +198,7 @@ export function BoardDetails() {
           />
         </div>
       </div>
-      {<Outlet />}
+      <Outlet context={{ handleUpdateTask }} />
     </section>
   )
 }
