@@ -120,7 +120,7 @@ function handleChangeColor(color) {
           />
         {/* </div> */}
         {/* <button className="collapse-btn"> <EditorCollapseIcon label="" color="#9fadbc" /></button> */}
-        <button ref={menuTriggerRef} className="options-btn" onClick={() => setIsMenuOpen(!isMenuOpen)} style={group.style}><MoreIcon label="" color="#172B4D" /></button>
+        <button ref={menuTriggerRef} className="options-btn" onClick={() => setIsMenuOpen(!isMenuOpen)} style={group.style}><MoreIcon label="" primaryColor=" #626F86" /></button>
       </div>
 
       <TaskList boardId={boardId} tasks={group.tasks} group={group} onRemoveTask={onRemoveTask} onUpdateTask={onUpdateTask} />
@@ -136,11 +136,11 @@ function handleChangeColor(color) {
                   setIsAddingTask(false)
                   setTaskTitle('')
                 }}
-              ><CrossIcon label="" color="#172B4D" /></button>
+              ><CrossIcon label="" primaryColor='#091E42' /></button>
             </div>
           </form>
         ) : (
-          <button className="add-task-btn" onClick={() => setIsAddingTask(true)}><AddIcon label="" color="#9fadbc" /> Add a card </button>
+          <button className="add-task-btn" onClick={() => setIsAddingTask(true)}><AddIcon label="" primaryColor="#172B4D" /> Add a card </button>
         )}
       </div>
 

@@ -6,7 +6,7 @@
   margin: 0;
 
   .group-list-content {
-    flex-shrink: 0;
+    height: 100%;
   }
 }
 
@@ -114,7 +114,7 @@
   @include group-font-base;
   background: transparent;
   font-weight: $group-font-weight-medium;
-  border-radius:$group-border-radius-small;
+  border-radius: $group-border-radius-small;
   color: var(--ds-text);
   padding: rem(6px);
 
