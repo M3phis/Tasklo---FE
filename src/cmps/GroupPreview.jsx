@@ -88,7 +88,7 @@ export function GroupPreview({
   }
 
   return (
-    <div className="group-preview">
+    <div className="group-preview" style={group.style}>
       <div className="group-header" style={group.style}>
         {isEditing ? (
           <input
