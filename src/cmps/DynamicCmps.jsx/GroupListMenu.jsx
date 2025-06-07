@@ -53,23 +53,23 @@ export function GroupListMenu({
 
     return (
         <div ref={menuRef} className="group-list-menu">
-            <div className="menu-header">
-                <span className="menu-title">List actions</span>
-                <button onClick={onClose} className="close-button"><CrossIcon label="" color="#172B4D" /></button>
+            <div className="group-list-menu-header">
+                <span className="group-list-menu-title">List actions</span>
+                <button onClick={onClose} className="group-list-close-button"><CrossIcon label="" primaryColor="#626F86" /></button>
             </div>
 
-            <div className="menu-content">
+            <div className="group-list-menu-content">
                 <button
                     onClick={() => {
                         onAddCard()
                         onClose()
                     }}
-                    className="menu-button"
+                    className="group-list-menu-button"
                 >
                     Add card
                 </button>
 
-                <button className="menu-button">Change list color</button>
+                <button className="group-list-menu-button-list-color">Change list color</button>
 
                 <div className="color-picker">
                     <div className="color-grid">
@@ -92,9 +92,7 @@ export function GroupListMenu({
                             onChangeColor(null)
                             onClose()
                         }}
-                        className="remove-color-button"
-                    >
-                        <span className="remove-icon"><CrossIcon label="" color="#172B4D" /></span>Remove color</button>
+                        className="remove-color-button"> <CrossIcon label="" primaryColor="#172B4D" />Remove color</button>
                 </div>
 
                 <button
@@ -102,7 +100,7 @@ export function GroupListMenu({
                         onDeleteList()
                         onClose()
                     }}
-                    className="menu-button"
+                    className="group-list-menu-button"
                 >
                     Delete this list
                 </button>

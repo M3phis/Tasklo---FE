@@ -1,26 +1,25 @@
 .group-list-menu {
-    position: fixed;
-    inset: rem(164px) auto auto rem(696px);
-    width: rem(304px);
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    // position: fixed;
+    background-color: var(--ds-background-input);
     color: var(--ds-text);
-    font-display: swap;
-    box-sizing: border-box;
+    // inset: rem(164px) auto auto rem(696px);
+    width: rem(304px);
     overflow: hidden;
     border-radius: $group-border-radius-medium;
     outline: 0;
-    background-color: var(--ds-background-input);
     box-shadow: rem(0px) rem(8px) rem(12px) rgba(9, 30, 66, 0.15), rem(0px) rem(0px) rem(1px) rgba(9, 30, 66, 0.31);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 
-    .menu-header {
+    .group-list-menu-header {
         display: grid;
         position: relative;
         grid-template-columns: rem(32px) 1fr rem(32px);
         align-items: center;
         padding: rem(4px) rem(8px);
         text-align: center;
+        line-height: $group-line-height-base;
 
-        .menu-title {
+        .group-list-menu-title {
             display: block;
             position: relative;
             grid-column: 1 / span 3;
@@ -32,13 +31,13 @@
             color: var(--ds-text-subtle);
             font-size: $group-font-size-base;
             font-weight: $group-font-weight-semibold;
-            letter-spacing: rem(-0.003px);
+            letter-spacing: rem(-0.0042px);
             line-height: $group-header-height;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
-        .close-button {
+        .group-list-close-button {
             grid-column: 3;
             grid-row: 1;
             display: flex;
@@ -48,17 +47,18 @@
             height: $group-button-size;
             border-radius: $group-border-radius-medium;
             color: var(--ds-icon-subtle);
+            font-size: $group-font-size-base;
+            line-height: $group-line-height-base;
             z-index: 2;
             margin: 0;
             padding: 0;
             border: none;
             outline: none;
-            background: transparent;
-            cursor: pointer;
+            background-color: var(--ds-background-input);
             transition: background-color 0.2s ease, color 0.2s ease;
 
             &:hover {
-                background-color: var(--ds-background-neutral-hovered);
+                background-color: var(--ds-background-neutral-hovered); //check
                 color: var(--ds-icon);
                 text-decoration: none;
             }
@@ -73,39 +73,65 @@
         }
     }
 
-    .menu-content {
+    .group-list-menu-content {
+        width: rem(304px);
         padding: rem(12px);
         padding-top: 0;
+        color: var(--ds-text);
+        background-color: var(--ds-background-input);
         overflow-x: hidden;
         overflow-y: auto;
 
-        .menu-button {
+        .group-list-menu-button {
+            display: flex;
+            flex-direction: column;
+            justify-self: center;
+            text-align: left;
             border: none;
-            background-color: transparent;
-            display: block;
-            box-sizing: border-box;
-            width: 100%;
-            height: 100%;
+            width: rem(304px);
+            text-decoration: none;
             margin: 0;
             padding: rem(6px) rem(12px);
             transition: background-color 0.2s ease;
             border-radius: 0;
             outline: 0;
-            background: var(--ds-background-neutral-subtle);
-            box-shadow: none;
+            font-size: $group-font-size-base;
+            line-height: $group-line-height-base;
+            background-color: var(--ds-background-input);
             color: var(--ds-text);
-            text-align: left;
-            text-decoration: none;
-            cursor: pointer;
+            box-shadow: none;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 
             &:hover {
                 border: none;
-                background-color: transparent;
+                // background-color: transparent;
                 box-shadow: none;
-                background: var(--ds-background-neutral-subtle-hovered);
+                background-color: var(--ds-background-neutral-subtle-hovered); //check
                 color: var(--ds-text);
                 text-decoration: none;
             }
+
+        }
+
+        .group-list-menu-button-list-color {
+            display: flex;
+            flex-direction: column;
+            justify-self: center;
+            text-align: left;
+            border: none;
+            width: rem(304px);
+            text-decoration: none;
+            margin: 0;
+            padding: rem(6px) rem(12px);
+            transition: background-color 0.2s ease;
+            border-radius: 0;
+            outline: 0;
+            font-size: $group-font-size-base;
+            line-height: $group-line-height-base;
+            background-color: var(--ds-background-input);
+            color: var(--ds-text);
+            box-shadow: none;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
 
         .color-picker {
@@ -126,7 +152,6 @@
                     padding: rem(5px);
                     cursor: pointer;
                     transition: border 0.2s ease;
-                    background: transparent;
 
                     &.selected {
                         border: rem(3px) solid var(--ds-border-selected);
@@ -221,15 +246,15 @@
                 justify-content: center;
                 width: 100%;
                 padding: rem(8px) rem(12px);
-                background: var(--ds-background-input);
+                background-color: var(--ds-background-input);
                 border: rem(1px) solid var(--ds-border);
                 border-radius: $group-border-radius-small;
                 font-size: $group-font-size-base;
                 color: var(--ds-text-subtle);
                 gap: rem(8px);
                 margin: 0;
-                cursor: pointer;
                 transition: background-color 0.2s ease;
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 
                 &:hover {
                     background-color: var(--ds-background-neutral-hovered);
