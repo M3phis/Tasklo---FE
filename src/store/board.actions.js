@@ -12,6 +12,33 @@ export async function loadBoards(filterBy) {
     }
 }
 
+
+export async function updateBoardOptimistic(board, isUpdateMiniBoard = false) {
+    store.dispatch({
+        type: UPDATE_BOARD,
+        board
+    })
+    try {
+        //  if (isUpdateMiniBoard) store.dispatch({ type: UPDATE_MINI_BOARD, board: { _id: board._id, title: board.title, style: { backgroundImage: board.style?.backgroundImage }, isStarred: board.isStarred } })
+        const savedBoard = await boardService.save(board)
+        console.log('Updated Board:', savedBoard)
+        socketService.emit('board-changed', savedBoard)
+        return savedBoard
+    }
+    catch (err) {
+        console.log('optimistic', err)
+
+        // store.dispatch({
+        //     type: UNDO_UPDATE_BOARD,
+        // })
+        // store.dispatch({
+        //     type: UNDO_UPDATE_MINI_BOARDS,
+        // })
+        throw err
+    }
+}
+
+
 export async function loadBoard(boardId) {
     try {
         const board = await boardService.getById(boardId)

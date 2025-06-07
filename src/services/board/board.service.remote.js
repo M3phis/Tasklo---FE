@@ -32,6 +32,7 @@ async function save(board) {
 }
 
 async function saveTask(boardId, groupId, task, activity) {
+    console.log('saving task remote')
     return httpService.put(`board/${boardId}/task/${task.id}`, { task, groupId, activity })
 }
 

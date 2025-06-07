@@ -127,3 +127,11 @@
     height: $group-icon-size-medium;
   }
 }
+
+.task-list-item,
+.group-list-item {
+  &.dragging {
+    opacity: 0.6;
+    cursor: grabbing;
+  }
+}

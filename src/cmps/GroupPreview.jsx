@@ -8,11 +8,21 @@ import AddIcon from '@atlaskit/icon/glyph/add'
 import MoreIcon from '@atlaskit/icon/glyph/more'
 import CrossIcon from '@atlaskit/icon/glyph/cross'
 
-export function GroupPreview({ group, boardId, onUpdateList, onRemoveList, onUpdateTask, onRemoveTask }) {
+export function GroupPreview({
+  group,
+  board,
+  boardId,
+  onUpdateList,
+  onRemoveList,
+  onUpdateTask,
+  onRemoveTask,
+  onOpenQuickEdit,
+}) {
   const [isAddingTask, setIsAddingTask] = useState(false)
-  const [titleValue, setTitleValue] = useState(group.title)
-  const [taskTitle, setTaskTitle] = useState('')
   const [isEditing, setIsEditing] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const [title, setTitle] = useState(group.title)
+  const [taskTitle, setTaskTitle] = useState('')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const contentEditableRef = useRef(null)
   const menuTriggerRef = useRef(null)
@@ -37,110 +47,143 @@ export function GroupPreview({ group, boardId, onUpdateList, onRemoveList, onUpd
     })
   }
 
-  function saveTitle() {
-    if (!titleValue.trim()) {
-      setTitleValue(group.title)
-      return
+  const handleTitleClick = (ev) => {
+    if (!isDragging) {
+      setIsEditing(true)
     }
+  }
 
+  const handleTitleChange = (ev) => {
+    setTitle(ev.target.value)
+  }
+
+  const handleTitleBlur = () => {
+    setIsEditing(false)
+    if (title !== group.title) {
+      onUpdateList({ ...group, title })
+    }
+  }
+
+  const handleKeyDown = (ev) => {
+    if (ev.key === 'Enter') {
+      setIsEditing(false)
+      if (title !== group.title) {
+        onUpdateList({ ...group, title })
+      }
+    } else if (ev.key === 'Escape') {
+      setIsEditing(false)
+      setTitle(group.title)
+    }
+  }
+
+  function handleChangeColor(color) {
     const updatedGroup = {
       ...group,
-      title: titleValue.trim(),
+      style: {
+        ...group.style,
+        backgroundColor: color,
+      },
     }
-
-    onUpdateList(updatedGroup).catch(() => {
-      setTitleValue(group.title)
-    })
+    onUpdateList(updatedGroup)
   }
-
-  function handleFocus() {
-    setIsEditing(true)
-
-    setTimeout(() => {
-      if (contentEditableRef.current) {
-        const range = document.createRange()
-        range.selectNodeContents(contentEditableRef.current)
-        const selection = window.getSelection()
-        selection.removeAllRanges()
-        selection.addRange(range)
-      }
-    }, 0)
-  }
-
-  function handleBlur() {
-    setIsEditing(false)
-    if (titleValue !== group.title) {
-      saveTitle()
-    }
-  }
-
-  function handleChange(evt) {
-    setTitleValue(evt.target.value)
-  }
-
-  function handleKeyDown(evt) {
-    if (evt.key === 'Enter') {
-      evt.preventDefault()
-      contentEditableRef.current?.blur()
-    }
-    if (evt.key === 'Escape') {
-      evt.preventDefault()
-      setTitleValue(group.title)
-      contentEditableRef.current?.blur()
-    }
-  }
-
-function handleChangeColor(color) {
-  const updatedGroup = {
-    ...group,
-    style: { 
-      ...group.style,  
-      backgroundColor: color 
-    },
-  }
-  onUpdateList(updatedGroup)
-}
 
   return (
     <div className="group-preview">
       <div className="group-header" style={group.style}>
-        {/* <div className="group-title"> */}
-          <ContentEditable
-            innerRef={contentEditableRef}
-            html={titleValue}
-            disabled={false}
-            onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
+        {isEditing ? (
+          <input
+            type="text"
+            value={title}
+            onChange={handleTitleChange}
+            onBlur={handleTitleBlur}
             onKeyDown={handleKeyDown}
-            tagName="h3"
-            suppressContentEditableWarning={true}
-            className={`group-title-editable  ${isEditing ? 'editing' : ''}` }
-            style={group.style}
+            autoFocus
+            className="group-title-input"
           />
-        {/* </div> */}
-        {/* <button className="collapse-btn"> <EditorCollapseIcon label="" color="#9fadbc" /></button> */}
-        <button ref={menuTriggerRef} className="options-btn" onClick={() => setIsMenuOpen(!isMenuOpen)} style={group.style}><MoreIcon label="" primaryColor=" #626F86" /></button>
+        ) : (
+          <h3
+            className="group-title"
+            onClick={handleTitleClick}
+            onMouseDown={(ev) => {
+              // Only set dragging if it's not a click (check if mouse moves)
+              const startX = ev.clientX
+              const startY = ev.clientY
+
+              const handleMouseMove = (moveEv) => {
+                const deltaX = Math.abs(moveEv.clientX - startX)
+                const deltaY = Math.abs(moveEv.clientY - startY)
+                if (deltaX > 5 || deltaY > 5) {
+                  setIsDragging(true)
+                }
+              }
+
+              const handleMouseUp = () => {
+                setIsDragging(false)
+                document.removeEventListener('mousemove', handleMouseMove)
+                document.removeEventListener('mouseup', handleMouseUp)
+              }
+
+              document.addEventListener('mousemove', handleMouseMove)
+              document.addEventListener('mouseup', handleMouseUp)
+            }}
+          >
+            {group.title}
+          </h3>
+        )}
+        <button
+          ref={menuTriggerRef}
+          className="options-btn"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          style={group.style}
+        >
+          <MoreIcon label="" primaryColor=" #626F86" />
+        </button>
       </div>
 
-      <TaskList boardId={boardId} tasks={group.tasks} group={group} onRemoveTask={onRemoveTask} onUpdateTask={onUpdateTask} />
+      <TaskList
+        tasks={group.tasks}
+        group={group}
+        onRemoveTask={onRemoveTask}
+        onUpdateTask={onUpdateTask}
+        onOpenQuickEdit={onOpenQuickEdit}
+        board={board}
+      />
 
       <div className="add-task-section">
         {isAddingTask ? (
           <form onSubmit={handleAddTask} className="add-task-form">
-            <input type="text" value={taskTitle} onChange={(ev) => setTaskTitle(ev.target.value)} placeholder="Enter a title..." autoFocus className="task-input" />
+            <input
+              type="text"
+              value={taskTitle}
+              onChange={(ev) => setTaskTitle(ev.target.value)}
+              placeholder="Enter a title..."
+              autoFocus
+              className="task-input"
+            />
             <div className="add-task-actions">
-              <button type="submit" className="add-btn"> Add card </button>
-              <button type="button" className="cancel-btn"
+              <button type="submit" className="add-btn">
+                {' '}
+                Add card{' '}
+              </button>
+              <button
+                type="button"
+                className="cancel-btn"
                 onClick={() => {
                   setIsAddingTask(false)
                   setTaskTitle('')
                 }}
-              ><CrossIcon label="" primaryColor='#091E42' /></button>
+              >
+                <CrossIcon label="" primaryColor='#091E42' />
+              </button>
             </div>
           </form>
         ) : (
-          <button className="add-task-btn" onClick={() => setIsAddingTask(true)}><AddIcon label="" primaryColor="#172B4D" /> Add a card </button>
+          <button
+            className="add-task-btn"
+            onClick={() => setIsAddingTask(true)}
+          >
+            <AddIcon label="" primaryColor="#172B4D" /> Add a card{' '}
+          </button>
         )}
       </div>
 

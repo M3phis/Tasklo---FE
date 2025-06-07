@@ -1,13 +1,27 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { GroupPreview } from './GroupPreview'
 
 import AddIcon from '@atlaskit/icon/glyph/add'
 import CrossIcon from '@atlaskit/icon/glyph/cross'
 
-export function GroupList({ board, boardId, onAddGroup, onUpdateList, onRemoveList, onUpdateTask, onRemoveTask }) {
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+
+export function GroupList({
+  board,
+  boardId,
+  onAddGroup,
+  onUpdateList,
+  onRemoveList,
+  onUpdateTask,
+  onRemoveTask,
+  onDragEnd,
+}) {
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [groupTitle, setGroupTitle] = useState('')
-  const { groups } = board
+
+  // Add null checks
+  if (!board) return null
+  const { groups = [] } = board
 
   function handleAddGroup(ev) {
     ev.preventDefault()
@@ -23,48 +37,105 @@ export function GroupList({ board, boardId, onAddGroup, onUpdateList, onRemoveLi
       style: '',
     }
 
-    onAddGroup(newGroup)
-      .then(() => {
-        setGroupTitle('')
-        setIsAddingGroup(false)
-      })
+    onAddGroup(newGroup).then(() => {
+      setGroupTitle('')
+      setIsAddingGroup(false)
+    })
   }
 
   return (
-    <ul className="group-list">
-      {groups?.map((group) => (
-        <li key={group.id} className="group-list-content">
-          <GroupPreview
-            group={group}
-            board={board}
-            boardId={boardId}
-            onUpdateList={onUpdateList}
-            onRemoveList={onRemoveList}
-            onUpdateTask={onUpdateTask}
-            onRemoveTask={onRemoveTask}
-          />
-        </li>
-      ))}
-      <li>
-        <div className="group-list-header">
-          {!isAddingGroup ? (
-            <button className="add-group-btn" onClick={() => setIsAddingGroup(true)} ><AddIcon label="" primaryColor="#42526E" /> Add another list</button>
-          ) : (
-            <form onSubmit={handleAddGroup} className="add-group-form">
-              <input className='group-input' type="text" value={groupTitle} onChange={(ev) => setGroupTitle(ev.target.value)} placeholder="Enter list name..." aria-label="List title" />
-              <div className="add-group-actions">
-                <button type="submit" className="add-btn" aria-label="Add new list">Add list</button>
-                <button className="cancel-btn"
-                  onClick={() => {
-                    setIsAddingGroup(false)
-                    setGroupTitle('')
-                  }}
-                ><CrossIcon label="" primaryColor="#091E42"/></button>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="groups" direction="horizontal" type="group">
+        {(provided) => (
+          <ul
+            className="group-list"
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {groups.map((group, idx) => (
+              <Draggable key={group.id} draggableId={group.id} index={idx}>
+                {(provided, snapshot) => (
+                  <li
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    className={`group-list-item ${
+                      snapshot.isDragging && !snapshot.isDropAnimating
+                        ? 'dragging'
+                        : ''
+                    }`}
+                    style={
+                      snapshot.isDragging && !snapshot.isDropAnimating
+                        ? {
+                            ...provided.draggableProps?.style,
+                            opacity: 0.6,
+                            transform: `${provided.draggableProps?.style?.transform} rotate(6deg)`,
+                          }
+                        : {
+                            ...provided.draggableProps?.style,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                          }
+                    }
+                  >
+                    <GroupPreview
+                      group={group}
+                      board={board}
+                      boardId={boardId}
+                      onUpdateList={onUpdateList}
+                      onRemoveList={onRemoveList}
+                      onUpdateTask={onUpdateTask}
+                      onRemoveTask={onRemoveTask}
+                    />
+                  </li>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+            <li>
+              <div className="group-list-header">
+                {!isAddingGroup ? (
+                  <button
+                    className="add-group-btn"
+                    onClick={() => setIsAddingGroup(true)}
+                  >
+                    <AddIcon label="" primaryColor="#42526E" /> Add another list
+                  </button>
+                ) : (
+                  <form onSubmit={handleAddGroup} className="add-group-form">
+                    <input
+                      className="group-input"
+                      type="text"
+                      value={groupTitle}
+                      onChange={(ev) => setGroupTitle(ev.target.value)}
+                      placeholder="Enter list name..."
+                      aria-label="List title"
+                    />
+                    <div className="add-group-actions">
+                      <button
+                        type="submit"
+                        className="add-btn"
+                        aria-label="Add new list"
+                      >
+                        Add list
+                      </button>
+                      <button
+                        className="cancel-btn"
+                        onClick={() => {
+                          setIsAddingGroup(false)
+                          setGroupTitle('')
+                        }}
+                      >
+                        <CrossIcon label="" primaryColor="#091E42"/>
+                      </button>
+                    </div>
+                  </form>
+                )}
               </div>
-            </form>
-          )}
-        </div>
-      </li>
-    </ul>
+            </li>
+          </ul>
+        )}
+      </Droppable>
+    </DragDropContext>
   )
 }

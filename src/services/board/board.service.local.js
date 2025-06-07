@@ -54,6 +54,7 @@ async function remove(boardId) {
 }
 
 async function save(board) {
+    console.log('board', board)
     var savedBoard
     if (board._id) {
         savedBoard = await storageService.put(STORAGE_KEY, board)
@@ -72,6 +73,7 @@ async function save(board) {
 }
 
 async function saveTask(boardId, groupId, task, activity) {
+    console.log('saving task')
     const board = await getById(boardId)
     const group = board.groups.find((g) => g.id === groupId)
     const taskIdx = group.tasks.findIndex((t) => t.id === task.id)

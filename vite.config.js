@@ -10,5 +10,12 @@ export default defineConfig({
     },
     define: {
         'import.meta.env.VITE_LOCAL': JSON.stringify(process.env.VITE_LOCAL)
+    },
+    server: {
+        hmr: {
+            overlay: {
+                warnings: false,
+            },
+        },
     }
 })
