@@ -88,7 +88,7 @@ export function GroupPreview({
   }
 
   return (
-    <div className="group-preview">
+    <div className="group-preview" style={group.style}>
       <div className="group-header" style={group.style}>
         {isEditing ? (
           <input
@@ -97,13 +97,15 @@ export function GroupPreview({
             onChange={handleTitleChange}
             onBlur={handleTitleBlur}
             onKeyDown={handleKeyDown}
+            onFocus={(e) => e.target.select()}
             autoFocus
-            className="group-title-input"
+            className={`group-title-editable ${isEditing ? 'editing' : ''}`}
           />
         ) : (
           <h3
-            className="group-title"
+            className="group-title-editable"
             onClick={handleTitleClick}
+            style={group.style}
             onMouseDown={(ev) => {
               // Only set dragging if it's not a click (check if mouse moves)
               const startX = ev.clientX
@@ -136,7 +138,7 @@ export function GroupPreview({
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           style={group.style}
         >
-          <MoreIcon label="" color="#172B4D" />
+          <MoreIcon label="" primaryColor=" #626F86" />
         </button>
       </div>
 
@@ -173,7 +175,7 @@ export function GroupPreview({
                   setTaskTitle('')
                 }}
               >
-                <CrossIcon label="" color="#172B4D" />
+                <CrossIcon label="" primaryColor='#091E42' />
               </button>
             </div>
           </form>
@@ -182,7 +184,7 @@ export function GroupPreview({
             className="add-task-btn"
             onClick={() => setIsAddingTask(true)}
           >
-            <AddIcon label="" color="#9fadbc" /> Add a card{' '}
+            <AddIcon label="" primaryColor="#172B4D" /> Add a card{' '}
           </button>
         )}
       </div>

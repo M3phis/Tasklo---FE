@@ -6,7 +6,7 @@
   margin: 0;
 
   .group-list-content {
-    flex-shrink: 0;
+    height: 100%;
   }
 }
 
@@ -17,13 +17,12 @@
 .add-group-btn {
   @include group-font-base;
   font-weight: $group-font-weight-medium;
-  color: $group-text-primary;
-  background-color: $group-bg-primary;
+  color: var(--ds-text);
+  background-color: var(--ds-background-accent-gray-subtlest);
   width: $group-width;
   height: $group-add-group-height;
   border: none;
   border-radius: $group-border-radius-large;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -38,14 +37,14 @@
   }
 
   &:hover {
-    background: $group-hover-bg;
+    background: var(--ds-background-neutral-hovered);
   }
 }
 
 .add-group-form {
   @include group-font-base;
-  background: $group-bg-primary;
-  color: $group-text-primary;
+  background: var(--ds-background-accent-gray-subtlest);
+  color: var(--ds-text);
   width: $group-width;
   height: $group-form-height;
   border-radius: $group-border-radius-large;
@@ -55,8 +54,8 @@
   .group-input {
     @include group-font-base;
     font-weight: $group-font-weight-semibold;
-    background: $group-bg-secondary;
-    color: $group-text-primary;
+    background: var(--ds-background-input);
+    color: var(--ds-text);
     width: $group-input-width;
     height: rem(32px);
     border: 0 solid transparent;
@@ -64,23 +63,23 @@
     padding: rem(6px) rem(12px);
     box-sizing: border-box;
     margin: 0;
-    box-shadow: inset 0 0 0 1px #8590a2;
+    box-shadow: inset 0 0 0 1px var(--ds-border-input);
 
     &:focus {
       outline: none;
-      box-shadow: inset 0 0 0 2px $group-accent-blue;
+      box-shadow: inset 0 0 0 2px var(--ds-border-focused);
     }
   }
 
   &::placeholder {
-    color: $group-text-muted;
+    color: var(--ds-text-subtlest);
   }
 }
 
 .add-group-actions {
   @include group-font-base;
-  background: $group-bg-primary;
-  color: $group-text-primary;
+  background: var(--ds-background-accent-gray-subtlest);
+  color: var(--ds-text);
   width: $group-input-width;
   height: rem(32px);
   border-radius: $group-border-radius-mini;
@@ -89,13 +88,14 @@
   gap: rem(4px);
   box-sizing: border-box;
   margin-top: 8px;
+  margin-bottom: 0;
 }
 
 .add-group-form .add-btn {
   @include group-button-base;
   font-weight: $group-font-weight-medium;
-  color: $group-bg-secondary;
-  background: $group-accent-blue;
+  color: var(--ds-text-inverse);
+  background: var(--ds-background-accent-blue-bolder);
   width: 73px;
   height: rem(32px);
   border: none;
@@ -106,19 +106,20 @@
   margin: 0;
 
   &:hover {
-    background: #0052cc;
+    background: var(--ds-background-accent-blue-bolder-hovered);
   }
 }
 
 .add-group-form .cancel-btn {
   @include group-font-base;
   background: transparent;
-  color: $group-text-primary;
+  font-weight: $group-font-weight-medium;
+  border-radius: $group-border-radius-small;
+  color: var(--ds-text);
   padding: rem(6px);
 
   &:hover {
-    background: $group-hover-bg;
-    border-radius: 3px;
+    background: var(--ds-background-neutral-hovered);
   }
 
   svg {
