@@ -97,13 +97,15 @@ export function GroupPreview({
             onChange={handleTitleChange}
             onBlur={handleTitleBlur}
             onKeyDown={handleKeyDown}
+            onFocus={(e) => e.target.select()}
             autoFocus
-            className="group-title-input"
+            className={`group-title-editable ${isEditing ? 'editing' : ''}`}
           />
         ) : (
           <h3
-            className="group-title"
+            className="group-title-editable"
             onClick={handleTitleClick}
+            style={group.style}
             onMouseDown={(ev) => {
               // Only set dragging if it's not a click (check if mouse moves)
               const startX = ev.clientX
