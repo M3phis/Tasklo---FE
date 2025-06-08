@@ -1,0 +1,38 @@
+.members-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 42, 62, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.members-modal {
+  background: #fff;
+  border-radius: 8px;
+  width: 320px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  position: relative;
+}
+.members-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.member-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.member-name {
+  color: #172b4d;
+  font-size: 15px;
+}

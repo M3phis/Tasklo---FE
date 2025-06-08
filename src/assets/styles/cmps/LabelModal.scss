@@ -1,0 +1,75 @@
+.labels-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.labels-modal {
+  background: #fff;
+  border-radius: 8px;
+  width: 320px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  position: relative;
+}
+
+.labels-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.labels-search {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid #dfe1e6;
+}
+
+.labels-list {
+  margin-bottom: 12px;
+}
+
+.label-row {
+  display: grid;
+  grid-template-columns: 1fr 8fr 1fr;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.label-color {
+  height: 32px;
+  width: 100%;
+  border-radius: 6px;
+  display: block;
+}
+
+.edit-label-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-label-btn,
+.colorblind-btn {
+  width: 100%;
+  margin-top: 4px;
+  padding: 6px 0;
+  border: none;
+  background: #f4f5f7;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
