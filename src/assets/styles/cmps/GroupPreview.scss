@@ -1,53 +1,56 @@
 .group-preview {
   @include group-font-base;
-  background: $group-bg-primary;
-  color: $group-text-secondary;
+  background: var(--ds-background-accent-gray-subtlest);
+  color: var(--ds-text-subtle);
   width: $group-width;
-  border-radius: rem(12px);////check
+  max-height: 100%;
+  border-radius: rem(12px); ////check
   padding-bottom: rem(4px);
+  box-shadow: var(--ds-box-shadow);
 }
 
 .group-header {
   @include group-font-base;
-  background: $group-bg-primary;
-  color: $group-text-primary;
-  width: 100%;
-  height: $group-header-height;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: var(--ds-background-accent-gray-subtlest);
+  color: var(--ds-text);
+  width: rem(272px);
+  height: rem(40px);
   padding: rem(8px) rem(8px) 0;
   border-radius: rem(12px) rem(12px) 0 0;
 }
 
 .group-title-editable {
   @include group-font-base;
-  background: $group-bg-primary;
-  color: $group-text-primary;
+  background: var(--ds-background-accent-gray-subtlest);
+  color: var(--ds-text);
+  width: rem(224px);
+  height: rem(32px);
   font-weight: $group-font-weight-semibold;
   flex-grow: 1;
-  width: rem(272px);
-  height: rem(32px);
   font-size: rem(14px);
   line-height: rem(20px);
-  padding: rem(4px) rem(8px) rem(6px) rem(12px);
+  padding: rem(6px) rem(8px) rem(6px) rem(12px);
   margin: 0;
   outline: none;
+  border: none;
 
   &.editing {
-    background: $group-bg-secondary;
-    box-shadow: inset 0 0 0 2px $group-accent-blue;
+    background: var(--ds-background-input);
+    border-radius: rem(3px);
+    box-shadow: inset 0 0 0 2px var(--ds-border-focused);
   }
 }
 
-.collapse-btn,
 .options-btn {
   @include group-button-base;
-  font-weight: $group-font-weight-medium;
-  color: $group-text-primary;
+  background-color: var(--ds-background-accent-gray-subtlest);
+  color: var(--ds-icon-subtlest);
   width: $group-button-size;
   height: $group-button-size;
-  background-color: $group-bg-primary;
+  font-weight: $group-font-weight-medium;
   border-radius: $group-border-radius-medium;
   margin: 0;
   padding: rem(8px);
@@ -58,90 +61,92 @@
   }
 
   &:hover {
-    background:$group-hover-bg;
+    background: var(--ds-background-neutral-hovered);
   }
 }
 
 .options-btn svg {
   width: $group-icon-size-small;
   height: $group-icon-size-small;
-  fill: $group-text-primary;
-  color: $group-text-primary;
 }
 
 .add-task-form {
   @include group-font-base;
-  background: $group-bg-primary;
-  color: $group-text-primary;
-  width: rem(246px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-self: center;
+  background: var(--ds-background-accent-gray-subtlest);
+  color: var(--ds-text);
+  width: rem(256px);
   height: rem(96px);
-  border-radius: $group-border-radius-medium;
+  padding-top: rem(2px); //0
+  gap: rem(2px);
+
 
   .task-input {
     @include group-font-base;
-    background: $group-bg-secondary;
-    color: $group-text-primary;
-    width: 100%;
+    background: var(--ds-background-input);
+    color: var(--ds-text);
+    width: rem(256px);
     height: rem(56px);
     border: 0 solid transparent;
     border-radius: $group-border-radius-medium;
     padding: rem(8px) rem(12px);
-    box-sizing: border-box;
-    resize: vertical;
     margin: 0;
-    box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
+    box-shadow: var(--ds-box-shadow);
 
     &:focus {
       outline: none;
     }
 
     &::placeholder {
-      color: $group-text-muted;
+      color: var(--ds-text-subtlest);
     }
   }
 }
 
 .add-task-actions {
   @include group-font-base;
-  background: $group-bg-primary;
-  color: $group-text-primary;
-  width: rem(246px);
-  height: $group-header-height;
   display: flex;
   align-items: center;
+  background: var(--ds-background-accent-gray-subtlest);
+  color: var(--ds-text);
+  width: rem(245.600px);
+  height: rem(32px);
   gap: rem(4px);
-  margin-top: rem(8px);
+  margin-top: rem(6px); //8
+  margin-bottom: rem(3px); //0
 }
 
 .add-btn {
   @include group-font-base;
-  font-weight: $group-font-weight-medium;
-  color: $group-bg-secondary;
-  background: $group-accent-blue;
-  width: rem(81.5px);
+  color: var(--ds-text-inverse);
+  background: var(--ds-background-accent-blue-bolder);
+  width: rem(81.5125px);
   height: rem(32px);
+  font-weight: $group-font-weight-medium;
   border: none;
   border-radius: $group-border-radius-small;
-  cursor: pointer;
   transition: background-color 0.2s ease;
   margin: 0;
   padding: rem(6px) rem(12px);
 
   &:hover {
-    background: #0052CC;
+    background: var(--ds-background-accent-blue-bolder-hovered);
   }
 }
 
 .cancel-btn {
   @include group-button-base;
   background: transparent;
-  color: $group-text-primary;
+  color: var(--ds-text);
   padding: rem(6px);
   margin: 0;
+  border-radius: $group-border-radius-small;
 
   &:hover {
-    background:$group-hover-bg;
-    border-radius: $group-border-radius-small;
+    background: var(--ds-background-neutral-hovered);
   }
 
   svg {
@@ -152,24 +157,24 @@
 
 .add-task-btn {
   @include group-font-base;
-  font-weight: $group-font-weight-medium;
-  background: transparent;
-  color: $group-text-secondary;
-  border: none;
-  padding: rem(4px) rem(8px);
-  border-radius: $group-border-radius-medium;
-  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: rem(6px);
-  width: 100%;
+  width: rem(272px);
   height: rem(40px);
+  // height: rem(32px);
+  background: transparent;
+  color: var(--ds-text-subtle);
+  font-weight: $group-font-weight-medium;
+  border-radius: $group-border-radius-medium;
+  border: none;
+  padding: rem(10px) rem(20px) rem(10px) rem(8px);
+  gap: rem(6px);
   transition: background-color 0.2s ease, color 0.2s ease;
   margin: 0;
 
   &:hover {
-    background:$group-hover-bg;
-    color: $group-text-primary;
+    background: var(--ds-background-neutral-hovered);
+    color: var(--ds-text);
   }
 
   svg {

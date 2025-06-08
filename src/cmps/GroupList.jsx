@@ -99,7 +99,7 @@ export function GroupList({
                     className="add-group-btn"
                     onClick={() => setIsAddingGroup(true)}
                   >
-                    <AddIcon label="" color="#9fadbc" /> Add another list
+                    <AddIcon label="" primaryColor="#42526E" /> Add another list
                   </button>
                 ) : (
                   <form onSubmit={handleAddGroup} className="add-group-form">
@@ -126,7 +126,7 @@ export function GroupList({
                           setGroupTitle('')
                         }}
                       >
-                        <CrossIcon label="" color="#172B4D" />
+                        <CrossIcon label="" primaryColor="#091E42"/>
                       </button>
                     </div>
                   </form>

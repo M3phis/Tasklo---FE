@@ -1,6 +1,7 @@
 import { Droppable, Draggable } from 'react-beautiful-dnd'
-import { TaskPreview } from './TaskPreview'
 import { useNavigate } from 'react-router'
+
+import { TaskPreview } from './TaskPreview'
 
 export function TaskList({
   tasks = [],
@@ -19,7 +20,7 @@ export function TaskList({
     <Droppable droppableId={group.id} type="task" direction="vertical">
       {(provided) => (
         <ul
-          className="task-list clean-list"
+          className="task-list"
           {...provided.droppableProps}
           ref={provided.innerRef}
         >

@@ -10,18 +10,19 @@ import CrossIcon from '@atlaskit/icon/glyph/cross'
 
 export function GroupPreview({
   group,
+  board,
   boardId,
   onUpdateList,
   onRemoveList,
   onUpdateTask,
   onRemoveTask,
   onOpenQuickEdit,
-  board,
 }) {
   const [isAddingTask, setIsAddingTask] = useState(false)
-  const [titleValue, setTitleValue] = useState(group.title)
-  const [taskTitle, setTaskTitle] = useState('')
   const [isEditing, setIsEditing] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const [title, setTitle] = useState(group.title)
+  const [taskTitle, setTaskTitle] = useState('')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const contentEditableRef = useRef(null)
   const menuTriggerRef = useRef(null)
@@ -46,56 +47,32 @@ export function GroupPreview({
     })
   }
 
-  function saveTitle() {
-    if (!titleValue.trim()) {
-      setTitleValue(group.title)
-      return
+  const handleTitleClick = (ev) => {
+    if (!isDragging) {
+      setIsEditing(true)
     }
-
-    const updatedGroup = {
-      ...group,
-      title: titleValue.trim(),
-    }
-
-    onUpdateList(updatedGroup).catch(() => {
-      setTitleValue(group.title)
-    })
   }
 
-  function handleFocus() {
-    setIsEditing(true)
-
-    setTimeout(() => {
-      if (contentEditableRef.current) {
-        const range = document.createRange()
-        range.selectNodeContents(contentEditableRef.current)
-        const selection = window.getSelection()
-        selection.removeAllRanges()
-        selection.addRange(range)
-      }
-    }, 0)
+  const handleTitleChange = (ev) => {
+    setTitle(ev.target.value)
   }
 
-  function handleBlur() {
+  const handleTitleBlur = () => {
     setIsEditing(false)
-    if (titleValue !== group.title) {
-      saveTitle()
+    if (title !== group.title) {
+      onUpdateList({ ...group, title })
     }
   }
 
-  function handleChange(evt) {
-    setTitleValue(evt.target.value)
-  }
-
-  function handleKeyDown(evt) {
-    if (evt.key === 'Enter') {
-      evt.preventDefault()
-      contentEditableRef.current?.blur()
-    }
-    if (evt.key === 'Escape') {
-      evt.preventDefault()
-      setTitleValue(group.title)
-      contentEditableRef.current?.blur()
+  const handleKeyDown = (ev) => {
+    if (ev.key === 'Enter') {
+      setIsEditing(false)
+      if (title !== group.title) {
+        onUpdateList({ ...group, title })
+      }
+    } else if (ev.key === 'Escape') {
+      setIsEditing(false)
+      setTitle(group.title)
     }
   }
 
@@ -111,31 +88,57 @@ export function GroupPreview({
   }
 
   return (
-    <div className="group-preview">
+    <div className="group-preview" style={group.style}>
       <div className="group-header" style={group.style}>
-        {/* <div className="group-title"> */}
-        <ContentEditable
-          innerRef={contentEditableRef}
-          html={titleValue}
-          disabled={false}
-          onChange={handleChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          onKeyDown={handleKeyDown}
-          tagName="h3"
-          suppressContentEditableWarning={true}
-          className={`group-title-editable  ${isEditing ? 'editing' : ''}`}
-          style={group.style}
-        />
-        {/* </div> */}
-        {/* <button className="collapse-btn"> <EditorCollapseIcon label="" color="#9fadbc" /></button> */}
+        {isEditing ? (
+          <input
+            type="text"
+            value={title}
+            onChange={handleTitleChange}
+            onBlur={handleTitleBlur}
+            onKeyDown={handleKeyDown}
+            onFocus={(e) => e.target.select()}
+            autoFocus
+            className={`group-title-editable ${isEditing ? 'editing' : ''}`}
+          />
+        ) : (
+          <h3
+            className="group-title-editable"
+            onClick={handleTitleClick}
+            style={group.style}
+            onMouseDown={(ev) => {
+              // Only set dragging if it's not a click (check if mouse moves)
+              const startX = ev.clientX
+              const startY = ev.clientY
+
+              const handleMouseMove = (moveEv) => {
+                const deltaX = Math.abs(moveEv.clientX - startX)
+                const deltaY = Math.abs(moveEv.clientY - startY)
+                if (deltaX > 5 || deltaY > 5) {
+                  setIsDragging(true)
+                }
+              }
+
+              const handleMouseUp = () => {
+                setIsDragging(false)
+                document.removeEventListener('mousemove', handleMouseMove)
+                document.removeEventListener('mouseup', handleMouseUp)
+              }
+
+              document.addEventListener('mousemove', handleMouseMove)
+              document.addEventListener('mouseup', handleMouseUp)
+            }}
+          >
+            {group.title}
+          </h3>
+        )}
         <button
           ref={menuTriggerRef}
           className="options-btn"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           style={group.style}
         >
-          <MoreIcon label="" color="#172B4D" />
+          <MoreIcon label="" primaryColor=" #626F86" />
         </button>
       </div>
 
@@ -150,8 +153,8 @@ export function GroupPreview({
 
       <div className="add-task-section">
         {isAddingTask ? (
-          <form onSubmit={handleAddTask} className="add-task-form">
-            <input
+          <form onSubmit={handleAddTask} className="add-task-form" style={group.style}>
+            <input 
               type="text"
               value={taskTitle}
               onChange={(ev) => setTaskTitle(ev.target.value)}
@@ -159,7 +162,7 @@ export function GroupPreview({
               autoFocus
               className="task-input"
             />
-            <div className="add-task-actions">
+            <div className="add-task-actions" style={group.style}>
               <button type="submit" className="add-btn">
                 {' '}
                 Add card{' '}
@@ -172,7 +175,7 @@ export function GroupPreview({
                   setTaskTitle('')
                 }}
               >
-                <CrossIcon label="" color="#172B4D" />
+                <CrossIcon label="" primaryColor='#091E42' />
               </button>
             </div>
           </form>
@@ -181,7 +184,7 @@ export function GroupPreview({
             className="add-task-btn"
             onClick={() => setIsAddingTask(true)}
           >
-            <AddIcon label="" color="#9fadbc" /> Add a card{' '}
+            <AddIcon label="" primaryColor="#172B4D" /> Add a card{' '}
           </button>
         )}
       </div>
