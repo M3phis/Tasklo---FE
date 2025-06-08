@@ -6,18 +6,23 @@
   flex-wrap: nowrap;
 
   a {
+    text-decoration: none;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: var(--button-background, #091e420f);
+    background-color: rgba(9, 30, 66, 0.06);
     padding: 6px 12px 6px 6px;
     width: 75px;
+  }
+  a:hover {
+    background-color: rgba(9, 30, 66, 0.14);
+    cursor: pointer;
   }
 }
 
 .nav-bar-boards a span {
   text-align: center;
-  color: $clr8;
+  color: rgb(23, 43, 77);
   font-weight: $group-font-weight-semibold;
   font-size: $group-font-size-base;
   line-height: $group-line-height-base;

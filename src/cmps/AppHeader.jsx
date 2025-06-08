@@ -38,7 +38,7 @@ export function AppHeader() {
     <header className="app-header main-container full">
       <nav className="">
         <button className="menu-button">
-          <AppSwitcherIcon label="" color="#9fadbc" />
+          <AppSwitcherIcon label="" color="#455570" />
         </button>
         <NavLink to="/board" className="logo">
           <div className="tasklo-logo">
@@ -56,15 +56,15 @@ export function AppHeader() {
 
         <div className="nav-buttons">
           <button>
-            <MegaphoneIcon label="" color="#9fadbc" />
+            <MegaphoneIcon label="" color="#455570" />
           </button>
 
           <button>
-            <NotificationIcon label="" color="#9fadbc" />
+            <NotificationIcon label="" color="#455570" />
           </button>
 
           <button>
-            <QuestionCircleIcon label="" color="#9fadbc" />
+            <QuestionCircleIcon label="" color="#455570" />
           </button>
 
           {!user && (

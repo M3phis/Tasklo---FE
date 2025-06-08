@@ -1,5 +1,5 @@
 .app-header {
-  background-color: var(--dynamic-background, #ffffff);
+  background-color: rgb(255, 255, 255);
   padding: 8px;
   width: 100vw;
   height: 44px;
@@ -63,7 +63,7 @@
   }
 }
 .create-btn {
-  background-color: blue;
+  background-color: #0055cc;
 }
 
 .menu-button {
@@ -106,7 +106,7 @@
       height: 24px;
     }
     &:hover {
-      background-color: var(--header-btn-hover, rgba(166, 197, 226, 0.29));
+      background-color: #dcdfe4;
     }
 
     &.active {
@@ -186,7 +186,7 @@
   .logo-text {
     font-size: 20px;
     font-weight: 700;
-    color: white;
+    color: #485773;
     letter-spacing: -0.5px;
     line-height: 1;
   }

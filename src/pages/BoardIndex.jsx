@@ -80,9 +80,8 @@ export function BoardIndex() {
     <section className="board-index">
       <aside className="home-sidebar">
         <div className="sidebar-section">
-          <div className="sidebar-title">Boards</div>
           <ul>
-            <li className="active">Boards</li>
+            <li>Boards</li>
             <li>Templates</li>
             <li>Home</li>
           </ul>
