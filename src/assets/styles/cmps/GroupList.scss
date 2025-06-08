@@ -16,20 +16,21 @@
 
 .add-group-btn {
   @include group-font-base;
-  font-weight: $group-font-weight-medium;
-  color: var(--ds-text);
-  background-color: var(--ds-background-accent-gray-subtlest);
-  width: $group-width;
-  height: $group-add-group-height;
-  border: none;
-  border-radius: $group-border-radius-large;
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  background-color: var(--ds-background-accent-gray-subtlest);
+  color: var(--ds-text);
+  width: $group-width;
+  height: $group-add-group-height;
+  font-weight: $group-font-weight-medium;
+  border: none;
+  border-radius: $group-border-radius-large;
   gap: rem(8px);
   padding: rem(12px);
-  transition: background-color 0.2s ease;
   margin: 0;
+  transition: background-color 0.2s ease;
+  box-shadow: var(--ds-box-shadow);
 
   svg {
     width: $group-icon-size-small;
@@ -49,19 +50,19 @@
   height: $group-form-height;
   border-radius: $group-border-radius-large;
   padding: rem(8px);
-  box-sizing: border-box;
+  box-shadow: var(--ds-box-shadow);
+
 
   .group-input {
     @include group-font-base;
-    font-weight: $group-font-weight-semibold;
     background: var(--ds-background-input);
     color: var(--ds-text);
     width: $group-input-width;
     height: rem(32px);
+    font-weight: $group-font-weight-semibold;
     border: 0 solid transparent;
     border-radius: $group-border-radius-mini;
     padding: rem(6px) rem(12px);
-    box-sizing: border-box;
     margin: 0;
     box-shadow: inset 0 0 0 1px var(--ds-border-input);
 
@@ -78,29 +79,27 @@
 
 .add-group-actions {
   @include group-font-base;
+  display: flex;
+  align-items: center;
   background: var(--ds-background-accent-gray-subtlest);
   color: var(--ds-text);
   width: $group-input-width;
   height: rem(32px);
   border-radius: $group-border-radius-mini;
-  display: flex;
-  align-items: center;
   gap: rem(4px);
-  box-sizing: border-box;
   margin-top: 8px;
   margin-bottom: 0;
 }
 
 .add-group-form .add-btn {
   @include group-button-base;
-  font-weight: $group-font-weight-medium;
-  color: var(--ds-text-inverse);
   background: var(--ds-background-accent-blue-bolder);
+  color: var(--ds-text-inverse);
   width: 73px;
   height: rem(32px);
+  font-weight: $group-font-weight-medium;
   border: none;
   border-radius: $group-border-radius-small;
-  cursor: pointer;
   transition: background-color 0.2s ease;
   padding: rem(6px) rem(12px);
   margin: 0;
@@ -113,9 +112,9 @@
 .add-group-form .cancel-btn {
   @include group-font-base;
   background: transparent;
+  color: var(--ds-text);
   font-weight: $group-font-weight-medium;
   border-radius: $group-border-radius-small;
-  color: var(--ds-text);
   padding: rem(6px);
 
   &:hover {

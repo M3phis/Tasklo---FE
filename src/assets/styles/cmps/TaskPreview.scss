@@ -1,6 +1,8 @@
 .task-preview {
     width: rem(256px);
     border-radius: $group-border-radius-medium;
+    box-shadow: var(--ds-box-shadow);
+
     // display: flow-root;
     // width: rem(256px);
     // background-color: var(--ds-background-input);
@@ -24,9 +26,9 @@
 
     &.task-done {
         .task-title {
-            width: rem(210px);
             background-color: var(--ds-background-input);
             color: var(--ds-text-subtlest);
+            width: rem(210px);
             margin-bottom: rem(4px);
         }
 
@@ -61,12 +63,12 @@
 
 .task-content {
     position: relative;
+    background-color: var(--ds-background-input);
+    color: var(--ds-text);
     width: rem(256px);
     padding: rem(8px) rem(12px) rem(4px);
     border-radius: $group-border-radius-medium;
-    background-color: var(--ds-background-input);
-    color: var(--ds-text);
-    box-shadow: 0 rem(1px) rem(1px) var(--ds-border), var(--ds-border-bold);
+    box-shadow: var(--ds-box-shadow);
     overflow-wrap: break-word;
     //  display: flow-root;
     // padding: rem(8px) rem(5px) rem(4px);
@@ -94,14 +96,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background: none;
+    color: var(--ds-text-subtlest);
     width: $group-icon-size-medium;
     height: $group-icon-size-medium;
     font-size: $group-font-size-base;
     line-height: $group-line-height-base;
     font-weight: $group-font-weight-medium;
     border: none;
-    background: none;
-    color: var(--ds-text-subtlest);
     border-radius: $group-border-radius-small;
     margin: 0px rem(4px) 0 rem(-2px);
     padding: rem(2px);

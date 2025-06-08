@@ -153,8 +153,8 @@ export function GroupPreview({
 
       <div className="add-task-section">
         {isAddingTask ? (
-          <form onSubmit={handleAddTask} className="add-task-form">
-            <input
+          <form onSubmit={handleAddTask} className="add-task-form" style={group.style}>
+            <input 
               type="text"
               value={taskTitle}
               onChange={(ev) => setTaskTitle(ev.target.value)}
@@ -162,7 +162,7 @@ export function GroupPreview({
               autoFocus
               className="task-input"
             />
-            <div className="add-task-actions">
+            <div className="add-task-actions" style={group.style}>
               <button type="submit" className="add-btn">
                 {' '}
                 Add card{' '}
