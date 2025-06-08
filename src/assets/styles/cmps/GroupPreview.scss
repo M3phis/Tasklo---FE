@@ -93,8 +93,10 @@
     border: 0 solid transparent;
     border-radius: $group-border-radius-medium;
     padding: rem(8px) rem(12px);
+    padding-top: 0; //input from top
     margin: 0;
     box-shadow: var(--ds-box-shadow);
+
 
     &:focus {
       outline: none;
