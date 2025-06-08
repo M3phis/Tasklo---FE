@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import EditIcon from '@atlaskit/icon/core/edit';
+import DeleteIcon from '@atlaskit/icon/core/delete';
 import CheckCircleIcon from '@atlaskit/icon/core/check-circle';
 import MediaServicesPreselectedIcon from '@atlaskit/icon/glyph/media-services/preselected'
 
@@ -19,7 +20,7 @@ export function TaskPreview({
 
   const handleTaskClick = (ev) => {
     // Prevent navigation if clicking the edit button
-    if (ev.target.closest('.task-edit-btn')) {
+    if (ev.target.closest('.task-edit-btn') || ev.target.closest('.task-delete-btn')) {
       return
     }
 
@@ -87,13 +88,25 @@ export function TaskPreview({
 
       <div className="task-content">
         {isHovered && (
-          <button
-            className="task-edit-btn"
-            onClick={handleEditClick}
-            title="Edit card"
-          >
-            <EditIcon label="Mark as incomplete" color="#172B4D"/>
-          </button>
+          <>
+            <button
+              className="task-edit-btn"
+              onClick={handleEditClick}
+              title="Edit card"
+            >
+              <EditIcon label="Edit card" color="#172B4D" />
+            </button>
+
+            {isDone && (
+              <button
+                className="task-delete-btn"
+                onClick={handleRemoveClick}
+                title="Delete card"
+              >
+                <DeleteIcon label="Delete card" color="#172B4D" />
+              </button>
+            )}
+          </>
         )}
 
         <div className="task-header">
@@ -104,7 +117,7 @@ export function TaskPreview({
               title={isDone ? 'Mark as undone' : 'Mark as done'}
             >
               {isDone ? (
-                <CheckCircleIcon label="Mark as incomplete"/>
+                <CheckCircleIcon label="Mark as incomplete" />
               ) : (
                 <MediaServicesPreselectedIcon label="Mark as complete" />
               )}

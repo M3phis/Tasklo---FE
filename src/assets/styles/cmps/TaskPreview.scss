@@ -116,7 +116,8 @@
 
 }
 
-.task-edit-btn {
+.task-edit-btn,
+.task-delete-btn {
     position: absolute;
     background-color: var(--ds-background-input);
     width: rem(26px);
@@ -136,4 +137,8 @@
         width: rem(14px);
         height: rem(14px);
     }
+}
+
+.task-delete-btn {
+    right: rem(28px);
 }
