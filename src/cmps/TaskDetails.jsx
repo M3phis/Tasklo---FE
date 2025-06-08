@@ -5,6 +5,7 @@ import { boardService } from '../services/board'
 import { loadBoard, updateBoard } from '../store/board.actions'
 import { LabelsModal } from './LabelsModal'
 import { MembersModal } from './MembersModal'
+
 export function TaskDetails({}) {
   const { boardId, groupId, taskId } = useParams()
   const navigate = useNavigate()
@@ -120,16 +121,24 @@ export function TaskDetails({}) {
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal-content task-details-modal">
-        <button className="close-btn" onClick={handleClose}>
-          ×
-        </button>
+        {/* HEADER */}
+        <div className="task-details-header">
+          <div className="task-details-header-left">
+            <div className="task-list-title-badge">{group.title}</div>
+          </div>
+          <div className="task-details-header-right"></div>
+        </div>
+
         <div className="task-details-layout">
           <div className="task-details-main">
             <div className="task-details-title-row">
+              <input
+                type="checkbox"
+                className="task-done-checkbox"
+                // checked={task.status === 'done'}
+                // onChange={handleDoneToggle}
+              />
               <input className="task-title-input" value={task.title} readOnly />
-              <span className="task-group-name">
-                in list <b>{group.title}</b>
-              </span>
             </div>
 
             <div className="task-details-actions-row">
@@ -312,7 +321,19 @@ export function TaskDetails({}) {
           <div className="task-details-sidebar">
             <div className="task-details-activity">
               <div className="activity-header">
-                <span>Comments and activity</span>
+                <span className="activity-header-title">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="18"
+                    viewBox="0 -960 960 960"
+                    width="18"
+                    fill="#5f6368"
+                    style={{ marginRight: 6, verticalAlign: 'middle' }}
+                  >
+                    <path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z" />
+                  </svg>
+                  Comments and activity
+                </span>
                 <button className="show-details-btn">Show details</button>
               </div>
               <input
