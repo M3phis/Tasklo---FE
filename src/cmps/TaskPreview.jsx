@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import EditIcon from '@atlaskit/icon/glyph/edit'
-import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle'
+import EditIcon from '@atlaskit/icon/core/edit';
+import CheckCircleIcon from '@atlaskit/icon/core/check-circle';
 import MediaServicesPreselectedIcon from '@atlaskit/icon/glyph/media-services/preselected'
-import editpenSvg from '../svg/editpen.svg'
 
 export function TaskPreview({
   task,
@@ -11,7 +10,6 @@ export function TaskPreview({
   onRemoveTask,
   onUpdateTask,
   onOpenQuickEdit,
-  isEmptyPlaceholder = false,
   board,
 }) {
   const navigate = useNavigate()
@@ -60,14 +58,6 @@ export function TaskPreview({
     onUpdateTask(updatedGroup)
   }
 
-  if (isEmptyPlaceholder) {
-    return (
-      <div className="task-empty-placeholder">
-        <p className="empty-message">No cards in this list</p>
-      </div>
-    )
-  }
-
   return (
     <div
       className={`task-preview ${isDone ? 'task-done' : ''}`}
@@ -100,9 +90,9 @@ export function TaskPreview({
           <button
             className="task-edit-btn"
             onClick={handleEditClick}
-            title="Quick edit"
+            title="Edit card"
           >
-            <img src={editpenSvg} alt="Edit" width="14" height="14" />
+            <EditIcon label="Mark as incomplete" color="#172B4D"/>
           </button>
         )}
 
@@ -114,10 +104,7 @@ export function TaskPreview({
               title={isDone ? 'Mark as undone' : 'Mark as done'}
             >
               {isDone ? (
-                <CheckCircleIcon
-                  label="Mark as incomplete"
-                  primaryColor="#00875A"
-                />
+                <CheckCircleIcon label="Mark as incomplete"/>
               ) : (
                 <MediaServicesPreselectedIcon label="Mark as complete" />
               )}
