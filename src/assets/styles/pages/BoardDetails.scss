@@ -1,7 +1,14 @@
+.board-content {
+  margin-top: rem(12px);
+}
 
 .lists-container {
   display: flex;
   flex-direction: row;
-  align-items: start;
-  padding: 1rem;
+  align-items: center;
+  padding-top: rem(2px);
+  padding: 0 rem(6px);
+  padding-bottom: rem(44px);
+  margin-top: rem(-2px);
+  margin-bottom: rem(8px);
 }
