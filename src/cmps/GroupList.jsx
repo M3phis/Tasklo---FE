@@ -93,7 +93,7 @@ export function GroupList({
             ))}
             {provided.placeholder}
             <li>
-              <div className="group-list-header">
+              <div className="group-list-item">
                 {!isAddingGroup ? (
                   <button
                     className="add-group-btn"
