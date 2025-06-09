@@ -1,0 +1,33 @@
+.avatar-list {
+    display: flex;
+    align-items: center;
+
+    .avatar-wrapper {
+        margin-left: -4px;
+
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+
+    .more {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        background: var(--ds-background-neutral-hovered);
+        border: 2px solid var(--ds-background-inverse-subtle);
+        border-radius: 50%;
+        color: var(--ds-text);
+        font-size: 12px;
+        font-weight: $group-font-weight-medium;
+        transition: all 0.2s;
+        margin-left: -4px;
+
+        &:hover {
+            background: var(--ds-background-neutral-pressed);
+            transform: translateY(-1px);
+        }
+    }
+}
