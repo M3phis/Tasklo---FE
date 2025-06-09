@@ -6,6 +6,7 @@ import {
   updateBoard,
   updateBoardOptimistic,
 } from '../store/board.actions'
+import { BoardHeader } from '../cmps/BoardHeader/BoardHeader'
 import { GroupList } from '../cmps/GroupList'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { Outlet } from 'react-router-dom'
@@ -14,8 +15,7 @@ export function BoardDetails() {
   const { boardId } = useParams()
   const board = useSelector((storeState) => storeState.boardModule.board)
   const [isLoading, setIsLoading] = useState(true)
-  // const [isAddingList, setIsAddingList] = useState(false)
-  // const [listTitle, setListTitle] = useState('')
+  const [rsbIsOpen, setRsbIsOpen] = useState(false)
 
   useEffect(() => {
     loadBoard(boardId)
@@ -56,32 +56,6 @@ export function BoardDetails() {
     }
   }
 
-  // function handleAddList(ev) {
-  //   ev.preventDefault()
-  //   if (!listTitle.trim()) return
-
-  //   const newList = {
-  //     id: Date.now().toString(),
-  //     title: listTitle,
-  //     tasks: [],
-  //   }
-
-  // const updatedBoard = {
-  //   ...board,
-  //   groups: [...board.groups, newList],
-  // }
-
-  //   updateBoard(updatedBoard)
-  //     .then(() => {
-  //       showSuccessMsg('List added')
-  //       setListTitle('')
-  //       setIsAddingList(false)
-  //     })
-  //     .catch((err) => {
-  //       console.log('err', err)
-  //       showErrorMsg('Cannot add list')
-  //     })
-  // }
   let taskIsOpen = true
 
   function handleAddGroup(newGroup) {
@@ -176,14 +150,32 @@ export function BoardDetails() {
       })
   }
 
+  function handleBoardUpdate(updatedBoard) {
+    updateBoardOptimistic(updatedBoard)
+      .then(() => {
+        if (updatedBoard.title !== board.title) {
+          showSuccessMsg('Board title updated')
+        }
+        if (updatedBoard.isStarred !== board.isStarred) {
+          showSuccessMsg(updatedBoard.isStarred ? 'Board starred' : 'Board unstarred')
+        }
+      })
+      .catch((err) => {
+        console.log('Error updating board:', err)
+        showErrorMsg('Cannot update board')
+      })
+  }
+
   if (isLoading) return <div>Loading...</div>
   if (!board) return <div>Board not found</div>
 
   return (
     <section className="board-details">
-      <div className="board-header">
-        <h1>{board.title}</h1>
-      </div>
+      <BoardHeader
+        board={board}
+        setRsbIsOpen={setRsbIsOpen}
+        onUpdateBoard={handleBoardUpdate}
+      />
       <div className="board-content">
         <div className="lists-container">
           <GroupList
