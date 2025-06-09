@@ -106,7 +106,7 @@
                 border: none;
                 // background-color: transparent;
                 box-shadow: none;
-                background-color: var(--ds-background-neutral-subtle-hovered); //check
+                background-color: var(--ds-background-neutral-subtle-hovered); 
                 color: var(--ds-text);
                 text-decoration: none;
             }
@@ -246,7 +246,7 @@
                 justify-content: center;
                 width: 100%;
                 padding: rem(8px) rem(12px);
-                background-color: var(--ds-background-input);
+                background-color: var( --ds-background-neutral-subtle-hovered);
                 border: rem(1px) solid var(--ds-border);
                 border-radius: $group-border-radius-small;
                 font-size: $group-font-size-base;
