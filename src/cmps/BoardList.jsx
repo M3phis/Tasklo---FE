@@ -21,9 +21,9 @@ export function BoardList({
                 tabIndex={-1}
               >
                 {board.isStarred ? (
-                  <StarStarredIcon label="" />
+                  <StarStarredIcon label="" color="white" />
                 ) : (
-                  <StarUnstarredIcon label="" />
+                  <StarUnstarredIcon label="" color="white" />
                 )}
               </button>
             </div>
