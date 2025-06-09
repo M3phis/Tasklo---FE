@@ -1,5 +1,5 @@
 import { storageService } from '../async-storage.service'
-import { makeId } from '../util.service'
+import { utilService } from "../../services/util.service"
 import { userService } from '../user'
 import boardsData from '../../data/boards.json'
 
@@ -61,7 +61,7 @@ async function save(board) {
     } else {
         const boardToSave = {
             ...board,
-            _id: makeId(),
+            _id: utilService.makeId(),
             createdAt: Date.now(),
             createdBy: userService.getLoggedinUser(),
             activities: [],
