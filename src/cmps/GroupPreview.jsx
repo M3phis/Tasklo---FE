@@ -1,9 +1,8 @@
 import { useState, useRef } from 'react'
-import ContentEditable from 'react-contenteditable'
+import { useClickAway } from 'react-use'
 import { GroupListMenu } from './DynamicCmps.jsx/GroupListMenu'
 import { TaskList } from './TaskList'
 
-import EditorCollapseIcon from '@atlaskit/icon/glyph/editor/collapse'
 import AddIcon from '@atlaskit/icon/glyph/add'
 import MoreIcon from '@atlaskit/icon/glyph/more'
 import CrossIcon from '@atlaskit/icon/glyph/cross'
@@ -24,8 +23,32 @@ export function GroupPreview({
   const [title, setTitle] = useState(group.title)
   const [taskTitle, setTaskTitle] = useState('')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const contentEditableRef = useRef(null)
   const menuTriggerRef = useRef(null)
+  const formRef = useRef(null)
+
+   useClickAway(formRef, () => {
+    if (isAddingTask) {
+      if (taskTitle.trim()) {
+        const newTask = {
+          id: Date.now().toString(),
+          title: taskTitle,
+        }
+
+        const updatedGroup = {
+          ...group,
+          tasks: [...group.tasks, newTask],
+        }
+
+        onUpdateTask(updatedGroup).then(() => {
+          setTaskTitle('')
+          setIsAddingTask(false)
+        })
+      } else {
+        setIsAddingTask(false)
+        setTaskTitle('')
+      }
+    }
+  })
 
   function handleAddTask(ev) {
     ev.preventDefault()
@@ -43,28 +66,27 @@ export function GroupPreview({
 
     onUpdateTask(updatedGroup).then(() => {
       setTaskTitle('')
-      setIsAddingTask(false)
     })
   }
 
-  const handleTitleClick = (ev) => {
+  function handleTitleClick(ev) {
     if (!isDragging) {
       setIsEditing(true)
     }
   }
 
-  const handleTitleChange = (ev) => {
+  function handleTitleChange(ev) {
     setTitle(ev.target.value)
   }
 
-  const handleTitleBlur = () => {
+  function handleTitleBlur() {
     setIsEditing(false)
     if (title !== group.title) {
       onUpdateList({ ...group, title })
     }
   }
 
-  const handleKeyDown = (ev) => {
+  function handleKeyDown(ev) {
     if (ev.key === 'Enter') {
       setIsEditing(false)
       if (title !== group.title) {
@@ -73,6 +95,16 @@ export function GroupPreview({
     } else if (ev.key === 'Escape') {
       setIsEditing(false)
       setTitle(group.title)
+    }
+  }
+
+  function handleTaskKeyDown(ev) {
+    if (ev.key === 'Enter') {
+      ev.preventDefault()
+      handleAddTask(ev)
+    } else if (ev.key === 'Escape') {
+      setIsAddingTask(false)
+      setTaskTitle('')
     }
   }
 
@@ -153,11 +185,12 @@ export function GroupPreview({
 
       <div className="add-task-section">
         {isAddingTask ? (
-          <form onSubmit={handleAddTask} className="add-task-form" style={group.style}>
-            <input 
+          <form ref={formRef} onSubmit={handleAddTask} className="add-task-form" style={group.style}>
+            <input
               type="text"
               value={taskTitle}
               onChange={(ev) => setTaskTitle(ev.target.value)}
+              onKeyDown={handleTaskKeyDown}
               placeholder="Enter a title..."
               autoFocus
               className="task-input"
