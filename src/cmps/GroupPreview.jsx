@@ -26,7 +26,7 @@ export function GroupPreview({
   const menuTriggerRef = useRef(null)
   const formRef = useRef(null)
 
-   useClickAway(formRef, () => {
+  useClickAway(formRef, () => {
     if (isAddingTask) {
       if (taskTitle.trim()) {
         const newTask = {
@@ -139,7 +139,6 @@ export function GroupPreview({
             onClick={handleTitleClick}
             style={group.style}
             onMouseDown={(ev) => {
-              // Only set dragging if it's not a click (check if mouse moves)
               const startX = ev.clientX
               const startY = ev.clientY
 
@@ -174,14 +173,16 @@ export function GroupPreview({
         </button>
       </div>
 
-      <TaskList
-        tasks={group.tasks}
-        group={group}
-        onRemoveTask={onRemoveTask}
-        onUpdateTask={onUpdateTask}
-        onOpenQuickEdit={onOpenQuickEdit}
-        board={board}
-      />
+      <div className="tasks-container">
+        <TaskList
+          tasks={group.tasks}
+          group={group}
+          onRemoveTask={onRemoveTask}
+          onUpdateTask={onUpdateTask}
+          onOpenQuickEdit={onOpenQuickEdit}
+          board={board}
+        />
+      </div>
 
       <div className="add-task-section">
         {isAddingTask ? (
