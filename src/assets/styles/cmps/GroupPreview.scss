@@ -3,10 +3,14 @@
   background: var(--ds-background-accent-gray-subtlest);
   color: var(--ds-text-subtle);
   width: $group-width;
-  max-height: 100%;
-  border-radius: rem(12px); ////check
+  border-radius: rem(12px);
   padding-bottom: rem(4px);
   box-shadow: var(--ds-box-shadow);
+
+  max-height: calc(100vh - 180px);
+  display: flex; 
+  flex-direction: column; 
+  flex-shrink: 0; 
 }
 
 .group-header {
@@ -68,6 +72,15 @@
 .options-btn svg {
   width: $group-icon-size-small;
   height: $group-icon-size-small;
+}
+
+.tasks-container {
+  display: flex; 
+  flex-direction: column; 
+  overflow: hidden; 
+  scrollbar-color: var(--ds-background-neutral-hovered, #091e4224) var(--ds-background-neutral, #091e420f);
+  scrollbar-width: thin;
+  // flex: 1; 
 }
 
 .add-task-form {
