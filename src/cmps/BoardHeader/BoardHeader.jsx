@@ -88,7 +88,7 @@ export function BoardHeader({
 
                 <div className="header-right">
                     <div className="users-section">
-                        <AvatarList users={board.members || []} maxUsers={4} />
+                        <AvatarList users={board.members || []} />
                     </div>
 
                     <button className="header-btn">
