@@ -1,13 +1,13 @@
 .board-content {
-  margin-top: rem(12px);
+  margin-top: rem(12px); //12
 }
 
 .lists-container {
   display: flex;
   flex-direction: row;
   align-items: center;
+  padding: rem(6px);
   padding-top: rem(2px);
-  padding: 0 rem(6px);
   padding-bottom: rem(44px);
   margin-top: rem(-2px);
   margin-bottom: rem(8px);
