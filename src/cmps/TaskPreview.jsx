@@ -19,12 +19,10 @@ export function TaskPreview({
   const isDone = task?.status === 'done'
 
   const handleTaskClick = (ev) => {
-    // Prevent navigation if clicking the edit button
     if (ev.target.closest('.task-edit-btn') || ev.target.closest('.task-delete-btn')) {
       return
     }
 
-    // Only navigate if we're not in a modal
     if (!document.querySelector('.modal-overlay')) {
       navigate(`/board/${boardId}/${group.id}/${task.id}`)
     }
