@@ -3,6 +3,8 @@ import { useState } from 'react'
 export function Checklist({ checklist, onUpdateChecklist, onDeleteChecklist }) {
   const [isAddingItem, setIsAddingItem] = useState(false)
   const [newItemTitle, setNewItemTitle] = useState('')
+  const [isEditingTitle, setIsEditingTitle] = useState(false)
+  const [editedTitle, setEditedTitle] = useState(checklist.title)
 
   // Calculate progress
   const completedTodos = checklist.todos.filter((todo) => todo.isDone).length
@@ -46,41 +48,59 @@ export function Checklist({ checklist, onUpdateChecklist, onDeleteChecklist }) {
     }
   }
 
+  const handleTitleEdit = () => {
+    if (!editedTitle.trim()) return
+
+    const updatedChecklist = { ...checklist, title: editedTitle.trim() }
+    onUpdateChecklist(updatedChecklist)
+    setIsEditingTitle(false)
+  }
+
+  const handleTitleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleTitleEdit()
+    } else if (e.key === 'Escape') {
+      setEditedTitle(checklist.title)
+      setIsEditingTitle(false)
+    }
+  }
+
+  const handleTitleBlur = () => {
+    handleTitleEdit()
+  }
+
   return (
     <div className="checklist">
       <div className="checklist-header">
         <div className="checklist-title">
           <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            height="20px"
+            viewBox="0 -960 960 960"
+            width="20px"
+            fill="#5f6368"
             className="checklist-icon"
           >
-            <rect
-              x="2"
-              y="4"
-              width="12"
-              height="10"
-              rx="2"
-              stroke="#172b4d"
-              strokeWidth="1.5"
-            />
-            <path
-              d="M5 2v2M11 2v2"
-              stroke="#172b4d"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-            <path
-              d="M5.5 8.5l2 2 3-3"
-              stroke="#172b4d"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
+            <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q8 0 15 1.5t14 4.5l-74 74H200v560h560v-266l80-80v346q0 33-23.5 56.5T760-120H200Zm261-160L235-506l56-56 170 170 367-367 57 55-424 424Z" />
           </svg>
-          <span>{checklist.title}</span>
+          {isEditingTitle ? (
+            <input
+              type="text"
+              value={editedTitle}
+              onChange={(e) => setEditedTitle(e.target.value)}
+              onKeyDown={handleTitleKeyDown}
+              onBlur={handleTitleBlur}
+              className="checklist-title-input"
+              autoFocus
+            />
+          ) : (
+            <span
+              onClick={() => setIsEditingTitle(true)}
+              className="checklist-title-text"
+            >
+              {checklist.title}
+            </span>
+          )}
         </div>
         <button
           className="delete-checklist-btn"
