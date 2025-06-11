@@ -21,16 +21,8 @@ export function BoardFilter({ filterBy, onSetFilterBy }) {
           value={filterBy.txt}
           onChange={handleChange}
         />
-        {filterBy.txt && (
-          <button
-            type="button"
-            className="btn-clear"
-            onClick={() => onSetFilterBy({ txt: '' })}
-          >
-            <MdClose />
-          </button>
-        )}
       </form>
+      <button className="create-btn">Create</button>
     </section>
   )
 }

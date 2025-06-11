@@ -12,6 +12,7 @@ import {
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { boardService } from '../services/board'
 import { NavBarBoards } from '../cmps/NavBarBoards'
+import { FaS } from 'react-icons/fa6'
 
 export function BoardIndex() {
   const dispatch = useDispatch()
@@ -106,6 +107,7 @@ export function BoardIndex() {
               onRemoveBoard={onRemoveBoard}
               onUpdateBoard={onEditBoard}
               onToggleStarred={onToggleStarred}
+              starBoards={true}
             />
           </section>
         )}
@@ -119,10 +121,8 @@ export function BoardIndex() {
               onRemoveBoard={onRemoveBoard}
               onEditBoard={onEditBoard}
               onToggleStarred={onToggleStarred}
+              starBoards={false}
             />
-            <div className="create-board-preview" onClick={onAddBoard}>
-              Create new board
-            </div>
           </div>
         </section>
       </main>
