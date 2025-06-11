@@ -134,7 +134,7 @@
   margin-bottom: rem(3px); //0
 }
 
-.add-btn {
+.add-btn, .save-card-title-edit-btn {
   @include group-font-base;
   color: var(--ds-text-inverse);
   background: var(--ds-background-accent-blue-bolder);

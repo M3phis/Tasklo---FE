@@ -83,7 +83,8 @@
     // width: rem(232px);
 }
 
-.task-title {
+.task-title,
+.card-title-editable {
     width: rem(210px);
     color: var(--ds-text);
     font-size: $group-font-size-base;
