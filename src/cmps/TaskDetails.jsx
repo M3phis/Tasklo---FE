@@ -6,6 +6,7 @@ import { loadBoard, updateBoard } from '../store/board.actions'
 import { LabelsModal } from './LabelsModal'
 import { MembersModal } from './MembersModal'
 import { DatesModal } from './DatesModal'
+import { Checklist } from './Checklist'
 
 export function TaskDetails({}) {
   const { boardId, groupId, taskId } = useParams()
@@ -51,6 +52,30 @@ export function TaskDetails({}) {
 
   const handleUpdateDates = (dateUpdates) => {
     const updatedTask = { ...task, ...dateUpdates }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    handleUpdateTask(updatedGroup)
+  }
+
+  const handleUpdateChecklist = (updatedChecklist) => {
+    const updatedChecklists = task.checklists.map((checklist) =>
+      checklist.id === updatedChecklist.id ? updatedChecklist : checklist
+    )
+    const updatedTask = { ...task, checklists: updatedChecklists }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    handleUpdateTask(updatedGroup)
+  }
+
+  const handleDeleteChecklist = (checklistId) => {
+    const updatedChecklists = task.checklists.filter(
+      (checklist) => checklist.id !== checklistId
+    )
+    const updatedTask = { ...task, checklists: updatedChecklists }
     const updatedGroup = {
       ...group,
       tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
@@ -402,6 +427,20 @@ export function TaskDetails({}) {
                 </div>
               )}
             </div>
+
+            {/* Checklists */}
+            {task.checklists && task.checklists.length > 0 && (
+              <div className="task-details-checklists">
+                {task.checklists.map((checklist) => (
+                  <Checklist
+                    key={checklist.id}
+                    checklist={checklist}
+                    onUpdateChecklist={handleUpdateChecklist}
+                    onDeleteChecklist={handleDeleteChecklist}
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Right/Sidebar */}
