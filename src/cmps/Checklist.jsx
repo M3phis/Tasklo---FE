@@ -1,10 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export function Checklist({ checklist, onUpdateChecklist, onDeleteChecklist }) {
   const [isAddingItem, setIsAddingItem] = useState(false)
   const [newItemTitle, setNewItemTitle] = useState('')
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [editedTitle, setEditedTitle] = useState(checklist.title)
+  const [editingItemId, setEditingItemId] = useState(null)
+  const [editedItemTitle, setEditedItemTitle] = useState('')
+  const [showActionsForItem, setShowActionsForItem] = useState(null)
+  const checklistRef = useRef(null)
 
   // Calculate progress
   const completedTodos = checklist.todos.filter((todo) => todo.isDone).length
@@ -69,8 +73,65 @@ export function Checklist({ checklist, onUpdateChecklist, onDeleteChecklist }) {
     handleTitleEdit()
   }
 
+  const handleDeleteItem = (todoId) => {
+    const updatedTodos = checklist.todos.filter((todo) => todo.id !== todoId)
+    const updatedChecklist = { ...checklist, todos: updatedTodos }
+    onUpdateChecklist(updatedChecklist)
+    setShowActionsForItem(null)
+  }
+
+  const handleEditItem = (todo) => {
+    setEditingItemId(todo.id)
+    setEditedItemTitle(todo.title)
+    setShowActionsForItem(null)
+  }
+
+  const handleSaveItemEdit = () => {
+    if (!editedItemTitle.trim()) return
+
+    const updatedTodos = checklist.todos.map((todo) =>
+      todo.id === editingItemId
+        ? { ...todo, title: editedItemTitle.trim() }
+        : todo
+    )
+    const updatedChecklist = { ...checklist, todos: updatedTodos }
+    onUpdateChecklist(updatedChecklist)
+    setEditingItemId(null)
+    setEditedItemTitle('')
+  }
+
+  const handleCancelItemEdit = () => {
+    setEditingItemId(null)
+    setEditedItemTitle('')
+  }
+
+  const handleItemKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSaveItemEdit()
+    } else if (e.key === 'Escape') {
+      handleCancelItemEdit()
+    }
+  }
+
+  // Close actions menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        checklistRef.current &&
+        !checklistRef.current.contains(event.target)
+      ) {
+        setShowActionsForItem(null)
+      }
+    }
+
+    if (showActionsForItem) {
+      document.addEventListener('click', handleClickOutside)
+      return () => document.removeEventListener('click', handleClickOutside)
+    }
+  }, [showActionsForItem])
+
   return (
-    <div className="checklist">
+    <div className="checklist" ref={checklistRef}>
       <div className="checklist-header">
         <div className="checklist-title">
           <svg
@@ -130,9 +191,90 @@ export function Checklist({ checklist, onUpdateChecklist, onDeleteChecklist }) {
               onChange={() => handleToggleTodo(todo.id)}
               className="todo-checkbox"
             />
-            <span className={`todo-title ${todo.isDone ? 'completed' : ''}`}>
-              {todo.title}
-            </span>
+            {editingItemId === todo.id ? (
+              <div className="item-edit-form">
+                <input
+                  type="text"
+                  value={editedItemTitle}
+                  onChange={(e) => setEditedItemTitle(e.target.value)}
+                  onKeyDown={handleItemKeyDown}
+                  className="item-edit-input"
+                  autoFocus
+                />
+                <div className="item-edit-actions">
+                  <button
+                    className="save-item-btn"
+                    onClick={handleSaveItemEdit}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className="cancel-item-btn"
+                    onClick={handleCancelItemEdit}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <span
+                  className={`todo-title ${todo.isDone ? 'completed' : ''}`}
+                  onClick={() => handleEditItem(todo)}
+                >
+                  {todo.title}
+                </span>
+                <div className="item-actions">
+                  <button
+                    className="item-menu-btn"
+                    onClick={() =>
+                      setShowActionsForItem(
+                        showActionsForItem === todo.id ? null : todo.id
+                      )
+                    }
+                  >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <circle cx="8" cy="2.5" r="1.5" fill="#6b778c" />
+                      <circle cx="8" cy="8" r="1.5" fill="#6b778c" />
+                      <circle cx="8" cy="13.5" r="1.5" fill="#6b778c" />
+                    </svg>
+                  </button>
+                  {showActionsForItem === todo.id && (
+                    <div className="item-actions-menu">
+                      <div className="menu-header">
+                        <h3 className="menu-title">Item actions</h3>
+                        <button
+                          className="close-menu-btn"
+                          onClick={() => setShowActionsForItem(null)}
+                        >
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 14 14"
+                            fill="none"
+                          >
+                            <path
+                              d="M1 1L13 13M1 13L13 1"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                      <div className="menu-content">
+                        <button
+                          className="item-action-btn"
+                          onClick={() => handleDeleteItem(todo.id)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         ))}
       </div>
