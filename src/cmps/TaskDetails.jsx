@@ -62,6 +62,48 @@ export function TaskDetails({}) {
     board.labels?.filter((label) => task.labelIds?.includes(label.id)) || []
   const members = task.memberIds || []
   const hasLabels = taskLabels.length > 0
+  const hasDueDate = task.dueDate
+
+  // Format due date for display
+  const formatDueDate = (epochTime) => {
+    if (!epochTime) return ''
+    const date = new Date(epochTime)
+    const currentYear = new Date().getFullYear()
+    const dateYear = date.getFullYear()
+
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ]
+    const month = months[date.getMonth()]
+    const day = date.getDate()
+    let hours = date.getHours()
+    const minutes = date.getMinutes().toString().padStart(2, '0')
+    const ampm = hours >= 12 ? 'PM' : 'AM'
+    hours = hours % 12
+    hours = hours ? hours : 12 // 0 should be 12
+
+    // Include year if different from current year
+    const yearStr = dateYear !== currentYear ? `, ${dateYear}` : ''
+    return `${month} ${day}${yearStr}, ${hours}:${minutes} ${ampm}`
+  }
+
+  // Check if due date is overdue
+  const isOverdue = (epochTime) => {
+    if (!epochTime) return false
+    const now = new Date().getTime()
+    return epochTime < now
+  }
 
   const handleClose = () => navigate(-1)
   const handleOverlayClick = (ev) => {
@@ -162,33 +204,35 @@ export function TaskDetails({}) {
                   Labels
                 </button>
               )}
-              <button onClick={() => setShowDatesModal(true)}>
-                <span style={{ display: 'flex', alignItems: 'center' }}>
-                  <svg
-                    width="16"
-                    height="16"
-                    fill="none"
-                    viewBox="0 0 16 16"
-                    style={{ marginRight: 4 }}
-                  >
-                    <path
-                      d="M8 2v6l4.2 2.5"
-                      stroke="#44546F"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <circle
-                      cx="8"
-                      cy="8"
-                      r="6.25"
-                      stroke="#44546F"
-                      strokeWidth="1.5"
-                    />
-                  </svg>
-                  Dates
-                </span>
-              </button>
+              {!hasDueDate && (
+                <button onClick={() => setShowDatesModal(true)}>
+                  <span style={{ display: 'flex', alignItems: 'center' }}>
+                    <svg
+                      width="16"
+                      height="16"
+                      fill="none"
+                      viewBox="0 0 16 16"
+                      style={{ marginRight: 4 }}
+                    >
+                      <path
+                        d="M8 2v6l4.2 2.5"
+                        stroke="#44546F"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <circle
+                        cx="8"
+                        cy="8"
+                        r="6.25"
+                        stroke="#44546F"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                    Dates
+                  </span>
+                </button>
+              )}
               <button>
                 <span style={{ display: 'flex', alignItems: 'center' }}>
                   <svg
@@ -292,6 +336,38 @@ export function TaskDetails({}) {
                 </div>
               )}
             </div>
+
+            {hasDueDate && (
+              <div className="task-details-due-date">
+                <span className="due-date-label">Due date</span>
+                <div className="due-date-display">
+                  <span
+                    className="due-date-text"
+                    onClick={() => setShowDatesModal(true)}
+                  >
+                    {formatDueDate(task.dueDate)}
+                    {isOverdue(task.dueDate) && (
+                      <span className="overdue-badge">Overdue</span>
+                    )}
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      className="dropdown-arrow"
+                    >
+                      <path
+                        d="M3 4.5L6 7.5L9 4.5"
+                        stroke="#5e6c84"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            )}
 
             <div className="task-details-description">
               <h3>Description</h3>

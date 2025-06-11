@@ -219,7 +219,6 @@ export function DatesModal({ task, onClose, onUpdateDates }) {
       updates.dueDate = null
     }
 
-    console.log('Saving dates in epoch format:', updates) // Temporary debug log
     onUpdateDates(updates)
     onClose()
   }

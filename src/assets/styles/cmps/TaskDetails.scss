@@ -487,6 +487,67 @@
   padding: 32px 32px 32px 32px;
 }
 
+.task-details-due-date {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 24px;
+
+  .due-date-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #5e6c84;
+    letter-spacing: 0.04em;
+  }
+
+  .due-date-display {
+    display: flex;
+    align-items: center;
+
+    .due-date-text {
+      background: #f4f5f7;
+      color: #172b4d;
+      padding: 6px 12px;
+      border-radius: 3px;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: space-between;
+
+      &:hover {
+        background: #e4e6ea;
+      }
+
+      .overdue-badge {
+        background: #ffebe6;
+        color: #ae2a19;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        margin-left: 8px;
+      }
+
+      .dropdown-arrow {
+        margin-left: auto;
+        flex-shrink: 0;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+      }
+
+      &:hover .dropdown-arrow {
+        opacity: 1;
+      }
+    }
+  }
+}
+
 .task-details-description h3 {
   font-size: 16px;
   font-weight: 500;
