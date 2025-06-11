@@ -5,6 +5,7 @@ import { boardService } from '../services/board'
 import { loadBoard, updateBoard } from '../store/board.actions'
 import { LabelsModal } from './LabelsModal'
 import { MembersModal } from './MembersModal'
+import { DatesModal } from './DatesModal'
 
 export function TaskDetails({}) {
   const { boardId, groupId, taskId } = useParams()
@@ -17,6 +18,7 @@ export function TaskDetails({}) {
   const [isEditing, setIsEditing] = useState(false)
   const [showLabelsModal, setShowLabelsModal] = useState(false)
   const [showMembersModal, setShowMembersModal] = useState(false)
+  const [showDatesModal, setShowDatesModal] = useState(false)
   const [taskLabelIds, setTaskLabelIds] = useState(task?.labelIds || [])
 
   const { handleUpdateTask } = useOutletContext()
@@ -40,6 +42,15 @@ export function TaskDetails({}) {
       updatedMemberIds = [...task.memberIds, memberId]
     }
     const updatedTask = { ...task, memberIds: updatedMemberIds }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    handleUpdateTask(updatedGroup)
+  }
+
+  const handleUpdateDates = (dateUpdates) => {
+    const updatedTask = { ...task, ...dateUpdates }
     const updatedGroup = {
       ...group,
       tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
@@ -151,7 +162,7 @@ export function TaskDetails({}) {
                   Labels
                 </button>
               )}
-              <button>
+              <button onClick={() => setShowDatesModal(true)}>
                 <span style={{ display: 'flex', alignItems: 'center' }}>
                   <svg
                     width="16"
@@ -243,9 +254,9 @@ export function TaskDetails({}) {
                       .toUpperCase()
                     return (
                       <span
-                        key={member.id}
+                        key={memberId}
                         className="task-member-avatar"
-                        title={member.name}
+                        title={member?.fullname}
                       >
                         {initials}
                       </span>
@@ -370,6 +381,14 @@ export function TaskDetails({}) {
           cardMemberIds={task.memberIds}
           onClose={() => setShowMembersModal(false)}
           onToggleMember={handleToggleMember}
+        />
+      )}
+
+      {showDatesModal && (
+        <DatesModal
+          task={task}
+          onClose={() => setShowDatesModal(false)}
+          onUpdateDates={handleUpdateDates}
         />
       )}
     </div>

@@ -1,0 +1,306 @@
+.dates-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dates-modal {
+  position: absolute;
+  top: 100px;
+  right: 100px;
+  background: #fff;
+  border-radius: 8px;
+  width: 304px;
+  box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25),
+    0 0 0 1px rgba(9, 30, 66, 0.08);
+  color: #172b4d;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    sans-serif;
+}
+
+.dates-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #dfe1e6;
+
+  span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #5e6c84;
+    text-align: center;
+    flex: 1;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #6b778c;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+
+    &:hover {
+      background: #e4e6ea;
+      color: #172b4d;
+    }
+  }
+}
+
+.calendar-container {
+  padding: 12px;
+}
+
+.calendar-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+
+    &:hover {
+      background: #e4e6ea;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .month-year {
+    font-size: 14px;
+    font-weight: 600;
+    color: #172b4d;
+    min-width: 120px;
+    text-align: center;
+  }
+}
+
+.calendar-grid {
+  .day-headers {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-bottom: 4px;
+
+    .day-header {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b778c;
+      padding: 4px 0;
+    }
+  }
+
+  .calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+
+    .calendar-day {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px 4px;
+      text-align: center;
+      font-size: 14px;
+      color: #172b4d;
+      border-radius: 3px;
+      min-height: 32px;
+      position: relative;
+
+      &:hover {
+        background: #e4e6ea;
+      }
+
+      &.other-month {
+        color: #a5adba;
+      }
+
+      &.today {
+        background: #ddd;
+        color: #0079bf;
+        font-weight: 600;
+        border: 2px solid #0079bf;
+
+        &:hover {
+          background: #ccc;
+        }
+      }
+
+      &.start-date {
+        background: #0079bf;
+        color: #fff;
+        font-weight: 600;
+
+        &:hover {
+          background: #026aa7;
+        }
+      }
+
+      &.due-date {
+        background: #d04437;
+        color: #fff;
+        font-weight: 600;
+
+        &:hover {
+          background: #b33e2b;
+        }
+      }
+
+      &.in-range {
+        background: #e6f4ff;
+        color: #0079bf;
+
+        &:hover {
+          background: #cce7ff;
+        }
+      }
+
+      // Today styling when it's also a start/due date
+      &.today.start-date {
+        background: #0079bf;
+        color: #fff;
+        border: 2px solid #fff;
+        box-shadow: 0 0 0 2px #0079bf;
+      }
+
+      &.today.due-date {
+        background: #d04437;
+        color: #fff;
+        border: 2px solid #fff;
+        box-shadow: 0 0 0 2px #d04437;
+      }
+    }
+  }
+}
+
+.date-inputs-section {
+  padding: 12px 16px 0;
+  border-top: 1px solid #dfe1e6;
+
+  .date-input-row {
+    margin-bottom: 12px;
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: #5e6c84;
+      margin-bottom: 4px;
+      cursor: pointer;
+
+      input[type='checkbox'] {
+        margin-right: 8px;
+        cursor: pointer;
+      }
+    }
+
+    .date-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 2px solid #dfe1e6;
+      border-radius: 3px;
+      font-size: 14px;
+      color: #172b4d;
+      background: #fafbfc;
+
+      &:focus {
+        outline: none;
+        border-color: #0079bf;
+        background: #fff;
+      }
+
+      &::placeholder {
+        color: #a5adba;
+      }
+    }
+
+    .due-date-inputs {
+      display: flex;
+      gap: 4px;
+
+      .date-input {
+        flex: 1;
+      }
+
+      .time-input {
+        width: 80px;
+        padding: 8px 12px;
+        border: 2px solid #dfe1e6;
+        border-radius: 3px;
+        font-size: 14px;
+        color: #172b4d;
+        background: #fafbfc;
+
+        &:focus {
+          outline: none;
+          border-color: #0079bf;
+          background: #fff;
+        }
+      }
+    }
+  }
+}
+
+.dates-modal-actions {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  button {
+    width: 100%;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  .save-btn {
+    background: #0079bf;
+    color: #fff;
+
+    &:hover {
+      background: #026aa7;
+    }
+  }
+
+  .remove-btn {
+    background: transparent;
+    color: #6b778c;
+
+    &:hover {
+      background: #e4e6ea;
+      color: #172b4d;
+    }
+  }
+}
