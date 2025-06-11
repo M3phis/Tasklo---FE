@@ -236,7 +236,7 @@ export function DatesModal({ task, onClose, onUpdateDates }) {
       <div className="dates-modal" onClick={(e) => e.stopPropagation()}>
         <div className="dates-modal-header">
           <span>Dates</span>
-          <button className="close-btn" onClick={onClose}>
+          <button className="date-close-btn" onClick={onClose}>
             ×
           </button>
         </div>
