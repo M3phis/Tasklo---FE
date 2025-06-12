@@ -1,7 +1,7 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(30, 42, 62, 0.45);
+  background: transparent;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -156,6 +156,12 @@
     &:hover {
       background: #f4f5f7;
       color: #172b4d;
+    }
+
+    &.active {
+      background: #172b4d;
+      color: white;
+      border-color: #172b4d;
     }
   }
 

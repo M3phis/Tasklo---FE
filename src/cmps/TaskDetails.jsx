@@ -8,6 +8,7 @@ import { MembersModal } from './MembersModal'
 import { DatesModal } from './DatesModal'
 import { Checklist } from './Checklist'
 import { AttachmentsModal } from './AttachmentsModal'
+import { AddChecklistModal } from './AddChecklistModal'
 
 export function TaskDetails({}) {
   const { boardId, groupId, taskId } = useParams()
@@ -27,6 +28,12 @@ export function TaskDetails({}) {
     x: 0,
     y: 0,
   })
+  const [showAddChecklistModal, setShowAddChecklistModal] = useState(false)
+  const [checklistButtonPosition, setChecklistButtonPosition] = useState({
+    x: 0,
+    y: 0,
+  })
+  const [activeButton, setActiveButton] = useState(null)
 
   const { handleUpdateTask } = useOutletContext()
   useEffect(() => {
@@ -81,6 +88,16 @@ export function TaskDetails({}) {
     const updatedChecklists = task.checklists.filter(
       (checklist) => checklist.id !== checklistId
     )
+    const updatedTask = { ...task, checklists: updatedChecklists }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    handleUpdateTask(updatedGroup)
+  }
+
+  const handleAddChecklist = (newChecklist) => {
+    const updatedChecklists = [...(task.checklists || []), newChecklist]
     const updatedTask = { ...task, checklists: updatedChecklists }
     const updatedGroup = {
       ...group,
@@ -229,14 +246,25 @@ export function TaskDetails({}) {
               <button>+ Add</button>
               {!hasLabels && (
                 <button
-                  className="labels-btn"
-                  onClick={() => setShowLabelsModal(true)}
+                  className={`labels-btn ${
+                    activeButton === 'labels' ? 'active' : ''
+                  }`}
+                  onClick={() => {
+                    setActiveButton('labels')
+                    setShowLabelsModal(true)
+                  }}
                 >
                   Labels
                 </button>
               )}
               {!hasDueDate && (
-                <button onClick={() => setShowDatesModal(true)}>
+                <button
+                  className={activeButton === 'dates' ? 'active' : ''}
+                  onClick={() => {
+                    setActiveButton('dates')
+                    setShowDatesModal(true)
+                  }}
+                >
                   <span style={{ display: 'flex', alignItems: 'center' }}>
                     <svg
                       width="16"
@@ -247,7 +275,7 @@ export function TaskDetails({}) {
                     >
                       <path
                         d="M8 2v6l4.2 2.5"
-                        stroke="#44546F"
+                        stroke={activeButton === 'dates' ? 'white' : '#44546F'}
                         strokeWidth="1.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -256,7 +284,7 @@ export function TaskDetails({}) {
                         cx="8"
                         cy="8"
                         r="6.25"
-                        stroke="#44546F"
+                        stroke={activeButton === 'dates' ? 'white' : '#44546F'}
                         strokeWidth="1.5"
                       />
                     </svg>
@@ -264,7 +292,18 @@ export function TaskDetails({}) {
                   </span>
                 </button>
               )}
-              <button>
+              <button
+                className={activeButton === 'checklist' ? 'active' : ''}
+                onClick={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect()
+                  setChecklistButtonPosition({
+                    x: rect.left,
+                    y: rect.bottom + 8,
+                  })
+                  setActiveButton('checklist')
+                  setShowAddChecklistModal(true)
+                }}
+              >
                 <span style={{ display: 'flex', alignItems: 'center' }}>
                   <svg
                     width="16"
@@ -279,18 +318,24 @@ export function TaskDetails({}) {
                       width="12"
                       height="10"
                       rx="2"
-                      stroke="#44546F"
+                      stroke={
+                        activeButton === 'checklist' ? 'white' : '#44546F'
+                      }
                       strokeWidth="1.5"
                     />
                     <path
                       d="M5 2v2M11 2v2"
-                      stroke="#44546F"
+                      stroke={
+                        activeButton === 'checklist' ? 'white' : '#44546F'
+                      }
                       strokeWidth="1.5"
                       strokeLinecap="round"
                     />
                     <path
                       d="M5.5 8.5l2 2 3-3"
-                      stroke="#44546F"
+                      stroke={
+                        activeButton === 'checklist' ? 'white' : '#44546F'
+                      }
                       strokeWidth="1.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -300,12 +345,14 @@ export function TaskDetails({}) {
                 </span>
               </button>
               <button
+                className={activeButton === 'attachment' ? 'active' : ''}
                 onClick={(e) => {
                   const rect = e.currentTarget.getBoundingClientRect()
                   setAttachmentButtonPosition({
                     x: rect.left,
                     y: rect.bottom + 8, // 8px gap below the button
                   })
+                  setActiveButton('attachment')
                   setShowAttachmentsModal(true)
                 }}
               >
@@ -315,7 +362,7 @@ export function TaskDetails({}) {
                     height="20"
                     viewBox="0 -960 960 960"
                     width="20"
-                    fill="#5f6368"
+                    fill={activeButton === 'attachment' ? 'white' : '#5f6368'}
                     style={{ marginRight: 4, transform: 'rotate(50deg)' }}
                   >
                     <path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z" />
@@ -500,7 +547,10 @@ export function TaskDetails({}) {
         <LabelsModal
           labels={board.labels}
           taskLabelIds={taskLabelIds}
-          onClose={() => setShowLabelsModal(false)}
+          onClose={() => {
+            setShowLabelsModal(false)
+            setActiveButton(null)
+          }}
           onToggleLabel={handleToggleLabel}
         />
       )}
@@ -509,7 +559,10 @@ export function TaskDetails({}) {
         <MembersModal
           boardMembers={board.members}
           cardMemberIds={task.memberIds}
-          onClose={() => setShowMembersModal(false)}
+          onClose={() => {
+            setShowMembersModal(false)
+            setActiveButton(null)
+          }}
           onToggleMember={handleToggleMember}
         />
       )}
@@ -517,7 +570,10 @@ export function TaskDetails({}) {
       {showDatesModal && (
         <DatesModal
           task={task}
-          onClose={() => setShowDatesModal(false)}
+          onClose={() => {
+            setShowDatesModal(false)
+            setActiveButton(null)
+          }}
           onUpdateDates={handleUpdateDates}
         />
       )}
@@ -526,7 +582,21 @@ export function TaskDetails({}) {
         <AttachmentsModal
           task={task}
           position={attachmentButtonPosition}
-          onClose={() => setShowAttachmentsModal(false)}
+          onClose={() => {
+            setShowAttachmentsModal(false)
+            setActiveButton(null)
+          }}
+        />
+      )}
+
+      {showAddChecklistModal && (
+        <AddChecklistModal
+          position={checklistButtonPosition}
+          onClose={() => {
+            setShowAddChecklistModal(false)
+            setActiveButton(null)
+          }}
+          onAddChecklist={handleAddChecklist}
         />
       )}
     </div>
