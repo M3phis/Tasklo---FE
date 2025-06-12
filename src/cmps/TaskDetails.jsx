@@ -7,6 +7,7 @@ import { LabelsModal } from './LabelsModal'
 import { MembersModal } from './MembersModal'
 import { DatesModal } from './DatesModal'
 import { Checklist } from './Checklist'
+import { AttachmentsModal } from './AttachmentsModal'
 
 export function TaskDetails({}) {
   const { boardId, groupId, taskId } = useParams()
@@ -21,6 +22,11 @@ export function TaskDetails({}) {
   const [showMembersModal, setShowMembersModal] = useState(false)
   const [showDatesModal, setShowDatesModal] = useState(false)
   const [taskLabelIds, setTaskLabelIds] = useState(task?.labelIds || [])
+  const [showAttachmentsModal, setShowAttachmentsModal] = useState(false)
+  const [attachmentButtonPosition, setAttachmentButtonPosition] = useState({
+    x: 0,
+    y: 0,
+  })
 
   const { handleUpdateTask } = useOutletContext()
   useEffect(() => {
@@ -293,7 +299,16 @@ export function TaskDetails({}) {
                   Checklist
                 </span>
               </button>
-              <button>
+              <button
+                onClick={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect()
+                  setAttachmentButtonPosition({
+                    x: rect.left,
+                    y: rect.bottom + 8, // 8px gap below the button
+                  })
+                  setShowAttachmentsModal(true)
+                }}
+              >
                 <span style={{ display: 'flex', alignItems: 'center' }}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -504,6 +519,14 @@ export function TaskDetails({}) {
           task={task}
           onClose={() => setShowDatesModal(false)}
           onUpdateDates={handleUpdateDates}
+        />
+      )}
+
+      {showAttachmentsModal && (
+        <AttachmentsModal
+          task={task}
+          position={attachmentButtonPosition}
+          onClose={() => setShowAttachmentsModal(false)}
         />
       )}
     </div>
