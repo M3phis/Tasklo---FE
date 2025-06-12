@@ -82,6 +82,27 @@ export function TaskPreview({
     onUpdateTask(updatedGroup)
   }
 
+  function getDateStatus() {
+    if (!task.dueDate) return ''
+
+    if (task.status === 'done') return 'done'
+
+    const dueDate = new Date(task.dueDate)
+    const now = new Date()
+    const oneDayFromNow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
+
+    if (dueDate < now) return 'overdue'
+    if (dueDate < oneDayFromNow) return 'due-soon'
+    return ''
+  }
+
+  function formatDate() {
+    if (!task.dueDate) return null
+    const date = new Date(task.dueDate)
+    // Always format as "Month Day" without year (like Trello)
+    return `${date.toLocaleDateString('en-US', { month: 'short' })} ${date.getDate()}`
+  }
+
   return (
     <>
       <div
@@ -140,8 +161,10 @@ export function TaskPreview({
                 .map(label => (
                   <div
                     key={label.id}
-                    className={`task-label ${label.color || 'gray'} ${!isLabelsExtended ? 'collapsed' : ''
-                      }`}
+                    className={`task-label ${!isLabelsExtended ? 'collapsed' : ''}`}
+                    style={{
+                      backgroundColor: label.color || '#b3bac5'
+                    }}
                     onClick={(ev) => {
                       ev.stopPropagation()
                       setIsLabelExtended(!isLabelsExtended)
@@ -173,11 +196,10 @@ export function TaskPreview({
 
           <div className="task-info">
             <div className="task-badges">
-              {task.date?.dueDate && (
+              {task.dueDate && (
                 <div className={`task-badge date-badge ${getDateStatus()}`}>
                   <ClockIcon label="Due date" color="currentColor" />
                   <span>{formatDate()}</span>
-                  {task.date?.isDone && <CheckCircleIcon label="Complete" color="currentColor" />}
                 </div>
               )}
 
@@ -224,32 +246,4 @@ export function TaskPreview({
       )}
     </>
   )
-
-
-
-
-  // Helper functions
-  function getDateStatus() {
-    if (!task.date?.dueDate) return ''
-    if (task.date.isDone) return 'done'
-
-    const dueDate = new Date(task.date.dueDate)
-    const now = new Date()
-    const oneDayFromNow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
-
-    if (dueDate < now) return 'overdue'
-    if (dueDate < oneDayFromNow) return 'due-soon'
-    return ''
-  }
-
-  function formatDate() {
-    if (!task.date?.dueDate) return null
-    const date = new Date(task.date.dueDate)
-    const now = new Date()
-
-    if (date.getFullYear() !== now.getFullYear()) {
-      return `${date.toLocaleDateString('en-US', { month: 'short' })} ${date.getDate()}, ${date.getFullYear()}`
-    }
-    return `${date.toLocaleDateString('en-US', { month: 'short' })} ${date.getDate()}`
-  }
 }
