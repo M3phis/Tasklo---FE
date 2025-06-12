@@ -135,3 +135,232 @@
 .task-delete-btn {
     right: rem(28px);
 }
+
+// Task Info Layout
+.task-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
+
+// Task Labels 
+.task-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    margin-bottom: 4px;
+    min-height: 8px; 
+}
+
+.task-label {
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    position: relative;
+    line-height: 1;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+
+    &.collapsed {
+        height: 8px;
+        width: 40px;
+        border-radius: 4px;
+        padding: 0;
+        margin: 2px 4px 2px 0;
+        min-width: 40px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+
+        span {
+            display: none;
+        }
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+        }
+    }
+
+    &:not(.collapsed) {
+        padding: 4px 8px;
+        height: auto;
+        min-height: 20px;
+        max-width: 198px;
+        margin: 0 4px 4px 0;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+
+        span {
+            display: block;
+            line-height: 16px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+    }
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    &:active {
+        transform: translateY(0);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    &:focus {
+        outline: 2px solid var(--ds-border-focused);
+        outline-offset: 2px;
+    }
+
+    &[style*="#f2d600"],
+    &[style*="#51e898"] {
+        color: var(--ds-text);
+        text-shadow: none;
+    }
+
+    transition: width 0.2s ease,
+    height 0.2s ease,
+    padding 0.2s ease,
+    margin 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+// Task Badges
+.task-badges {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    flex: 1;
+}
+
+.task-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 16px;
+    min-height: 16px;
+    border: none;
+
+    svg {
+        width: 12px;
+        height: 12px;
+        flex-shrink: 0;
+    }
+
+    span {
+        white-space: nowrap;
+    }
+
+    // Description 
+    &:not(.date-badge) {
+        background-color: transparent;
+        color: var(--ds-text-accent-gray);
+        padding: 2px 4px;
+
+        &:hover {
+            background-color: var(--ds-background-accent-gray-subtlest);
+        }
+    }
+
+    // Date badge states 
+    &.date-badge {
+        background-color: transparent; 
+        color: var(--ds-text-accent-gray); 
+
+        &:hover {
+            background-color: var(--ds-background-accent-gray-subtlest-hovered); 
+        }
+
+        svg {
+            color: var(--ds-text-accent-gray); 
+        }
+
+        &.overdue {
+            background-color: var(--ds-background-accent-red-subtlest); 
+            color: var(--ds-text-accent-red); 
+
+            &:hover {
+                background-color: var(--ds-background-accent-red-subtlest-hovered); 
+            }
+
+            svg {
+                color: var(--ds-text-accent-red); 
+            }
+        }
+
+        &.due-soon {
+            background-color: var(--ds-background-accent-orange-subtlest);
+            color: var(--ds-text-accent-orange); 
+
+            &:hover {
+                background-color: var(--ds-background-accent-orange-subtlest-hovered); 
+            }
+
+            svg {
+                color: var(--ds-text-accent-orange); 
+            }
+        }
+
+        &.done {
+            background-color: var(--ds-background-accent-green-bolder); 
+            color: var(--ds-text-inverse); 
+
+            &:hover {
+                background-color: var(--ds-background-accent-green-subtlest-hovered); 
+            }
+
+            svg {
+                color: var(--ds-text-inverse); 
+            }
+        }
+    }
+}
+
+// Task Members
+.task-members {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: auto;
+
+    .task-member-avatar {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid var(--ds-background-input); 
+        box-shadow: var(--ds-box-shadow);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--ds-background-accent-gray-subtlest); 
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .member-initials {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--ds-text); 
+            text-transform: uppercase;
+        }
+    }
+}
