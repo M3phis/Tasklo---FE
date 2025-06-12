@@ -99,8 +99,12 @@ export function TaskPreview({
   function formatDate() {
     if (!task.dueDate) return null
     const date = new Date(task.dueDate)
-    // Always format as "Month Day" without year (like Trello)
     return `${date.toLocaleDateString('en-US', { month: 'short' })} ${date.getDate()}`
+  }
+
+  function isImageUrl(url) {
+    if (!url || typeof url !== 'string') return false
+    return url.startsWith('http') || url.startsWith('https') || url.startsWith('data:')
   }
 
   return (
@@ -111,21 +115,31 @@ export function TaskPreview({
         onMouseEnter={function () { setIsHovered(true) }}
         onMouseLeave={function () { setIsHovered(false) }}
       >
-        {(task.style?.backgroundImage || task.style?.backgroundColor) && (
+        {(task.style?.backgroundImage || task.style?.backgroundColor || task.style?.background) && (
           <div
-            className="task-cover"
+            className={`task-cover ${isImageUrl(task.style?.background) || task.style?.backgroundImage ? 'has-image' : 'has-color'}`}
             style={{
-              backgroundColor: task.style.backgroundColor,
+              backgroundColor: !isImageUrl(task.style?.background)
+                ? (task.style.backgroundColor || task.style.background)
+                : '#FFFFFF',
               backgroundImage: task.style.backgroundImage
                 ? `url(${task.style.backgroundImage})`
-                : 'none',
+                : isImageUrl(task.style?.background)
+                  ? `url(${task.style.background})`
+                  : 'none',
+              backgroundSize: isImageUrl(task.style?.background) || task.style?.backgroundImage ? 'contain' : 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat'
             }}
           >
-            {task.style.backgroundImage && (
+            {(task.style.backgroundImage || isImageUrl(task.style?.background)) && (
               <img
-                src={task.style.backgroundImage}
+                src={task.style.backgroundImage || task.style.background}
                 alt=""
                 className="cover-image"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
               />
             )}
           </div>

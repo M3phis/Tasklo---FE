@@ -3,6 +3,7 @@
     height: 100%;
     border-radius: $group-border-radius-medium;
     box-shadow: var(--ds-box-shadow);
+    overflow: hidden;
 
     &:hover {
         outline: 2px solid var(--ds-border-focused);
@@ -52,6 +53,31 @@
     }
 }
 
+.task-cover {
+    position: relative;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: $group-border-radius-medium $group-border-radius-medium 0 0;
+
+    &.has-color {
+        height: rem(32px);
+        background-size: cover;
+    }
+
+    &.has-image {
+        height: auto;
+        background-size: cover;
+
+        .cover-image {
+            width: 100%;
+            height: auto;
+            // max-height: rem(400px); TOadd?
+            object-fit: cover;
+            display: block;
+        }
+    }
+}
 
 .task-content {
     position: relative;
@@ -62,8 +88,10 @@
     border-radius: $group-border-radius-medium;
     box-shadow: var(--ds-box-shadow);
     overflow-wrap: break-word;
-    //  display: flow-root;
-    // padding: rem(8px) rem(5px) rem(4px);
+}
+
+.task-cover+.task-content {
+    border-radius: 0 0 $group-border-radius-medium $group-border-radius-medium;
 }
 
 .task-header {
@@ -150,7 +178,7 @@
     flex-wrap: wrap;
     gap: 2px;
     margin-bottom: 4px;
-    min-height: 8px; 
+    min-height: 8px;
 }
 
 .task-label {
@@ -277,53 +305,53 @@
 
     // Date badge states 
     &.date-badge {
-        background-color: transparent; 
-        color: var(--ds-text-accent-gray); 
+        background-color: transparent;
+        color: var(--ds-text-accent-gray);
 
         &:hover {
-            background-color: var(--ds-background-accent-gray-subtlest-hovered); 
+            background-color: var(--ds-background-accent-gray-subtlest-hovered);
         }
 
         svg {
-            color: var(--ds-text-accent-gray); 
+            color: var(--ds-text-accent-gray);
         }
 
         &.overdue {
-            background-color: var(--ds-background-accent-red-subtlest); 
-            color: var(--ds-text-accent-red); 
+            background-color: var(--ds-background-accent-red-subtlest);
+            color: var(--ds-text-accent-red);
 
             &:hover {
-                background-color: var(--ds-background-accent-red-subtlest-hovered); 
+                background-color: var(--ds-background-accent-red-subtlest-hovered);
             }
 
             svg {
-                color: var(--ds-text-accent-red); 
+                color: var(--ds-text-accent-red);
             }
         }
 
         &.due-soon {
             background-color: var(--ds-background-accent-orange-subtlest);
-            color: var(--ds-text-accent-orange); 
+            color: var(--ds-text-accent-orange);
 
             &:hover {
-                background-color: var(--ds-background-accent-orange-subtlest-hovered); 
+                background-color: var(--ds-background-accent-orange-subtlest-hovered);
             }
 
             svg {
-                color: var(--ds-text-accent-orange); 
+                color: var(--ds-text-accent-orange);
             }
         }
 
         &.done {
-            background-color: var(--ds-background-accent-green-bolder); 
-            color: var(--ds-text-inverse); 
+            background-color: var(--ds-background-accent-green-bolder);
+            color: var(--ds-text-inverse);
 
             &:hover {
-                background-color: var(--ds-background-accent-green-subtlest-hovered); 
+                background-color: var(--ds-background-accent-green-subtlest-hovered);
             }
 
             svg {
-                color: var(--ds-text-inverse); 
+                color: var(--ds-text-inverse);
             }
         }
     }
@@ -343,12 +371,12 @@
         height: 28px;
         border-radius: 50%;
         overflow: hidden;
-        border: 2px solid var(--ds-background-input); 
+        border: 2px solid var(--ds-background-input);
         box-shadow: var(--ds-box-shadow);
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: var(--ds-background-accent-gray-subtlest); 
+        background-color: var(--ds-background-accent-gray-subtlest);
 
         img {
             width: 100%;
@@ -359,7 +387,7 @@
         .member-initials {
             font-size: 10px;
             font-weight: 600;
-            color: var(--ds-text); 
+            color: var(--ds-text);
             text-transform: uppercase;
         }
     }
