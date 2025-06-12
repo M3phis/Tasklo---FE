@@ -44,3 +44,26 @@
   z-index: 2;
   cursor: pointer;
 }
+
+.create-board-preview {
+  padding: 9px;
+  align-self: center;
+  color: rgb(159, 173, 188);
+  font-size: rem(14px);
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  margin-inline-start: 9px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: rgba(9, 30, 66, 0.06);
+  width: 193.875px;
+  height: 108px;
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    background: #dcdfe4;
+    cursor: pointer;
+  }
+}

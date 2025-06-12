@@ -7,6 +7,7 @@ export function BoardList({
   onRemoveBoard,
   onUpdateBoard,
   onToggleStarred,
+  starBoards,
 }) {
   return (
     <section>
@@ -29,6 +30,9 @@ export function BoardList({
             </div>
           </li>
         ))}
+        {!starBoards && (
+          <div className="create-board-preview">Create new board </div>
+        )}
       </ul>
     </section>
   )
