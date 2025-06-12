@@ -1,16 +1,8 @@
 .task-preview {
-    width: rem(256px);
+    // width: rem(256px);
+    height: 100%;
     border-radius: $group-border-radius-medium;
     box-shadow: var(--ds-box-shadow);
-
-    // display: flow-root;
-    // width: rem(256px);
-    // background-color: var(--ds-background-input);
-    // box-shadow: 0 rem(1px) rem(1px) var(--ds-border), var(--ds-border-bold);
-    // color: var(--ds-text);
-    // // padding: rem(8px) rem(5px) rem(4px);
-    // padding: rem(8px) rem(12px) rem(4px);
-    // overflow-wrap: break-word;
 
     &:hover {
         outline: 2px solid var(--ds-border-focused);
@@ -65,7 +57,7 @@
     position: relative;
     background-color: var(--ds-background-input);
     color: var(--ds-text);
-    width: rem(256px);
+    // width: rem(256px);
     padding: rem(8px) rem(12px) rem(4px);
     border-radius: $group-border-radius-medium;
     box-shadow: var(--ds-box-shadow);

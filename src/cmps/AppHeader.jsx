@@ -8,8 +8,7 @@ import { BoardFilter } from '../cmps/BoardFilter.jsx'
 import { loadBoards } from '../store/board.actions'
 import MegaphoneIcon from '@atlaskit/icon/core/megaphone'
 import QuestionCircleIcon from '@atlaskit/icon/core/question-circle'
-import NotificationIcon from '@atlaskit/icon/core/migration/notification--notification-direct'
-import AppSwitcherIcon from '@atlaskit/icon/core/app-switcher'
+import NotificationIcon from '@atlaskit/icon/core/notification'
 
 export function AppHeader() {
   const user = useSelector((storeState) => storeState.userModule.user)
@@ -37,9 +36,6 @@ export function AppHeader() {
   return (
     <header className="app-header main-container full">
       <nav className="">
-        <button className="menu-button">
-          <AppSwitcherIcon label="" color="#455570" />
-        </button>
         <NavLink to="/board" className="logo">
           <div className="tasklo-logo">
             <div className="logo-icon">
@@ -51,8 +47,6 @@ export function AppHeader() {
         </NavLink>
 
         <BoardFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
-
-        <button className="create-btn">Create</button>
 
         <div className="nav-buttons">
           <button>
@@ -66,23 +60,17 @@ export function AppHeader() {
           <button>
             <QuestionCircleIcon label="" color="#455570" />
           </button>
-
-          {!user && (
-            <NavLink to="login" className="login-link">
-              Login
-            </NavLink>
-          )}
+          <div className="user-menu">M</div>
         </div>
-        {user && (
+        {/* {user && (
           <div className="user-info">
             <Link to={`user/${user._id}`}>
               {user.imgUrl && <img src={user.imgUrl} />}
               {user.fullname}
             </Link>
-            {/* <span className="score">{user.score?.toLocaleString()}</span> */}
             <button onClick={onLogout}>logout</button>
-          </div>
-        )}
+          </div> */}
+        {/* )} */}
       </nav>
     </header>
   )
