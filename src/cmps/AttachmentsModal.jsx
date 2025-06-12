@@ -70,7 +70,7 @@ export const AttachmentsModal = ({ onClose, task, position }) => {
             </svg>
           </div>
           <span>Attach</span>
-          <button className="close-btn" onClick={onClose}>
+          <button className="attachments-modal-close-btn" onClick={onClose}>
             ×
           </button>
         </div>
