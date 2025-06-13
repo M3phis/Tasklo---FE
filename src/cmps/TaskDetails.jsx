@@ -5,6 +5,10 @@ import { boardService } from '../services/board'
 import { loadBoard, updateBoard } from '../store/board.actions'
 import { LabelsModal } from './LabelsModal'
 import { MembersModal } from './MembersModal'
+import { DatesModal } from './DatesModal'
+import { Checklist } from './Checklist'
+import { AttachmentsModal } from './AttachmentsModal'
+import { AddChecklistModal } from './AddChecklistModal'
 
 export function TaskDetails({}) {
   const { boardId, groupId, taskId } = useParams()
@@ -17,7 +21,19 @@ export function TaskDetails({}) {
   const [isEditing, setIsEditing] = useState(false)
   const [showLabelsModal, setShowLabelsModal] = useState(false)
   const [showMembersModal, setShowMembersModal] = useState(false)
+  const [showDatesModal, setShowDatesModal] = useState(false)
   const [taskLabelIds, setTaskLabelIds] = useState(task?.labelIds || [])
+  const [showAttachmentsModal, setShowAttachmentsModal] = useState(false)
+  const [attachmentButtonPosition, setAttachmentButtonPosition] = useState({
+    x: 0,
+    y: 0,
+  })
+  const [showAddChecklistModal, setShowAddChecklistModal] = useState(false)
+  const [checklistButtonPosition, setChecklistButtonPosition] = useState({
+    x: 0,
+    y: 0,
+  })
+  const [activeButton, setActiveButton] = useState(null)
 
   const { handleUpdateTask } = useOutletContext()
   useEffect(() => {
@@ -47,10 +63,95 @@ export function TaskDetails({}) {
     handleUpdateTask(updatedGroup)
   }
 
+  const handleUpdateDates = (dateUpdates) => {
+    const updatedTask = { ...task, ...dateUpdates }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    handleUpdateTask(updatedGroup)
+  }
+
+  const handleUpdateChecklist = (updatedChecklist) => {
+    const updatedChecklists = task.checklists.map((checklist) =>
+      checklist.id === updatedChecklist.id ? updatedChecklist : checklist
+    )
+    const updatedTask = { ...task, checklists: updatedChecklists }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    handleUpdateTask(updatedGroup)
+  }
+
+  const handleDeleteChecklist = (checklistId) => {
+    const updatedChecklists = task.checklists.filter(
+      (checklist) => checklist.id !== checklistId
+    )
+    const updatedTask = { ...task, checklists: updatedChecklists }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    handleUpdateTask(updatedGroup)
+  }
+
+  const handleAddChecklist = (newChecklist) => {
+    const updatedChecklists = [...(task.checklists || []), newChecklist]
+    const updatedTask = { ...task, checklists: updatedChecklists }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    handleUpdateTask(updatedGroup)
+  }
+
   const taskLabels =
     board.labels?.filter((label) => task.labelIds?.includes(label.id)) || []
   const members = task.memberIds || []
   const hasLabels = taskLabels.length > 0
+  const hasDueDate = task.dueDate
+
+  // Format due date for display
+  const formatDueDate = (epochTime) => {
+    if (!epochTime) return ''
+    const date = new Date(epochTime)
+    const currentYear = new Date().getFullYear()
+    const dateYear = date.getFullYear()
+
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ]
+    const month = months[date.getMonth()]
+    const day = date.getDate()
+    let hours = date.getHours()
+    const minutes = date.getMinutes().toString().padStart(2, '0')
+    const ampm = hours >= 12 ? 'PM' : 'AM'
+    hours = hours % 12
+    hours = hours ? hours : 12 // 0 should be 12
+
+    // Include year if different from current year
+    const yearStr = dateYear !== currentYear ? `, ${dateYear}` : ''
+    return `${month} ${day}${yearStr}, ${hours}:${minutes} ${ampm}`
+  }
+
+  // Check if due date is overdue
+  const isOverdue = (epochTime) => {
+    if (!epochTime) return false
+    const now = new Date().getTime()
+    return epochTime < now
+  }
 
   const handleClose = () => navigate(-1)
   const handleOverlayClick = (ev) => {
@@ -145,40 +246,64 @@ export function TaskDetails({}) {
               <button>+ Add</button>
               {!hasLabels && (
                 <button
-                  className="labels-btn"
-                  onClick={() => setShowLabelsModal(true)}
+                  className={`labels-btn ${
+                    activeButton === 'labels' ? 'active' : ''
+                  }`}
+                  onClick={() => {
+                    setActiveButton('labels')
+                    setShowLabelsModal(true)
+                  }}
                 >
                   Labels
                 </button>
               )}
-              <button>
-                <span style={{ display: 'flex', alignItems: 'center' }}>
-                  <svg
-                    width="16"
-                    height="16"
-                    fill="none"
-                    viewBox="0 0 16 16"
-                    style={{ marginRight: 4 }}
-                  >
-                    <path
-                      d="M8 2v6l4.2 2.5"
-                      stroke="#44546F"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <circle
-                      cx="8"
-                      cy="8"
-                      r="6.25"
-                      stroke="#44546F"
-                      strokeWidth="1.5"
-                    />
-                  </svg>
-                  Dates
-                </span>
-              </button>
-              <button>
+              {!hasDueDate && (
+                <button
+                  className={activeButton === 'dates' ? 'active' : ''}
+                  onClick={() => {
+                    setActiveButton('dates')
+                    setShowDatesModal(true)
+                  }}
+                >
+                  <span style={{ display: 'flex', alignItems: 'center' }}>
+                    <svg
+                      width="16"
+                      height="16"
+                      fill="none"
+                      viewBox="0 0 16 16"
+                      style={{ marginRight: 4 }}
+                    >
+                      <path
+                        d="M8 2v6l4.2 2.5"
+                        stroke={activeButton === 'dates' ? 'white' : '#44546F'}
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <circle
+                        cx="8"
+                        cy="8"
+                        r="6.25"
+                        stroke={activeButton === 'dates' ? 'white' : '#44546F'}
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                    Dates
+                  </span>
+                </button>
+              )}
+              <button
+                className={activeButton === 'checklist' ? 'active' : ''}
+                onClick={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect()
+                  setChecklistButtonPosition({
+                    x: rect.left,
+                    y: rect.bottom + 8,
+                  })
+                  setActiveButton('checklist')
+                  setShowAddChecklistModal(true)
+                }}
+              >
                 <span style={{ display: 'flex', alignItems: 'center' }}>
                   <svg
                     width="16"
@@ -193,18 +318,24 @@ export function TaskDetails({}) {
                       width="12"
                       height="10"
                       rx="2"
-                      stroke="#44546F"
+                      stroke={
+                        activeButton === 'checklist' ? 'white' : '#44546F'
+                      }
                       strokeWidth="1.5"
                     />
                     <path
                       d="M5 2v2M11 2v2"
-                      stroke="#44546F"
+                      stroke={
+                        activeButton === 'checklist' ? 'white' : '#44546F'
+                      }
                       strokeWidth="1.5"
                       strokeLinecap="round"
                     />
                     <path
                       d="M5.5 8.5l2 2 3-3"
-                      stroke="#44546F"
+                      stroke={
+                        activeButton === 'checklist' ? 'white' : '#44546F'
+                      }
                       strokeWidth="1.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -213,14 +344,25 @@ export function TaskDetails({}) {
                   Checklist
                 </span>
               </button>
-              <button>
+              <button
+                className={activeButton === 'attachment' ? 'active' : ''}
+                onClick={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect()
+                  setAttachmentButtonPosition({
+                    x: rect.left,
+                    y: rect.bottom + 8, // 8px gap below the button
+                  })
+                  setActiveButton('attachment')
+                  setShowAttachmentsModal(true)
+                }}
+              >
                 <span style={{ display: 'flex', alignItems: 'center' }}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     height="20"
                     viewBox="0 -960 960 960"
                     width="20"
-                    fill="#5f6368"
+                    fill={activeButton === 'attachment' ? 'white' : '#5f6368'}
                     style={{ marginRight: 4, transform: 'rotate(50deg)' }}
                   >
                     <path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z" />
@@ -243,9 +385,9 @@ export function TaskDetails({}) {
                       .toUpperCase()
                     return (
                       <span
-                        key={member.id}
+                        key={memberId}
                         className="task-member-avatar"
-                        title={member.name}
+                        title={member?.fullname}
                       >
                         {initials}
                       </span>
@@ -282,6 +424,38 @@ export function TaskDetails({}) {
               )}
             </div>
 
+            {hasDueDate && (
+              <div className="task-details-due-date">
+                <span className="due-date-label">Due date</span>
+                <div className="due-date-display">
+                  <span
+                    className="due-date-text"
+                    onClick={() => setShowDatesModal(true)}
+                  >
+                    {formatDueDate(task.dueDate)}
+                    {isOverdue(task.dueDate) && (
+                      <span className="overdue-badge">Overdue</span>
+                    )}
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      className="dropdown-arrow"
+                    >
+                      <path
+                        d="M3 4.5L6 7.5L9 4.5"
+                        stroke="#5e6c84"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            )}
+
             <div className="task-details-description">
               <h3>Description</h3>
               {isEditing ? (
@@ -315,6 +489,20 @@ export function TaskDetails({}) {
                 </div>
               )}
             </div>
+
+            {/* Checklists */}
+            {task.checklists && task.checklists.length > 0 && (
+              <div className="task-details-checklists">
+                {task.checklists.map((checklist) => (
+                  <Checklist
+                    key={checklist.id}
+                    checklist={checklist}
+                    onUpdateChecklist={handleUpdateChecklist}
+                    onDeleteChecklist={handleDeleteChecklist}
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Right/Sidebar */}
@@ -359,7 +547,10 @@ export function TaskDetails({}) {
         <LabelsModal
           labels={board.labels}
           taskLabelIds={taskLabelIds}
-          onClose={() => setShowLabelsModal(false)}
+          onClose={() => {
+            setShowLabelsModal(false)
+            setActiveButton(null)
+          }}
           onToggleLabel={handleToggleLabel}
         />
       )}
@@ -368,8 +559,44 @@ export function TaskDetails({}) {
         <MembersModal
           boardMembers={board.members}
           cardMemberIds={task.memberIds}
-          onClose={() => setShowMembersModal(false)}
+          onClose={() => {
+            setShowMembersModal(false)
+            setActiveButton(null)
+          }}
           onToggleMember={handleToggleMember}
+        />
+      )}
+
+      {showDatesModal && (
+        <DatesModal
+          task={task}
+          onClose={() => {
+            setShowDatesModal(false)
+            setActiveButton(null)
+          }}
+          onUpdateDates={handleUpdateDates}
+        />
+      )}
+
+      {showAttachmentsModal && (
+        <AttachmentsModal
+          task={task}
+          position={attachmentButtonPosition}
+          onClose={() => {
+            setShowAttachmentsModal(false)
+            setActiveButton(null)
+          }}
+        />
+      )}
+
+      {showAddChecklistModal && (
+        <AddChecklistModal
+          position={checklistButtonPosition}
+          onClose={() => {
+            setShowAddChecklistModal(false)
+            setActiveButton(null)
+          }}
+          onAddChecklist={handleAddChecklist}
         />
       )}
     </div>
