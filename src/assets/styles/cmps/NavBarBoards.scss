@@ -3,6 +3,22 @@
   justify-content: space-between;
 }
 
+.workspace-header {
+  align-self: center;
+
+  span {
+    color: white;
+    margin-right: 16px;
+    padding: 9px;
+    height: 32px;
+    width: 32px;
+    background: linear-gradient(
+      var(--green-background1, #006644),
+      var(--green-background2, #00875a)
+    );
+  }
+}
+
 .nav-bar-boards {
   color: $clr8;
   display: flex;
