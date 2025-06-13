@@ -5,6 +5,61 @@
     box-shadow: var(--ds-box-shadow);
     overflow: hidden;
 
+    &.editing {
+        cursor: default;
+
+        .task-content {
+            pointer-events: auto;
+
+            .task-header {
+                .task-title-edit {
+                    flex: 1;
+
+                    .card-title-editable {
+                        width: 100%;
+                        max-height: rem(120px);
+                        border-radius: $group-border-radius-small;
+                        padding: rem(8px) rem(12px);
+                        font-size: $group-font-size-base;
+                        font-weight: $group-font-weight-semibold;
+                        line-height: $group-line-height-base;
+                        color: var(--ds-text);
+                        background: var(--ds-background-input);
+                        outline: none;
+                        resize: none;
+                        border: none;
+                        font-family: inherit;
+                        min-height: rem(36px);
+
+                        // &:focus {
+                        //     box-shadow: 0 0 0 2px rgba(0, 121, 191, 0.3);
+                        // }
+                    }
+                }
+            }
+        }
+
+        .task-edit-controls {
+            margin-top: 8px;
+            background-color: transparent;
+
+            .save-card-title-edit-btn {
+                background: #0079bf;
+                color: white;
+                border: none;
+                border-radius: $group-border-radius-small;
+                padding: rem(6px) rem(12px);
+                font-size: rem(14px);
+                font-weight: $group-font-weight-medium;
+                transition: background-color 0.1s ease;
+
+                &:hover {
+                    background: #005a8b;
+                }
+            }
+        }
+    }
+
     &:hover {
         outline: 2px solid var(--ds-border-focused);
 
@@ -164,7 +219,6 @@
     right: rem(28px);
 }
 
-// Task Info Layout
 .task-info {
     display: flex;
     justify-content: space-between;
@@ -172,7 +226,6 @@
     margin-top: 8px;
 }
 
-// Task Labels 
 .task-labels {
     display: flex;
     flex-wrap: wrap;
