@@ -16,7 +16,13 @@ export function TaskPreview({
   onRemoveTask,
   onUpdateTask,
   isLabelsExtended,
-  setIsLabelExtended
+  setIsLabelExtended,
+  isEditing = false,
+  editableTitle = '',
+  onTitleChange = null,
+  onSaveTitle = null,
+  onCancelEdit = null,
+  inputRef = null
 }) {
   const navigate = useNavigate()
   const [isHovered, setIsHovered] = useState(false)
@@ -30,6 +36,8 @@ export function TaskPreview({
     if (ev.target.closest('.task-edit-btn') ||
       ev.target.closest('.task-delete-btn') ||
       ev.target.closest('.task-done-btn') ||
+      ev.target.closest('.quick-edit-backdrop') ||
+      ev.target.closest('.task-quick-edit') ||
       isQuickEditOpen) {
       return
     }
@@ -110,7 +118,7 @@ export function TaskPreview({
   return (
     <>
       <div
-        className={`task-preview ${isDone ? 'task-done' : ''}`}
+        className={`task-preview ${isDone ? 'task-done' : ''} ${isEditing ? 'editing' : ''}`}
         onClick={handleTaskClick}
         onMouseEnter={function () { setIsHovered(true) }}
         onMouseLeave={function () { setIsHovered(false) }}
@@ -146,7 +154,7 @@ export function TaskPreview({
         )}
 
         <div className="task-content">
-          {isHovered && (
+          {isHovered && !isEditing && (
             <>
               <button
                 className="task-edit-btn"
@@ -191,7 +199,7 @@ export function TaskPreview({
           )}
 
           <div className="task-header">
-            {(isDone || isHovered) && (
+            {(isDone || isHovered) && !isEditing && (
               <button
                 className="task-done-btn"
                 onClick={handleDoneToggle}
@@ -205,7 +213,27 @@ export function TaskPreview({
               </button>
             )}
 
-            <div className="task-title">{task.title}</div>
+            {isEditing ? (
+              <div className="task-title-edit">
+                <textarea
+                  ref={inputRef}
+                  className="card-title-editable"
+                  value={editableTitle}
+                  onChange={onTitleChange}
+                  onKeyDown={(ev) => {
+                    if (ev.key === 'Escape') onCancelEdit()
+                    if (ev.key === 'Enter' && !ev.shiftKey) {
+                      ev.preventDefault()
+                      onSaveTitle()
+                    }
+                  }}
+                  autoFocus
+                  rows={1}
+                />
+              </div>
+            ) : (
+              <div className="task-title">{task.title}</div>
+            )}
           </div>
 
           <div className="task-info">
@@ -243,9 +271,17 @@ export function TaskPreview({
             )}
           </div>
         </div>
+
+        {isEditing && (
+          <div className="task-edit-controls">
+            <button className="save-card-title-edit-btn" onClick={onSaveTitle}>
+              Save
+            </button>
+          </div>
+        )}
       </div>
 
-      {isQuickEditOpen && (
+      {isQuickEditOpen && !isEditing && (
         <TaskQuickEdit
           task={task}
           group={group}

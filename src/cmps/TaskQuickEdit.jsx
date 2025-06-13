@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { TaskPreview } from './TaskPreview'
 
 import CardIcon from '@atlaskit/icon/core/card'
 import TagIcon from '@atlaskit/icon/core/tag';
@@ -68,19 +69,16 @@ export function TaskQuickEdit({
         }
     }, [position, windowSize])
 
+
     useEffect(() => {
         if (inputRef.current) {
             setTimeout(() => {
-                inputRef.current.focus()
-                inputRef.current.select()
-            }, 100)
+                inputRef.current.focus();
+                inputRef.current.select();
+                autoResizeTextarea(inputRef.current);
+            }, 100);
         }
     }, [])
-
-
-    function handleTitleChange(event) {
-        setTitleToEdit(event.target.value)
-    }
 
     function handleSaveTitle() {
         const updatedTask = { ...task, title: titleToEdit }
@@ -92,22 +90,27 @@ export function TaskQuickEdit({
         onClose()
     }
 
-    function handleFormSubmit(event) {
-        event.preventDefault();
-        const updatedTask = { ...task, title: titleToEdit }
-        const updatedGroup = {
-            ...group,
-            tasks: group.tasks.map(t => t.id === task.id ? updatedTask : t)
-        };
-        onUpdateTask(updatedGroup)
-        onClose()
+    function autoResizeTextarea(textarea) {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
     }
+
+    function handleTitleChange(event) {
+        setTitleToEdit(event.target.value);
+        autoResizeTextarea(event.target);
+    }
+
 
     function handleKeyDown(ev) {
         if (ev.key === 'Escape') {
             setTitleToEdit(task.title)
             onClose()
         }
+    }
+
+    function handleCancelEdit() {
+        setTitleToEdit(task.title)
+        onClose()
     }
 
     function handleOpenCard() {
@@ -117,53 +120,14 @@ export function TaskQuickEdit({
 
     function handleBackdropClick(event) {
         if (event.target.classList.contains('quick-edit-backdrop')) {
-            handleSaveTitle()
+            event.stopPropagation()
+            handleCancelEdit()
         }
     }
 
     function handleModalClick(event) {
         event.stopPropagation()
     }
-
-    function getLabels() {
-        if (!task.labelIds || !board.labels) return []
-        return board.labels.filter(label => task.labelIds.includes(label.id))
-    }
-
-    function getMembers() {
-        if (!task.memberIds || !board.members) return []
-        return board.members.filter(member => task.memberIds.includes(member._id))
-    }
-
-    function formatDate() {
-        if (!task.date?.dueDate) return null
-        const date = new Date(task.date.dueDate)
-        const now = new Date()
-
-        if (date.getFullYear() !== now.getFullYear()) {
-            return `${date.toLocaleDateString('en-US', { month: 'short' })} ${date.getDate()}, ${date.getFullYear()}`
-        }
-        return `${date.toLocaleDateString('en-US', { month: 'short' })} ${date.getDate()}`
-    }
-
-    function getDateStatus() {
-        if (!task.date?.dueDate) return ''
-        if (task.date.isDone) return 'done'
-
-        const dueDate = new Date(task.date.dueDate)
-        const now = new Date()
-        const oneDayFromNow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
-
-        if (dueDate < now) return 'overdue'
-        if (dueDate < oneDayFromNow) return 'due-soon'
-        return ''
-    }
-
-    const labels = getLabels()
-    const members = getMembers()
-    const formattedDate = formatDate()
-    const dateStatus = getDateStatus()
-
     return (
         <div className="quick-edit-backdrop" onClick={handleBackdropClick}>
             <div
@@ -178,96 +142,25 @@ export function TaskQuickEdit({
                 onClick={handleModalClick}
             >
                 <div className="quick-edit-card">
-                    {(task.style?.backgroundImage || task.style?.backgroundColor) && (
-                        <div
-                            className="task-cover"
-                            style={{
-                                backgroundColor: task.style.backgroundColor,
-                                backgroundImage: task.style.backgroundImage
-                                    ? `url(${task.style.backgroundImage})`
-                                    : 'none'
-                            }}
-                        >
-                            {task.style.backgroundImage && (
-                                <img
-                                    src={task.style.backgroundImage}
-                                    alt=""
-                                    className="cover-image"
-                                />
-                            )}
-                        </div>
-                    )}
-
-                    <div className="card-content">
-                        {labels.length > 0 && (
-                            <div className="card-labels">
-                                {labels.map(label => (
-                                    <div
-                                        key={label.id}
-                                        className={`card-label ${label.color || 'gray'} ${!isLabelsExtended ? 'collapsed' : ''
-                                            }`}
-                                        onClick={(ev) => {
-                                            ev.stopPropagation()
-                                            setIsLabelExtended(!isLabelsExtended)
-                                        }}
-                                    >
-                                        <span>{isLabelsExtended ? label.title : ''}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-
-                        <div className="card-title-section">
-                            <form onSubmit={handleFormSubmit}>
-                                <input
-                                    type="text"
-                                    ref={inputRef}
-                                    className="card-title-editable editing"
-                                    value={titleToEdit}
-                                    onChange={handleTitleChange}
-                                    onKeyDown={handleKeyDown}
-                                    onClick={ev => ev.stopPropagation()}
-                                    autoFocus
-                                />
-                            </form>
-                            <button className="save-card-title-edit-btn" onClick={handleSaveTitle}>Save</button>
-                        </div>
-
-                        <div className="card-info">
-                            <div className="card-badges">
-                                {formattedDate && (
-                                    <div className={`card-badge date-badge ${dateStatus}`}>
-                                        <ClockIcon label="Due date" color="currentColor" />
-                                        <span>{formattedDate}</span>
-                                        {task.date?.isDone && <CheckCircleIcon label="Complete" color="currentColor" />}
-                                    </div>
-                                )}
-
-                                {task.description && (
-                                    <div className="card-badge">
-                                        <TextLengthenIcon label="TextLengthenIcon" color="currentColor" />
-                                    </div>
-                                )}
-                            </div>
-
-                            {members.length > 0 && (
-                                <div className="card-members">
-                                    {members.map(member => (
-                                        <div key={member._id} className="member-avatar">
-                                            {member.imgUrl ? (
-                                                <img src={member.imgUrl} alt={member.fullname} />
-                                            ) : (
-                                                <div className="member-initials">
-                                                    {member.fullname?.charAt(0)?.toUpperCase() || '?'}
-                                                </div>
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                    <TaskPreview
+                        task={task}
+                        group={group}
+                        board={board}
+                        onRemoveTask={onRemoveTask}
+                        onUpdateTask={onUpdateTask}
+                        isLabelsExtended={isLabelsExtended}
+                        setIsLabelExtended={setIsLabelExtended}
+                        isEditing={true}
+                        editableTitle={titleToEdit}
+                        onTitleChange={handleTitleChange}
+                        onSaveTitle={handleSaveTitle}
+                        onCancelEdit={handleCancelEdit}
+                        inputRef={inputRef}
+                    />
                 </div>
+
+
+
 
                 <div className={`quick-edit-actions ${menuSideClass}`}>
                     <button className="action-button" onClick={handleOpenCard}>
@@ -305,7 +198,7 @@ export function TaskQuickEdit({
                         <span>Copy card</span>
                     </button>
 
-                    <button className="action-button" onClick={() => onRemoveTask(task.id)}>
+                    <button className="action-button" onClick={() => onRemoveTask(group.id, task.id)}>
                         <DeleteIcon label="Delete" color="currentColor" />
                         <span>Delete</span>
                     </button>
