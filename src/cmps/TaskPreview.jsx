@@ -9,6 +9,7 @@ import MediaServicesPreselectedIcon from '@atlaskit/icon/glyph/media-services/pr
 import ClockIcon from '@atlaskit/icon/core/clock';
 import TextLengthenIcon from '@atlaskit/icon-lab/core/text-lengthen';
 import AttachmentIcon from '@atlaskit/icon/core/attachment';
+import TaskIcon from '@atlaskit/icon/core/task'
 
 export function TaskPreview({
   task,
@@ -113,16 +114,26 @@ export function TaskPreview({
     return task.attachments.length
   }
 
-  function isAttachmentImage(attachment) {
-    if (!attachment.url) return false
-    const url = attachment.url.toLowerCase()
-    return url.includes('.jpg') || url.includes('.jpeg') ||
-      url.includes('.png') || url.includes('.gif') ||
-      url.includes('.webp') || url.includes('.svg') ||
-      url.includes('image')
+  function getChecklistCount() {
+    if (!task.checklists || !Array.isArray(task.checklists)) return { completed: 0, total: 0 }
+
+    let total = 0
+    let completed = 0
+
+    task.checklists.forEach(checklist => {
+      if (checklist.todos && Array.isArray(checklist.todos)) {
+        total += checklist.todos.length
+        completed += checklist.todos.filter(item => item.isDone).length
+      }
+    })
+
+    return { completed, total }
   }
 
-
+  function hasChecklist() {
+    const { total } = getChecklistCount()
+    return total > 0
+  }
 
   return (
     <>
@@ -244,6 +255,13 @@ export function TaskPreview({
                 <div className="task-badge attachment-badge">
                   <AttachmentIcon label="Attachments" size="small" />
                   <span>{getAttachmentCount()}</span>
+                </div>
+              )}
+
+              {hasChecklist() && (
+                <div className={`task-badge checklist-badge ${getChecklistCount().completed === getChecklistCount().total && getChecklistCount().total > 0 ? 'completed' : ''}`}>
+                  <TaskIcon label="Checklist" color="currentColor" />
+                  <span>{getChecklistCount().completed}/{getChecklistCount().total}</span>
                 </div>
               )}
             </div>
