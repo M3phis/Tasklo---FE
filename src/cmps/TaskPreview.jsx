@@ -170,11 +170,34 @@ export function TaskPreview({
                 }}
               />
             )}
+
+            {isHovered && (
+              <>
+                <button
+                  className="task-edit-btn task-cover-btn"
+                  onClick={handleEditClick}
+                  title="Edit card"
+                >
+                  <EditIcon label="Edit card" color="#172B4D" />
+                </button>
+
+                {isDone && (
+                  <button
+                    className="task-delete-btn task-cover-btn"
+                    onClick={handleRemoveClick}
+                    title="Delete card"
+                  >
+                    <DeleteIcon label="Delete card" color="#172B4D" />
+                  </button>
+                )}
+              </>
+            )}
+
           </div>
         )}
 
         <div className="task-content">
-          {isHovered && (
+          {!task.style?.backgroundImage && !task.style?.backgroundColor && !task.style?.background && isHovered && (
             <>
               <button
                 className="task-edit-btn"
