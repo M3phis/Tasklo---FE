@@ -181,7 +181,7 @@
     font-weight: $group-font-weight-medium;
     border: none;
     border-radius: $group-border-radius-small;
-    margin: 0px rem(4px) 0 rem(-2px);
+    margin: 0 rem(4px) 0 rem(-2px);
     padding: rem(2px);
     opacity: 0;
 
@@ -201,7 +201,7 @@
     margin: 0 rem(2px);
     border-radius: rem(16px);
     padding: rem(6px);
-    top: 0;
+    top: rem(3px);
     right: 0;
     border: none;
 
@@ -229,17 +229,16 @@
 .task-labels {
     display: flex;
     flex-wrap: wrap;
-    gap: 2px;
-    margin-bottom: 4px;
-    min-height: 8px;
+    gap: rem(2px);
+    margin-bottom: rem(4px);
+    min-height: rem(8px);
 }
 
 .task-label {
-    border-radius: 3px;
-    font-size: 12px;
-    font-weight: 700;
+    border-radius: rem(3px);
+    font-size: rem(12px);
+    font-weight: $group-font-weight-medium;
     color: white;
-    cursor: pointer;
     transition: all 0.15s ease;
     display: flex;
     align-items: center;
@@ -249,12 +248,12 @@
     border: 1px solid rgba(0, 0, 0, 0.08);
 
     &.collapsed {
-        height: 8px;
-        width: 40px;
-        border-radius: 4px;
+        ////check
+        height: rem(8px);
+        width: rem(40px);
+        border-radius: rem(4px);
         padding: 0;
-        margin: 2px 4px 2px 0;
-        min-width: 40px;
+        margin: rem(2px) rem(4px) rem(2px) 0;
         border: 1px solid rgba(0, 0, 0, 0.12);
 
         span {
@@ -268,17 +267,17 @@
     }
 
     &:not(.collapsed) {
-        padding: 4px 8px;
+        padding: rem(4px) rem(8px);
         height: auto;
-        min-height: 20px;
-        max-width: 198px;
-        margin: 0 4px 4px 0;
-        font-weight: 600;
+        min-height: rem(20px);
+        max-width: rem(198px);
+        margin: 0 rem(4px) rem(4px) 0;
+        font-weight: $group-font-weight-regular;
         letter-spacing: 0.02em;
 
         span {
             display: block;
-            line-height: 16px;
+            line-height: rem(16px);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -297,8 +296,8 @@
     }
 
     &:focus {
-        outline: 2px solid var(--ds-border-focused);
-        outline-offset: 2px;
+        outline: rem(2px) solid var(--ds-border-focused);
+        outline-offset: rem(2px);
     }
 
     &[style*="#f2d600"],
@@ -318,7 +317,7 @@
 // Task Badges
 .task-badges {
     display: flex;
-    gap: 4px;
+    gap: rem(4px);
     align-items: center;
     flex: 1;
 }
@@ -326,18 +325,18 @@
 .task-badge {
     display: flex;
     align-items: center;
-    gap: 4px;
-    padding: 2px 4px;
-    border-radius: 3px;
-    font-size: 11px;
-    font-weight: 400;
-    line-height: 16px;
-    min-height: 16px;
+    gap: rem(4px);
+    padding: rem(2px) rem(4px);
+    border-radius: rem(3px);
+    font-size: rem(11px);
+    font-weight: $group-font-weight-regular;
+    line-height: rem(16px);
+    min-height: rem(16px);
     border: none;
 
     svg {
-        width: 12px;
-        height: 12px;
+        width: rem(12px);
+        height: rem(12px);
         flex-shrink: 0;
     }
 
@@ -349,21 +348,13 @@
     &:not(.date-badge) {
         background-color: transparent;
         color: var(--ds-text-accent-gray);
-        padding: 2px 4px;
-
-        &:hover {
-            background-color: var(--ds-background-accent-gray-subtlest);
-        }
+        padding: rem(2px) rem(4px);
     }
 
     // Date badge states 
     &.date-badge {
         background-color: transparent;
         color: var(--ds-text-accent-gray);
-
-        &:hover {
-            background-color: var(--ds-background-accent-gray-subtlest-hovered);
-        }
 
         svg {
             color: var(--ds-text-accent-gray);
@@ -372,10 +363,6 @@
         &.overdue {
             background-color: var(--ds-background-accent-red-subtlest);
             color: var(--ds-text-accent-red);
-
-            &:hover {
-                background-color: var(--ds-background-accent-red-subtlest-hovered);
-            }
 
             svg {
                 color: var(--ds-text-accent-red);
@@ -386,10 +373,6 @@
             background-color: var(--ds-background-accent-orange-subtlest);
             color: var(--ds-text-accent-orange);
 
-            &:hover {
-                background-color: var(--ds-background-accent-orange-subtlest-hovered);
-            }
-
             svg {
                 color: var(--ds-text-accent-orange);
             }
@@ -399,32 +382,73 @@
             background-color: var(--ds-background-accent-green-bolder);
             color: var(--ds-text-inverse);
 
-            &:hover {
-                background-color: var(--ds-background-accent-green-subtlest-hovered);
-            }
-
             svg {
                 color: var(--ds-text-inverse);
             }
         }
     }
+
+    //Attachment
+    &.attachment-badge {
+        background-color: transparent;
+        color: var(--ds-text-accent-gray);
+
+        svg {
+            color: var(--ds-text-accent-gray);
+        }
+
+        span {
+            color: var(--ds-text-accent-gray);
+            font-size: 11px;
+            // margin-left: 2px;
+        }
+    }
+
+    &.checklist-badge {
+        background-color: transparent;
+        color: var(--ds-text-accent-gray);
+
+        svg {
+            color: var(--ds-text-accent-gray);
+        }
+
+        span {
+            color: var(--ds-text-accent-gray);
+            font-size: rem(11px);
+        }
+
+        // When all checklist items are completed
+        &.completed {
+            background-color: var(--ds-background-accent-green-bolder);
+            color: white;
+
+            svg {
+                color: white;
+            }
+
+            span {
+                color: white;
+            }
+        }
+    }
 }
+
 
 // Task Members
 .task-members {
     display: flex;
-    gap: 4px;
+    gap: rem(4px);
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-end;
     margin-left: auto;
 
     .task-member-avatar {
-        width: 28px;
-        height: 28px;
+        width: rem(28px);
+        height: rem(28px);
         border-radius: 50%;
         overflow: hidden;
-        border: 2px solid var(--ds-background-input);
+        border: rem(2px) solid var(--ds-background-input);
         box-shadow: var(--ds-box-shadow);
         display: flex;
         align-items: center;
@@ -438,8 +462,8 @@
         }
 
         .member-initials {
-            font-size: 10px;
-            font-weight: 600;
+            font-size: rem(10px);
+            font-weight: $group-font-weight-regular;
             color: var(--ds-text);
             text-transform: uppercase;
         }

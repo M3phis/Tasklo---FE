@@ -458,10 +458,23 @@ export function TaskDetails({}) {
             </div>
 
             <div className="task-details-description">
-              <h3>Description</h3>
+              <div className="description-header">
+                <svg
+                  className="description-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="20px"
+                  viewBox="0 -960 960 960"
+                  width="20px"
+                  fill="#5f6368"
+                >
+                  <path d="M160-200v-80h400v80H160Zm0-160v-80h640v80H160Zm0-160v-80h640v80H160Zm0-160v-80h640v80H160Z" />
+                </svg>
+                <h3>Description</h3>
+              </div>
               {isEditing ? (
                 <div className="description-edit">
                   <textarea
+                    className="task-description-input"
                     value={description}
                     onChange={handleDescriptionChange}
                     placeholder="Add a more detailed description..."

@@ -14,6 +14,8 @@
       flex: 1;
 
       .checklist-icon {
+        position: relative;
+        right: 8px;
         width: 20px;
         height: 20px;
         flex-shrink: 0;
