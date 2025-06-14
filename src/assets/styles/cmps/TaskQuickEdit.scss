@@ -4,7 +4,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: var(--ds-background-inverse-subtle);
+    background: rgba(0, 0, 0, 0.64);
     z-index: 999;
 }
 
@@ -13,200 +13,282 @@
     gap: 8px;
 
     .quick-edit-card {
-        width: 256px;
-        background: transparent;
+        width: rem(256px);
         border-radius: $group-border-radius-medium;
-        box-shadow: var(--ds-box-shadow);
+        box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25), 0 0 0 1px rgba(9, 30, 66, 0.08);
         overflow: hidden;
 
-        .task-cover {
-            height: 120px;
-            background-size: cover;
-            background-position: center;
-        }
+        .task-preview {
+            background: transparent;
+            box-shadow: none;
+            margin-bottom: 0;
+            border-radius: 0;
 
-        .card-content {
-            padding: 12px;
+            .task-content {
+                padding: 8px 12px 12px;
 
-            .card-labels {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 4px;
-                margin-bottom: 8px;
-            }
-
-            .card-label {
-                height: 8px;
-                border-radius: $group-border-radius-mini;
-                min-width: 40px;
-                background: var(--ds-background-accent-gray-subtle);
-                cursor: pointer;
-
-                &.collapsed {
-                    width: 40px;
-                }
-
-                span {
-                    display: none;
-                }
-
-                &:not(.collapsed) {
-                    height: $group-icon-size-small;
-                    padding: 0 8px;
-
-                    span {
-                        display: block;
-                        font-size: 12px;
-                        font-weight: $group-font-weight-medium;
-                        line-height: $group-icon-size-small;
-                        color: var(--ds-text-inverse);
-                    }
-                }
-
-                &.lime {
-                    background: var(--ds-background-accent-lime-subtle);
-                }
-
-                &.red {
-                    background: var(--ds-background-accent-red-subtle);
-                }
-
-                &.orange {
-                    background: var(--ds-background-accent-orange-subtle);
-                }
-
-                &.yellow {
-                    background: var(--ds-background-accent-yellow-subtle);
-                }
-
-                &.green {
-                    background: var(--ds-background-accent-green-subtle);
-                }
-
-                &.teal {
-                    background: var(--ds-background-accent-teal-subtle);
-                }
-
-                &.blue {
-                    background: var(--ds-background-accent-blue-subtle);
-                }
-
-                &.purple {
-                    background: var(--ds-background-accent-purple-subtle);
-                }
-
-                &.magenta {
-                    background: var(--ds-background-accent-magenta-subtle);
-                }
-
-                &.gray {
-                    background: var(--ds-background-accent-gray-subtle);
-                }
-            }
-
-            .card-title-section {
-                margin-bottom: 8px;
-
-                form {
-                    margin: 0;
-                }
-
-                .card-title-editable {
-                    width: 100%;
-                    border: none;
-                    border-radius: $group-border-radius-medium;
-                    padding: 8px 12px;
-                    font-size: $group-font-size-base;
-                    font-weight: $group-font-weight-regular;
-                    line-height: $group-line-height-base;
-                    color: var(--ds-text);
-                    background: var(--ds-background-input);
-                    outline: none;
-                    resize: none;
-                    box-shadow: var(--ds-box-shadow);
-
-                    &:focus {
-                        // border-color: var(--ds-border-focused);
-                        box-shadow: 0 0 0 1px var();
-                    }
-                }
-            }
-
-            .card-info {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-end;
-
-                .card-badges {
+                .task-labels {
                     display: flex;
                     flex-wrap: wrap;
                     gap: 4px;
+                    margin-bottom: 8px;
+                }
 
-                    .card-badge {
-                        display: flex;
-                        align-items: center;
-                        gap: 4px;
-                        padding: 2px 4px;
-                        border-radius: $group-border-radius-small;
+                .task-label {
+                    height: 8px;
+                    border-radius: $group-border-radius-mini;
+                    min-width: 40px;
+                    cursor: pointer;
+                    transition: all 0.1s ease;
+                    display: flex;
+                    align-items: center;
+                    padding: 0 8px;
+
+                    &.collapsed {
+                        min-width: 40px;
+                        padding: 0;
+                    }
+
+                    span {
                         font-size: 12px;
-                        font-weight: $group-font-weight-regular;
+                        font-weight: $group-font-weight-medium;
+                        color: white;
+                        display: none;
+                    }
+
+                    &:not(.collapsed) {
+                        height: $group-icon-size-small;
+                        min-height: $group-icon-size-small;
                         line-height: $group-icon-size-small;
-                        background: var(--ds-background-neutral);
-                        color: var(--ds-text-subtle);
 
-                        &.date-badge {
-                            &.overdue {
-                                background: var(--ds-background-accent-red-subtle);
-                                color: var(--ds-text-accent-red);
-                            }
+                        span {
+                            display: block;
+                        }
+                    }
 
-                            &.due-soon {
-                                background: var(--ds-background-accent-yellow-subtle);
-                                color: var(--ds-text-accent-yellow);
-                            }
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                }
 
-                            &.done {
-                                background: var(--ds-background-accent-green-subtle);
-                                color: var(--ds-text-inverse);
-                            }
+                .task-header {
+                    margin-bottom: 8px;
+
+                    .task-title-edit {
+                        .card-title-editable {
+                            width: 100%;
+                            max-height: rem(120px);
+                            border-radius: $group-border-radius-small;
+                            padding: rem(8px) rem(12px);
+                            font-size: $group-font-size-base;
+                            font-weight: $group-font-weight-semibold;
+                            line-height: $group-line-height-base;
+                            color: var(--ds-text);
+                            background: var(--ds-background-input);
+                            outline: none;
+                            resize: none;
+                            font-family: inherit;
+                            min-height: rem(36px);
+
+                            // &:focus {
+                            //     box-shadow: 0 0 0 2px rgba(0, 121, 191, 0.3);
+                            // }
+                        }
+                    }
+
+                    .task-title {
+                        font-size: $group-font-size-base;
+                        font-weight: $group-font-weight-semibold;
+                        line-height: $group-line-height-base;
+                        color: var(--ds-text);
+                        word-wrap: break-word;
+                    }
+                }
+
+                .task-info {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-top: 4px;
+                }
+
+                .task-badges {
+                    display: flex;
+                    gap: 4px;
+                    align-items: center;
+                    flex-wrap: wrap;
+                }
+
+                .task-badges {
+                    display: flex;
+                    gap: 4px;
+                    align-items: center;
+                    flex: 1;
+                }
+
+                .task-badge {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                    padding: 2px 4px;
+                    border-radius: 3px;
+                    font-size: 11px;
+                    font-weight: 400;
+                    line-height: 16px;
+                    min-height: 16px;
+                    border: none;
+
+                    svg {
+                        width: 12px;
+                        height: 12px;
+                        flex-shrink: 0;
+                    }
+
+                    span {
+                        white-space: nowrap;
+                    }
+
+                    // Description 
+                    &:not(.date-badge) {
+                        background-color: transparent;
+                        color: var(--ds-text-accent-gray);
+                        padding: 2px 4px;
+
+                        &:hover {
+                            background-color: var(--ds-background-accent-gray-subtlest);
+                        }
+                    }
+
+                    // Date badge states 
+                    &.date-badge {
+                        background-color: transparent;
+                        color: var(--ds-text-accent-gray);
+
+                        &:hover {
+                            background-color: var(--ds-background-accent-gray-subtlest-hovered);
                         }
 
                         svg {
-                            width: 12px;
-                            height: 12px;
+                            color: var(--ds-text-accent-gray);
+                        }
+
+                        &.overdue {
+                            background-color: var(--ds-background-accent-red-subtlest);
+                            color: var(--ds-text-accent-red);
+
+                            &:hover {
+                                background-color: var(--ds-background-accent-red-subtlest-hovered);
+                            }
+
+                            svg {
+                                color: var(--ds-text-accent-red);
+                            }
+                        }
+
+                        &.due-soon {
+                            background-color: var(--ds-background-accent-orange-subtlest);
+                            color: var(--ds-text-accent-orange);
+
+                            &:hover {
+                                background-color: var(--ds-background-accent-orange-subtlest-hovered);
+                            }
+
+                            svg {
+                                color: var(--ds-text-accent-orange);
+                            }
+                        }
+
+                        &.done {
+                            background-color: var(--ds-background-accent-green-bolder);
+                            color: var(--ds-text-inverse);
+
+                            &:hover {
+                                background-color: var(--ds-background-accent-green-subtlest-hovered);
+                            }
+
+                            svg {
+                                color: var(--ds-text-inverse);
+                            }
                         }
                     }
                 }
 
-                .card-members {
+                .task-members {
                     display: flex;
                     gap: 4px;
+                }
 
-                    .member-avatar {
-                        width: $group-icon-size-large;
-                        height: $group-icon-size-large;
-                        border-radius: 50%;
-                        overflow: hidden;
+                .task-member-avatar {
+                    width: rem(28px);
+                    height: rem(28px);
+                    border-radius: 50%;
+                    overflow: hidden;
+                    background: var(--ds-background-accent-gray-subtlest);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
 
-                        img {
-                            width: 100%;
-                            height: 100%;
-                            object-fit: cover;
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+
+                    .member-initials {
+                        font-size: 12px;
+                        font-weight: $group-font-weight-semibold;
+                        color: var(--ds-text-subtle);
+                    }
+                }
+
+                .task-edit-controls {
+                    margin-top: 4px;
+
+                    .save-card-title-edit-btn {
+                        background: var(--ds-background-accent-blue-bolder);
+                        color: white;
+                        border: none;
+                        border-radius: $group-border-radius-small;
+                        padding: rem(6px) rem(12px);
+                        font-size: $group-font-size-base;
+                        font-weight: $group-font-weight-medium;
+                        transition: background-color 0.1s ease;
+                        box-shadow: none;
+                        outline: none;
+
+                        &:hover {
+                            background: var(--ds-background-accent-blue-bolder-hovered);
                         }
 
-                        .member-initials {
-                            width: 100%;
-                            height: 100%;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            background: var(--ds-background-neutral);
-                            color: var(--ds-text-subtle);
-                            font-size: 12px;
-                            font-weight: $group-font-weight-semibold;
+                        &:focus {
+                            background: var(--ds-background-accent-blue-bolder);
+                            box-shadow: 0 0 0 2px rgba(0, 121, 191, 0.3);
                         }
                     }
                 }
+            }
+        }
+
+        .task-cover {
+            height: rem(32px);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: $group-border-radius-medium $group-border-radius-medium 0 0;
+
+            &.has-image {
+                height: rem(32px);
+            }
+
+            &.has-color {
+                height: rem(32px);
+            }
+
+            .cover-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: $group-border-radius-medium $group-border-radius-medium 0 0;
             }
         }
     }
@@ -230,11 +312,10 @@
             font-weight: $group-font-weight-regular;
             line-height: $group-line-height-base;
             text-align: left;
-            cursor: pointer;
             transition: background 0.1s ease;
 
             &:hover {
-                background: var(--ds-background-neutral-hovered);
+                background: var(--ds-background-accent-gray-subtler);
             }
 
             svg {
