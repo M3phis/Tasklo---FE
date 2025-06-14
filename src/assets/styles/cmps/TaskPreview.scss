@@ -355,7 +355,28 @@
             }
         }
     }
+
+    &.attachment-badge {
+        background-color: transparent;
+        color: var(--ds-text-accent-gray);
+
+        &:hover {
+            background-color: var(--ds-background-accent-gray-subtlest);
+        }
+
+        svg {
+            color: var(--ds-text-accent-gray);
+        }
+
+        span {
+            color: var(--ds-text-accent-gray);
+            font-size: 11px;
+            // margin-left: 2px;
+        }
+    }
+
 }
+
 
 // Task Members
 .task-members {

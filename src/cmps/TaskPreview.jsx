@@ -8,6 +8,7 @@ import CheckCircleIcon from '@atlaskit/icon/core/check-circle'
 import MediaServicesPreselectedIcon from '@atlaskit/icon/glyph/media-services/preselected'
 import ClockIcon from '@atlaskit/icon/core/clock';
 import TextLengthenIcon from '@atlaskit/icon-lab/core/text-lengthen';
+import AttachmentIcon from '@atlaskit/icon/core/attachment';
 
 export function TaskPreview({
   task,
@@ -106,6 +107,22 @@ export function TaskPreview({
     if (!url || typeof url !== 'string') return false
     return url.startsWith('http') || url.startsWith('https') || url.startsWith('data:')
   }
+
+  function getAttachmentCount() {
+    if (!task.attachments || !Array.isArray(task.attachments)) return 0
+    return task.attachments.length
+  }
+
+  function isAttachmentImage(attachment) {
+    if (!attachment.url) return false
+    const url = attachment.url.toLowerCase()
+    return url.includes('.jpg') || url.includes('.jpeg') ||
+      url.includes('.png') || url.includes('.gif') ||
+      url.includes('.webp') || url.includes('.svg') ||
+      url.includes('image')
+  }
+
+
 
   return (
     <>
@@ -220,6 +237,13 @@ export function TaskPreview({
               {task.description && (
                 <div className="task-badge">
                   <TextLengthenIcon label="TextLengthenIcon" color="currentColor" />
+                </div>
+              )}
+
+              {getAttachmentCount() > 0 && (
+                <div className="task-badge attachment-badge">
+                  <AttachmentIcon label="Attachments" size="small" />
+                  <span>{getAttachmentCount()}</span>
                 </div>
               )}
             </div>
