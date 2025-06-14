@@ -91,9 +91,9 @@ export function BoardHeader({
                         <AvatarList users={board.members || []} />
                     </div>
 
-                    <button className="header-btn">
+                    {/* <button className="header-btn">
                         <AutomationIcon label="Automation" color="#172B4D" />
-                    </button>
+                    </button> */}
 
                     <button className="header-btn">
                         <FilterIcon label="Filter" color="#172B4D" />
