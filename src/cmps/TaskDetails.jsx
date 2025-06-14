@@ -373,8 +373,8 @@ export function TaskDetails({}) {
             </div>
 
             <div className="task-details-info">
-              <div className="task-details-members-row">
-                <span>Members</span>
+              <div className="task-details-members-section">
+                <span className="section-header">Members</span>
                 <div className="task-members-list">
                   {members.map((memberId) => {
                     const member = board.members.find((m) => m._id === memberId)
@@ -401,9 +401,10 @@ export function TaskDetails({}) {
                   </button>
                 </div>
               </div>
+
               {hasLabels && (
-                <div className="task-details-labels-row">
-                  <span>Labels</span>
+                <div className="task-details-labels-section">
+                  <span className="section-header">Labels</span>
                   <div className="task-labels-list">
                     {taskLabels.map((label) => (
                       <span
@@ -422,39 +423,39 @@ export function TaskDetails({}) {
                   </div>
                 </div>
               )}
-            </div>
 
-            {hasDueDate && (
-              <div className="task-details-due-date">
-                <span className="due-date-label">Due date</span>
-                <div className="due-date-display">
-                  <span
-                    className="due-date-text"
-                    onClick={() => setShowDatesModal(true)}
-                  >
-                    {formatDueDate(task.dueDate)}
-                    {isOverdue(task.dueDate) && (
-                      <span className="overdue-badge">Overdue</span>
-                    )}
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 12 12"
-                      fill="none"
-                      className="dropdown-arrow"
+              {hasDueDate && (
+                <div className="task-details-due-date-section">
+                  <span className="section-header">Due date</span>
+                  <div className="due-date-display">
+                    <span
+                      className="due-date-text"
+                      onClick={() => setShowDatesModal(true)}
                     >
-                      <path
-                        d="M3 4.5L6 7.5L9 4.5"
-                        stroke="#5e6c84"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
+                      {formatDueDate(task.dueDate)}
+                      {isOverdue(task.dueDate) && (
+                        <span className="overdue-badge">Overdue</span>
+                      )}
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        className="dropdown-arrow"
+                      >
+                        <path
+                          d="M3 4.5L6 7.5L9 4.5"
+                          stroke="#5e6c84"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
 
             <div className="task-details-description">
               <h3>Description</h3>
