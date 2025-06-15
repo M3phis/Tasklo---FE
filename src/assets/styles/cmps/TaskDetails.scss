@@ -41,9 +41,8 @@
 .task-details-info {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 6px;
   align-items: flex-start;
-  margin-bottom: 24px;
   padding-left: 24px;
 }
 
@@ -52,14 +51,14 @@
 .task-details-due-date-section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 2px;
   min-width: 0;
   flex: 0 0 auto;
 
   .section-header {
     font-size: 12px;
     font-weight: 600;
-    color: #5e6c84;
+    color: #181c22;
     letter-spacing: 0.04em;
     // text-transform: uppercase;
   }
