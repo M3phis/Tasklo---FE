@@ -8,6 +8,8 @@ import CheckCircleIcon from '@atlaskit/icon/core/check-circle'
 import MediaServicesPreselectedIcon from '@atlaskit/icon/glyph/media-services/preselected'
 import ClockIcon from '@atlaskit/icon/core/clock';
 import TextLengthenIcon from '@atlaskit/icon-lab/core/text-lengthen';
+import AttachmentIcon from '@atlaskit/icon/core/attachment';
+import TaskIcon from '@atlaskit/icon/core/task'
 
 export function TaskPreview({
   task,
@@ -107,6 +109,32 @@ export function TaskPreview({
     return url.startsWith('http') || url.startsWith('https') || url.startsWith('data:')
   }
 
+  function getAttachmentCount() {
+    if (!task.attachments || !Array.isArray(task.attachments)) return 0
+    return task.attachments.length
+  }
+
+  function getChecklistCount() {
+    if (!task.checklists || !Array.isArray(task.checklists)) return { completed: 0, total: 0 }
+
+    let total = 0
+    let completed = 0
+
+    task.checklists.forEach(checklist => {
+      if (checklist.todos && Array.isArray(checklist.todos)) {
+        total += checklist.todos.length
+        completed += checklist.todos.filter(item => item.isDone).length
+      }
+    })
+
+    return { completed, total }
+  }
+
+  function hasChecklist() {
+    const { total } = getChecklistCount()
+    return total > 0
+  }
+
   return (
     <>
       <div
@@ -142,11 +170,34 @@ export function TaskPreview({
                 }}
               />
             )}
+
+            {isHovered && (
+              <>
+                <button
+                  className="task-edit-btn task-cover-btn"
+                  onClick={handleEditClick}
+                  title="Edit card"
+                >
+                  <EditIcon label="Edit card" color="#172B4D" />
+                </button>
+
+                {isDone && (
+                  <button
+                    className="task-delete-btn task-cover-btn"
+                    onClick={handleRemoveClick}
+                    title="Delete card"
+                  >
+                    <DeleteIcon label="Delete card" color="#172B4D" />
+                  </button>
+                )}
+              </>
+            )}
+
           </div>
         )}
 
         <div className="task-content">
-          {isHovered && (
+          {!task.style?.backgroundImage && !task.style?.backgroundColor && !task.style?.background && isHovered && (
             <>
               <button
                 className="task-edit-btn"
@@ -220,6 +271,20 @@ export function TaskPreview({
               {task.description && (
                 <div className="task-badge">
                   <TextLengthenIcon label="TextLengthenIcon" color="currentColor" />
+                </div>
+              )}
+
+              {getAttachmentCount() > 0 && (
+                <div className="task-badge attachment-badge">
+                  <AttachmentIcon label="Attachments" size="small" />
+                  <span>{getAttachmentCount()}</span>
+                </div>
+              )}
+
+              {hasChecklist() && (
+                <div className={`task-badge checklist-badge ${getChecklistCount().completed === getChecklistCount().total && getChecklistCount().total > 0 ? 'completed' : ''}`}>
+                  <TaskIcon label="Checklist" color="currentColor" />
+                  <span>{getChecklistCount().completed}/{getChecklistCount().total}</span>
                 </div>
               )}
             </div>
