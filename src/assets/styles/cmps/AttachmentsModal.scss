@@ -203,6 +203,10 @@
           background: #dfe1e6;
           color: #a5adba;
           cursor: not-allowed;
+
+          &:hover {
+            background: #dfe1e6;
+          }
         }
       }
     }

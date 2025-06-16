@@ -34,6 +34,8 @@ export function TaskDetails({}) {
     y: 0,
   })
   const [activeButton, setActiveButton] = useState(null)
+  const [showAttachmentMenu, setShowAttachmentMenu] = useState(null)
+  const [editingAttachment, setEditingAttachment] = useState(null)
 
   const { handleUpdateTask } = useOutletContext()
   useEffect(() => {
@@ -216,6 +218,35 @@ export function TaskDetails({}) {
     }
 
     // Call the update function (which updates the board and Redux)
+    handleUpdateTask(updatedGroup)
+  }
+
+  const handleEditAttachment = (attachment) => {
+    setEditingAttachment(attachment)
+    setShowAttachmentMenu(null)
+    // You can implement edit functionality here
+  }
+
+  const handleDeleteAttachment = (attachmentId) => {
+    const updatedAttachments = task.attachments.filter(
+      (att) => att.id !== attachmentId
+    )
+    const updatedTask = { ...task, attachments: updatedAttachments }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    handleUpdateTask(updatedGroup)
+    setShowAttachmentMenu(null)
+  }
+
+  const handleAddAttachment = (newAttachment) => {
+    const updatedAttachments = [...(task.attachments || []), newAttachment]
+    const updatedTask = { ...task, attachments: updatedAttachments }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
     handleUpdateTask(updatedGroup)
   }
 
@@ -504,6 +535,142 @@ export function TaskDetails({}) {
               )}
             </div>
 
+            {/* Attachments */}
+            {task.attachments && task.attachments.length > 0 && (
+              <div className="task-details-attachments">
+                <div className="attachments-header">
+                  <svg
+                    className="attachments-icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="20px"
+                    viewBox="0 -960 960 960"
+                    width="20px"
+                    fill="#5f6368"
+                  >
+                    <path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z" />
+                  </svg>
+                  <h3>Attachments</h3>
+                </div>
+
+                {/* Links Section */}
+                {task.attachments.filter((att) => att.type === 'link').length >
+                  0 && (
+                  <div className="attachment-section">
+                    <h4 className="attachment-section-title">Links</h4>
+                    <div className="attachment-links">
+                      {task.attachments
+                        .filter((att) => att.type === 'link')
+                        .map((attachment) => (
+                          <div
+                            key={attachment.id}
+                            className="attachment-link-item"
+                          >
+                            <div
+                              className="attachment-link-content"
+                              onClick={() =>
+                                window.open(attachment.url, '_blank')
+                              }
+                            >
+                              <div className="link-icon">
+                                <svg
+                                  width="14"
+                                  height="14"
+                                  viewBox="0 0 14 14"
+                                  fill="none"
+                                >
+                                  <path
+                                    d="M11.5 1.5L6.5 6.5M11.5 1.5L8 1.5M11.5 1.5V5M6 2.5H4.5C3.11929 2.5 2 3.61929 2 5V9.5C2 10.8807 3.11929 12 4.5 12H9C10.3807 12 11.5 10.8807 11.5 9.5V8"
+                                    stroke="#ae2a19"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                </svg>
+                              </div>
+                              <span className="attachment-link-text">
+                                {attachment.title || attachment.url}
+                              </span>
+                            </div>
+                            <div className="attachment-actions">
+                              <button
+                                className="attachment-menu-btn"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  setShowAttachmentMenu(
+                                    showAttachmentMenu === attachment.id
+                                      ? null
+                                      : attachment.id
+                                  )
+                                }}
+                              >
+                                <svg
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 16 16"
+                                  fill="none"
+                                >
+                                  <circle
+                                    cx="8"
+                                    cy="2.5"
+                                    r="1.5"
+                                    fill="#6b778c"
+                                  />
+                                  <circle
+                                    cx="8"
+                                    cy="8"
+                                    r="1.5"
+                                    fill="#6b778c"
+                                  />
+                                  <circle
+                                    cx="8"
+                                    cy="13.5"
+                                    r="1.5"
+                                    fill="#6b778c"
+                                  />
+                                </svg>
+                              </button>
+                              {showAttachmentMenu === attachment.id && (
+                                <div className="attachment-actions-menu">
+                                  <div className="menu-content">
+                                    <button
+                                      className="attachment-action-btn"
+                                      onClick={() =>
+                                        handleEditAttachment(attachment)
+                                      }
+                                    >
+                                      Edit
+                                    </button>
+                                    <button
+                                      className="attachment-action-btn"
+                                      onClick={() =>
+                                        handleDeleteAttachment(attachment.id)
+                                      }
+                                    >
+                                      Delete
+                                    </button>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Files Section - Placeholder for future implementation */}
+                {task.attachments.filter((att) => att.type === 'file').length >
+                  0 && (
+                  <div className="attachment-section">
+                    <h4 className="attachment-section-title">Files</h4>
+                    <div className="attachment-files">
+                      {/* Files will be implemented here */}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Checklists */}
             {task.checklists && task.checklists.length > 0 && (
               <div className="task-details-checklists">
@@ -600,6 +767,7 @@ export function TaskDetails({}) {
             setShowAttachmentsModal(false)
             setActiveButton(null)
           }}
+          onAddAttachment={handleAddAttachment}
         />
       )}
 
