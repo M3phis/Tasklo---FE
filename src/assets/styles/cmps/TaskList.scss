@@ -1,14 +1,13 @@
 .task-list {
   display: flex;
   flex-direction: column;
-  width: rem(264px);
+  // width: rem(264px);
+  height: 100%;
   row-gap: rem(8px);
   padding: rem(4px);
   margin: 0 rem(4px);
   list-style: none;
 
-  overflow-y: auto;
-  overflow-x: hidden;
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: var(--ds-background-neutral-hovered) var(--ds-background-neutral);

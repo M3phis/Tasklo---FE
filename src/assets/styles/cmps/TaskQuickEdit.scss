@@ -1,0 +1,251 @@
+.quick-edit-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--ds-background-inverse-subtle);
+    z-index: 999;
+}
+
+.task-quick-edit {
+    display: flex;
+    gap: 8px;
+
+    .quick-edit-card {
+        width: 256px;
+        background: transparent;
+        border-radius: $group-border-radius-medium;
+        box-shadow: var(--ds-box-shadow);
+        overflow: hidden;
+
+        .task-cover {
+            height: 120px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card-content {
+            padding: 12px;
+
+            .card-labels {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px;
+                margin-bottom: 8px;
+            }
+
+            .card-label {
+                height: 8px;
+                border-radius: $group-border-radius-mini;
+                min-width: 40px;
+                background: var(--ds-background-accent-gray-subtle);
+                cursor: pointer;
+
+                &.collapsed {
+                    width: 40px;
+                }
+
+                span {
+                    display: none;
+                }
+
+                &:not(.collapsed) {
+                    height: $group-icon-size-small;
+                    padding: 0 8px;
+
+                    span {
+                        display: block;
+                        font-size: 12px;
+                        font-weight: $group-font-weight-medium;
+                        line-height: $group-icon-size-small;
+                        color: var(--ds-text-inverse);
+                    }
+                }
+
+                &.lime {
+                    background: var(--ds-background-accent-lime-subtle);
+                }
+
+                &.red {
+                    background: var(--ds-background-accent-red-subtle);
+                }
+
+                &.orange {
+                    background: var(--ds-background-accent-orange-subtle);
+                }
+
+                &.yellow {
+                    background: var(--ds-background-accent-yellow-subtle);
+                }
+
+                &.green {
+                    background: var(--ds-background-accent-green-subtle);
+                }
+
+                &.teal {
+                    background: var(--ds-background-accent-teal-subtle);
+                }
+
+                &.blue {
+                    background: var(--ds-background-accent-blue-subtle);
+                }
+
+                &.purple {
+                    background: var(--ds-background-accent-purple-subtle);
+                }
+
+                &.magenta {
+                    background: var(--ds-background-accent-magenta-subtle);
+                }
+
+                &.gray {
+                    background: var(--ds-background-accent-gray-subtle);
+                }
+            }
+
+            .card-title-section {
+                margin-bottom: 8px;
+
+                form {
+                    margin: 0;
+                }
+
+                .card-title-editable {
+                    width: 100%;
+                    border: none;
+                    border-radius: $group-border-radius-medium;
+                    padding: 8px 12px;
+                    font-size: $group-font-size-base;
+                    font-weight: $group-font-weight-regular;
+                    line-height: $group-line-height-base;
+                    color: var(--ds-text);
+                    background: var(--ds-background-input);
+                    outline: none;
+                    resize: none;
+                    box-shadow: var(--ds-box-shadow);
+
+                    &:focus {
+                        // border-color: var(--ds-border-focused);
+                        box-shadow: 0 0 0 1px var();
+                    }
+                }
+            }
+
+            .card-info {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+
+                .card-badges {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 4px;
+
+                    .card-badge {
+                        display: flex;
+                        align-items: center;
+                        gap: 4px;
+                        padding: 2px 4px;
+                        border-radius: $group-border-radius-small;
+                        font-size: 12px;
+                        font-weight: $group-font-weight-regular;
+                        line-height: $group-icon-size-small;
+                        background: var(--ds-background-neutral);
+                        color: var(--ds-text-subtle);
+
+                        &.date-badge {
+                            &.overdue {
+                                background: var(--ds-background-accent-red-subtle);
+                                color: var(--ds-text-accent-red);
+                            }
+
+                            &.due-soon {
+                                background: var(--ds-background-accent-yellow-subtle);
+                                color: var(--ds-text-accent-yellow);
+                            }
+
+                            &.done {
+                                background: var(--ds-background-accent-green-subtle);
+                                color: var(--ds-text-inverse);
+                            }
+                        }
+
+                        svg {
+                            width: 12px;
+                            height: 12px;
+                        }
+                    }
+                }
+
+                .card-members {
+                    display: flex;
+                    gap: 4px;
+
+                    .member-avatar {
+                        width: $group-icon-size-large;
+                        height: $group-icon-size-large;
+                        border-radius: 50%;
+                        overflow: hidden;
+
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        }
+
+                        .member-initials {
+                            width: 100%;
+                            height: 100%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            background: var(--ds-background-neutral);
+                            color: var(--ds-text-subtle);
+                            font-size: 12px;
+                            font-weight: $group-font-weight-semibold;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .quick-edit-actions {
+        min-width: 168px;
+        background-color: transparent;
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            padding: 6px 12px;
+            margin-bottom: 4px;
+            border: none;
+            border-radius: $group-border-radius-small;
+            background-color: var(--ds-background-accent-gray-subtlest);
+            color: var(--ds-text);
+            font-size: $group-font-size-base;
+            font-weight: $group-font-weight-regular;
+            line-height: $group-line-height-base;
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.1s ease;
+
+            &:hover {
+                background: var(--ds-background-neutral-hovered);
+            }
+
+            svg {
+                width: $group-icon-size-small;
+                height: $group-icon-size-small;
+                flex-shrink: 0;
+            }
+        }
+    }
+
+    &.left-side {
+        flex-direction: row-reverse;
+    }
+}

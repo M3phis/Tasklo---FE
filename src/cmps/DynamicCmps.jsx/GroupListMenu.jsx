@@ -13,16 +13,16 @@ export function GroupListMenu({
     const menuRef = useRef(null)
 
     const colors = [
-        { name: 'Green', value: '#8de066' },
-        { name: 'Yellow', value: '#f7e44d' },
-        { name: 'Orange', value: '#ffbb59' },
-        { name: 'Red', value: '#f28b82' },
-        { name: 'Purple', value: '#d7a3ef' },
-        { name: 'Blue', value: '#4da8db' },
-        { name: 'Sky', value: '#4dd8f0' },
-        { name: 'Lime', value: '#7bedab' },
-        { name: 'Pink', value: '#ff9ede' },
-        { name: 'Gray', value: '#b3b3b3' }
+        { name: 'Green', value: '#4caf50' },
+        { name: 'Yellow', value: '#ffc107' },
+        { name: 'Orange', value: '#ff9800' },
+        { name: 'Red', value: '#f44336' },
+        { name: 'Purple', value: '#9c27b0' },
+        { name: 'Blue', value: '#2196f3' },
+        { name: 'Sky', value: '#00bcd4' },
+        { name: 'Lime', value: '#8bc34a' },
+        { name: 'Pink', value: '#e91e63' },
+        { name: 'Gray', value: '#607d8b' }
     ]
 
     useEffect(() => {

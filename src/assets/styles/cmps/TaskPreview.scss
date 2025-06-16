@@ -1,16 +1,9 @@
 .task-preview {
-    width: rem(256px);
+    // width: rem(256px);
+    height: 100%;
     border-radius: $group-border-radius-medium;
     box-shadow: var(--ds-box-shadow);
-
-    // display: flow-root;
-    // width: rem(256px);
-    // background-color: var(--ds-background-input);
-    // box-shadow: 0 rem(1px) rem(1px) var(--ds-border), var(--ds-border-bold);
-    // color: var(--ds-text);
-    // // padding: rem(8px) rem(5px) rem(4px);
-    // padding: rem(8px) rem(12px) rem(4px);
-    // overflow-wrap: break-word;
+    overflow: hidden;
 
     &:hover {
         outline: 2px solid var(--ds-border-focused);
@@ -60,18 +53,45 @@
     }
 }
 
+.task-cover {
+    position: relative;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: $group-border-radius-medium $group-border-radius-medium 0 0;
+
+    &.has-color {
+        height: rem(32px);
+        background-size: cover;
+    }
+
+    &.has-image {
+        height: auto;
+        background-size: cover;
+
+        .cover-image {
+            width: 100%;
+            height: auto;
+            // max-height: rem(400px); TOadd?
+            object-fit: cover;
+            display: block;
+        }
+    }
+}
 
 .task-content {
     position: relative;
     background-color: var(--ds-background-input);
     color: var(--ds-text);
-    width: rem(256px);
+    // width: rem(256px);
     padding: rem(8px) rem(12px) rem(4px);
     border-radius: $group-border-radius-medium;
     box-shadow: var(--ds-box-shadow);
     overflow-wrap: break-word;
-    //  display: flow-root;
-    // padding: rem(8px) rem(5px) rem(4px);
+}
+
+.task-cover+.task-content {
+    border-radius: 0 0 $group-border-radius-medium $group-border-radius-medium;
 }
 
 .task-header {
@@ -83,7 +103,8 @@
     // width: rem(232px);
 }
 
-.task-title {
+.task-title,
+.card-title-editable {
     width: rem(210px);
     color: var(--ds-text);
     font-size: $group-font-size-base;
@@ -105,7 +126,7 @@
     font-weight: $group-font-weight-medium;
     border: none;
     border-radius: $group-border-radius-small;
-    margin: 0px rem(4px) 0 rem(-2px);
+    margin: 0 rem(4px) 0 rem(-2px);
     padding: rem(2px);
     opacity: 0;
 
@@ -125,7 +146,7 @@
     margin: 0 rem(2px);
     border-radius: rem(16px);
     padding: rem(6px);
-    top: 0;
+    top: rem(3px);
     right: 0;
     border: none;
 
@@ -141,4 +162,255 @@
 
 .task-delete-btn {
     right: rem(28px);
+}
+
+.task-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.task-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: rem(2px);
+    margin-bottom: rem(4px);
+    min-height: rem(8px);
+}
+
+.task-label {
+    border-radius: rem(3px);
+    font-size: rem(12px);
+    font-weight: $group-font-weight-medium;
+    color: white;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    position: relative;
+    line-height: 1;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+
+    &.collapsed {
+        ////check
+        height: rem(8px);
+        width: rem(40px);
+        border-radius: rem(4px);
+        padding: 0;
+        margin: rem(2px) rem(4px) rem(2px) 0;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+
+        span {
+            display: none;
+        }
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+        }
+    }
+
+    &:not(.collapsed) {
+        padding: rem(4px) rem(8px);
+        height: auto;
+        min-height: rem(20px);
+        max-width: rem(198px);
+        margin: 0 rem(4px) rem(4px) 0;
+        font-weight: $group-font-weight-regular;
+        letter-spacing: 0.02em;
+
+        span {
+            display: block;
+            line-height: rem(16px);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+    }
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    &:active {
+        transform: translateY(0);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    &:focus {
+        outline: rem(2px) solid var(--ds-border-focused);
+        outline-offset: rem(2px);
+    }
+
+    &[style*="#f2d600"],
+    &[style*="#51e898"] {
+        color: var(--ds-text);
+        text-shadow: none;
+    }
+
+    transition: width 0.2s ease,
+    height 0.2s ease,
+    padding 0.2s ease,
+    margin 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+// Task Badges
+.task-badges {
+    display: flex;
+    gap: rem(4px);
+    align-items: center;
+    flex: 1;
+}
+
+.task-badge {
+    display: flex;
+    align-items: center;
+    gap: rem(4px);
+    padding: rem(2px) rem(4px);
+    border-radius: rem(3px);
+    font-size: rem(11px);
+    font-weight: $group-font-weight-regular;
+    line-height: rem(16px);
+    min-height: rem(16px);
+    border: none;
+
+    svg {
+        width: rem(12px);
+        height: rem(12px);
+        flex-shrink: 0;
+    }
+
+    span {
+        white-space: nowrap;
+    }
+
+    // Description 
+    &:not(.date-badge) {
+        background-color: transparent;
+        color: var(--ds-text-accent-gray);
+        padding: rem(2px) rem(4px);
+    }
+
+    // Date badge states 
+    &.date-badge {
+        background-color: transparent;
+        color: var(--ds-text-accent-gray);
+
+        svg {
+            color: var(--ds-text-accent-gray);
+        }
+
+        &.overdue {
+            background-color: var(--ds-background-accent-red-subtlest);
+            color: var(--ds-text-accent-red);
+
+            svg {
+                color: var(--ds-text-accent-red);
+            }
+        }
+
+        &.due-soon {
+            background-color: var(--ds-background-accent-orange-subtlest);
+            color: var(--ds-text-accent-orange);
+
+            svg {
+                color: var(--ds-text-accent-orange);
+            }
+        }
+
+        &.done {
+            background-color: var(--ds-background-accent-green-bolder);
+            color: var(--ds-text-inverse);
+
+            svg {
+                color: var(--ds-text-inverse);
+            }
+        }
+    }
+
+    //Attachment
+    &.attachment-badge {
+        background-color: transparent;
+        color: var(--ds-text-accent-gray);
+
+        svg {
+            color: var(--ds-text-accent-gray);
+        }
+
+        span {
+            color: var(--ds-text-accent-gray);
+            font-size: 11px;
+            // margin-left: 2px;
+        }
+    }
+
+    &.checklist-badge {
+        background-color: transparent;
+        color: var(--ds-text-accent-gray);
+
+        svg {
+            color: var(--ds-text-accent-gray);
+        }
+
+        span {
+            color: var(--ds-text-accent-gray);
+            font-size: rem(11px);
+        }
+
+        // When all checklist items are completed
+        &.completed {
+            background-color: var(--ds-background-accent-green-bolder);
+            color: white;
+
+            svg {
+                color: white;
+            }
+
+            span {
+                color: white;
+            }
+        }
+    }
+}
+
+
+// Task Members
+.task-members {
+    display: flex;
+    gap: rem(4px);
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: auto;
+
+    .task-member-avatar {
+        width: rem(28px);
+        height: rem(28px);
+        border-radius: 50%;
+        overflow: hidden;
+        border: rem(2px) solid var(--ds-background-input);
+        box-shadow: var(--ds-box-shadow);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--ds-background-accent-gray-subtlest);
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .member-initials {
+            font-size: rem(10px);
+            font-weight: $group-font-weight-regular;
+            color: var(--ds-text);
+            text-transform: uppercase;
+        }
+    }
 }

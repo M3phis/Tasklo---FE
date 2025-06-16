@@ -1,0 +1,214 @@
+.attachments-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.attachments-modal {
+  background: #fff;
+  border-radius: 8px;
+  width: 304px;
+  box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25),
+    0 0 0 1px rgba(9, 30, 66, 0.08);
+  color: #172b4d;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    sans-serif;
+
+  &.positioned {
+    position: absolute;
+    top: var(--modal-top);
+    left: var(--modal-left);
+    transform: none;
+  }
+
+  .attachments-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    position: relative;
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .info-icon {
+        flex-shrink: 0;
+        width: 16px;
+        height: 16px;
+        display: block;
+      }
+    }
+
+    span {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 16px;
+      font-weight: 500;
+      color: #172b4d;
+      line-height: 16px;
+    }
+
+    .attachments-modal-close-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6b778c;
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      padding: 0;
+      margin: 0;
+      line-height: 1;
+
+      &:hover {
+        background: #f4f5f7;
+        padding: 2px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  .attachments-modal-content {
+    padding: 0 12px 12px 12px;
+    margin-top: 8px;
+
+    .file-upload-section {
+      margin-bottom: 20px;
+
+      h3 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #172b4d;
+        margin: 0 0 8px 0;
+      }
+
+      .upload-description {
+        font-size: 12px;
+        color: #6b778c;
+        margin: 0 0 12px 0;
+        line-height: 1.4;
+      }
+
+      .choose-file-btn {
+        background: #f4f5f7;
+        border: 1px solid #dfe1e6;
+        border-radius: 3px;
+        padding: 8px 16px;
+        font-size: 14px;
+        color: #172b4d;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-weight: 500;
+        width: 100%;
+        box-sizing: border-box;
+
+        &:hover {
+          background: #e4e6ea;
+        }
+      }
+    }
+
+    .divider {
+      height: 1px;
+      background: #dfe1e6;
+      margin: 20px 0;
+    }
+
+    .link-section {
+      margin-bottom: 20px;
+
+      h3 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #172b4d;
+        margin: 0 0 8px 0;
+
+        &:not(:first-child) {
+          margin-top: 16px;
+        }
+      }
+
+      .link-input,
+      .display-text-input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 2px solid #dfe1e6;
+        border-radius: 3px;
+        font-size: 14px;
+        color: #172b4d;
+        background: #fff;
+        outline: none;
+        transition: border-color 0.2s;
+        box-sizing: border-box;
+
+        &:focus {
+          border-color: #0079bf;
+        }
+
+        &::placeholder {
+          color: #a5adba;
+        }
+      }
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 20px;
+
+      .cancel-btn {
+        background: none;
+        border: none;
+        color: #6b778c;
+        font-size: 14px;
+        cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 3px;
+        transition: background 0.2s;
+
+        &:hover {
+          background: #f4f5f7;
+        }
+      }
+
+      .insert-btn {
+        background: #0079bf;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s;
+
+        &:hover {
+          background: #026aa7;
+        }
+
+        &:disabled {
+          background: #dfe1e6;
+          color: #a5adba;
+          cursor: not-allowed;
+
+          &:hover {
+            background: #dfe1e6;
+          }
+        }
+      }
+    }
+  }
+}

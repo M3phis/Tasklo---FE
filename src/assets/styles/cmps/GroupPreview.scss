@@ -1,16 +1,15 @@
 .group-preview {
   @include group-font-base;
+  display: flex;
+  flex-direction: column;
   background: var(--ds-background-accent-gray-subtlest);
   color: var(--ds-text-subtle);
   width: $group-width;
   border-radius: rem(12px);
   padding-bottom: rem(4px);
   box-shadow: var(--ds-box-shadow);
-
-  max-height: calc(100vh - 180px);
-  display: flex; 
-  flex-direction: column; 
-  flex-shrink: 0; 
+  max-height: 100%;
+  flex-shrink: 0;
 }
 
 .group-header {
@@ -75,9 +74,9 @@
 }
 
 .tasks-container {
-  display: flex; 
-  flex-direction: column; 
-  overflow: hidden; 
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
   scrollbar-color: var(--ds-background-neutral-hovered, #091e4224) var(--ds-background-neutral, #091e420f);
   scrollbar-width: thin;
   // flex: 1; 
@@ -134,7 +133,7 @@
   margin-bottom: rem(3px); //0
 }
 
-.add-btn {
+.add-btn, .save-card-title-edit-btn {
   @include group-font-base;
   color: var(--ds-text-inverse);
   background: var(--ds-background-accent-blue-bolder);

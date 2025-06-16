@@ -28,7 +28,6 @@
 @import 'pages/ReviewIndex';
 @import 'pages/Chat';
 
-
 // Components
 
 @import 'cmps/AppHeader';
@@ -53,14 +52,16 @@
 // Task
 @import 'cmps/TaskList';
 @import 'cmps/TaskPreview';
+@import 'cmps/TaskQuickEdit';
 
 @import 'cmps/TaskDetails';
 @import 'cmps/LabelModal';
 
 @import 'cmps/MembersModal';
-
+@import 'cmps/DatesModal';
+@import 'cmps/Checklist';
+@import 'cmps/AttachmentsModal';
+@import 'cmps/AddChecklistModal';
 @import 'cmps/ReviewEdit';
 @import 'cmps/ReviewList';
 @import 'cmps/ReviewPreview';
-
-
