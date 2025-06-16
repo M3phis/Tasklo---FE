@@ -79,24 +79,7 @@ export function BoardIndex() {
 
   return (
     <section className="board-index">
-      <aside className="home-sidebar">
-        <div className="sidebar-section">
-          <ul>
-            <li>Boards</li>
-            <li>Templates</li>
-            <li>Home</li>
-          </ul>
-        </div>
-      </aside>
-
       <main className="boards-view">
-        <header className="boards-header">
-          <div>
-            <h2>Workspace</h2>
-            <div className="workspace-type">Private</div>
-          </div>
-        </header>
-
         {starredBoards.length > 0 && (
           <section className="starred-board-list">
             <h3>
