@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { useClickAway } from 'react-use'
-import { GroupListMenu } from './DynamicCmps.jsx/GroupListMenu'
+import { GroupListMenu } from './DynamicCmps/GroupListMenu'
 import { TaskList } from './TaskList'
 
 import AddIcon from '@atlaskit/icon/glyph/add'

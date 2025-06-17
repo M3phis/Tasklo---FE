@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { TaskPreview } from './TaskPreview'
+import { TaskDetailsDynamic, MODAL_TYPES } from './DynamicCmps/TaskDetailsDynamic'
 
 import CardIcon from '@atlaskit/icon/core/card'
 import TagIcon from '@atlaskit/icon/core/tag';
@@ -11,9 +12,6 @@ import ArrowRightIcon from '@atlaskit/icon/core/arrow-right'
 import CopyIcon from '@atlaskit/icon/core/copy';
 // import ArchiveBoxIcon from '@atlaskit/icon/core/archive-box';
 import DeleteIcon from '@atlaskit/icon/core/delete'
-import ClockIcon from '@atlaskit/icon/core/clock';
-import TextLengthenIcon from '@atlaskit/icon-lab/core/text-lengthen';
-import CheckCircleIcon from '@atlaskit/icon/core/check-circle'
 
 export function TaskQuickEdit({
     task,
@@ -34,8 +32,13 @@ export function TaskQuickEdit({
     })
     const [calculatedPosition, setCalculatedPosition] = useState(position)
     const [menuSideClass, setMenuSideClass] = useState('')
+    const [activeModal, setActiveModal] = useState(null)
+    const [modalTriggerRef, setModalTriggerRef] = useState(null)
     const quickEditRef = useRef(null)
-    const inputRef = useRef(null);
+    const inputRef = useRef(null)
+    const labelsButtonRef = useRef(null)
+    const membersButtonRef = useRef(null)
+    const datesButtonRef = useRef(null)
 
     useEffect(() => {
         function updateSize() {
@@ -103,8 +106,13 @@ export function TaskQuickEdit({
 
     function handleKeyDown(ev) {
         if (ev.key === 'Escape') {
-            setTitleToEdit(task.title)
-            onClose()
+            if (activeModal) {
+                setActiveModal(null)
+                setModalTriggerRef(null)
+            } else {
+                setTitleToEdit(task.title)
+                onClose()
+            }
         }
     }
 
@@ -128,82 +136,86 @@ export function TaskQuickEdit({
     function handleModalClick(event) {
         event.stopPropagation()
     }
+
+    function openModal(modalType, triggerRef) {
+        setActiveModal(modalType)
+        setModalTriggerRef(triggerRef)
+    }
+
+    function closeModal() {
+        setActiveModal(null)
+        setModalTriggerRef(null)
+    }
+
     return (
-        <div className="quick-edit-backdrop" onClick={handleBackdropClick}>
-            <div
-                ref={quickEditRef}
-                className={`task-quick-edit ${menuSideClass}`}
-                style={{
-                    position: 'fixed',
-                    top: calculatedPosition.y,
-                    left: calculatedPosition.x,
-                    zIndex: 1000
-                }}
-                onClick={handleModalClick}
-            >
-                <div className="quick-edit-card">
-                    <TaskPreview
-                        task={task}
-                        group={group}
-                        board={board}
-                        onRemoveTask={onRemoveTask}
-                        onUpdateTask={onUpdateTask}
-                        isLabelsExtended={isLabelsExtended}
-                        setIsLabelExtended={setIsLabelExtended}
-                        isEditing={true}
-                        editableTitle={titleToEdit}
-                        onTitleChange={handleTitleChange}
-                        onSaveTitle={handleSaveTitle}
-                        onCancelEdit={handleCancelEdit}
-                        inputRef={inputRef}
-                    />
-                </div>
+        <>
+            <div className="quick-edit-backdrop" onClick={handleBackdropClick}>
+                <div
+                    ref={quickEditRef}
+                    className={`task-quick-edit ${menuSideClass}`}
+                    style={{
+                        position: 'fixed',
+                        top: calculatedPosition.y,
+                        left: calculatedPosition.x,
+                        zIndex: 1000
+                    }}
+                    onClick={handleModalClick}
+                >
+                    <div className="quick-edit-card">
+                        <TaskPreview
+                            task={task}
+                            group={group}
+                            board={board}
+                            onRemoveTask={onRemoveTask}
+                            onUpdateTask={onUpdateTask}
+                            isLabelsExtended={isLabelsExtended}
+                            setIsLabelExtended={setIsLabelExtended}
+                            isEditing={true}
+                            editableTitle={titleToEdit}
+                            onTitleChange={handleTitleChange}
+                            onSaveTitle={handleSaveTitle}
+                            onCancelEdit={handleCancelEdit}
+                            inputRef={inputRef}
+                        />
+                    </div>
 
 
+                    <div className={`quick-edit-actions ${menuSideClass}`}>
+                        <button className="action-button" onClick={handleOpenCard}><CardIcon label="Open card" color="currentColor" /><span>Open card</span></button>
 
+                        <button ref={labelsButtonRef} className="action-button" onClick={() => openModal(MODAL_TYPES.LABELS, labelsButtonRef)}><TagIcon label="Edit labels" color="currentColor" /><span>Edit labels</span></button>
 
-                <div className={`quick-edit-actions ${menuSideClass}`}>
-                    <button className="action-button" onClick={handleOpenCard}>
-                        <CardIcon label="Open card" color="currentColor" />
-                        <span>Open card</span>
-                    </button>
+                        <button ref={membersButtonRef} className="action-button" onClick={() => openModal(MODAL_TYPES.MEMBERS, membersButtonRef)}><PersonIcon label="Change members" color="currentColor" /><span>Change members</span></button>
 
-                    <button className="action-button">
-                        <TagIcon label="Edit labels" color="currentColor" />
-                        <span>Edit labels</span>
-                    </button>
+                        <button className="action-button"><ImageIcon label="Change cover" color="currentColor" /><span>Change cover</span></button>
 
-                    <button className="action-button">
-                        <PersonIcon label="Change members" color="currentColor" />
-                        <span>Change members</span>
-                    </button>
+                        <button ref={datesButtonRef} className="action-button" onClick={() => openModal(MODAL_TYPES.DATES, datesButtonRef)}><CalendarIcon label="Edit dates" color="currentColor" /><span>Edit dates</span></button>
 
-                    <button className="action-button">
-                        <ImageIcon label="Change cover" color="currentColor" />
-                        <span>Change cover</span>
-                    </button>
-
-                    <button className="action-button">
-                        <CalendarIcon label="Edit dates" color="currentColor" />
-                        <span>Edit dates</span>
-                    </button>
-
-                    <button className="action-button">
+                        {/* <button className="action-button">
                         <ArrowRightIcon label="Move" color="currentColor" />
                         <span>Move</span>
-                    </button>
+                    </button> */}
 
-                    <button className="action-button">
-                        <CopyIcon label="Copy card" color="currentColor" />
-                        <span>Copy card</span>
-                    </button>
+                        <button className="action-button"><CopyIcon label="Copy card" color="currentColor" /><span>Copy card</span></button>
 
-                    <button className="action-button" onClick={() => onRemoveTask(group.id, task.id)}>
-                        <DeleteIcon label="Delete" color="currentColor" />
-                        <span>Delete</span>
-                    </button>
+                        <button className="action-button" onClick={() => onRemoveTask(group.id, task.id)}><DeleteIcon label="Delete" color="currentColor" /><span>Delete</span></button>
+
+                    </div>
                 </div>
             </div>
-        </div >
+
+            {activeModal && (
+                <TaskDetailsDynamic
+                    type={activeModal}
+                    task={task}
+                    board={board}
+                    group={group}
+                    onClose={closeModal}
+                    onUpdateTask={onUpdateTask}
+                    position={calculatedPosition}
+                    triggerRef={modalTriggerRef}
+                />
+            )}
+        </>
     )
 }
