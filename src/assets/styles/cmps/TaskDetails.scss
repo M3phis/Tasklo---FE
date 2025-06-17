@@ -41,9 +41,8 @@
 .task-details-info {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 6px;
   align-items: flex-start;
-  margin-bottom: 24px;
   padding-left: 24px;
 }
 
@@ -52,14 +51,14 @@
 .task-details-due-date-section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 2px;
   min-width: 0;
   flex: 0 0 auto;
 
   .section-header {
     font-size: 12px;
     font-weight: 600;
-    color: #5e6c84;
+    color: #181c22;
     letter-spacing: 0.04em;
     // text-transform: uppercase;
   }
@@ -631,6 +630,152 @@
 
     &:hover {
       background: #c1c7d0;
+    }
+  }
+}
+
+.task-details-attachments {
+  .attachments-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+
+    .attachments-icon {
+      position: relative;
+      right: 12px;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #172b4d;
+      margin: 0;
+      position: relative;
+      right: 2px;
+    }
+  }
+
+  .attachment-section {
+    margin-left: 20px;
+    margin-bottom: 16px;
+
+    .attachment-section-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #5e6c84;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+      margin-top: 0;
+    }
+  }
+
+  .attachment-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .attachment-link-item {
+    background: #fff;
+    border: 1px solid #dfe1e6;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    transition: box-shadow 0.2s;
+
+    &:hover {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+
+    .attachment-link-content {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      flex: 1;
+      cursor: pointer;
+      min-width: 0;
+
+      .link-icon {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+      }
+
+      .attachment-link-text {
+        color: #172b4d;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        flex: 1;
+      }
+    }
+
+    .attachment-actions {
+      position: relative;
+      padding: 8px;
+
+      .attachment-menu-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.2s, background 0.2s;
+
+        &:hover {
+          background: #e4e6ea;
+        }
+      }
+
+      .attachment-actions-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: #fff;
+        border: 1px solid #dfe1e6;
+        border-radius: 3px;
+        box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25);
+        z-index: 100;
+        min-width: 120px;
+
+        .menu-content {
+          padding: 8px 0;
+
+          .attachment-action-btn {
+            width: 100%;
+            background: none;
+            border: none;
+            text-align: left;
+            padding: 8px 16px;
+            font-size: 14px;
+            color: #172b4d;
+            cursor: pointer;
+
+            &:hover {
+              background: #f4f5f7;
+            }
+          }
+        }
+      }
+    }
+
+    &:hover .attachment-menu-btn {
+      opacity: 1;
     }
   }
 }

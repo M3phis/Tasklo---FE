@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 
-export const AttachmentsModal = ({ onClose, task, position }) => {
+export const AttachmentsModal = ({
+  onClose,
+  task,
+  position,
+  onAddAttachment,
+}) => {
   const modalRef = useRef(null)
   const [linkUrl, setLinkUrl] = useState('')
   const [displayText, setDisplayText] = useState('')
@@ -18,8 +23,23 @@ export const AttachmentsModal = ({ onClose, task, position }) => {
   }, [onClose])
 
   const handleInsert = () => {
-    // Handle insert logic here
-    console.log('Insert attachment:', { linkUrl, displayText })
+    if (!linkUrl.trim()) return
+
+    const newAttachment = {
+      id: Date.now().toString(),
+      type: 'link',
+      url: linkUrl.trim(),
+      title: displayText.trim() || linkUrl.trim(),
+      createdAt: Date.now(),
+    }
+
+    console.log('Insert attachment:', newAttachment)
+
+    // Call the callback to add the attachment
+    if (onAddAttachment) {
+      onAddAttachment(newAttachment)
+    }
+
     onClose()
   }
 
@@ -112,7 +132,11 @@ export const AttachmentsModal = ({ onClose, task, position }) => {
             <button className="cancel-btn" onClick={onClose}>
               Cancel
             </button>
-            <button className="insert-btn" onClick={handleInsert}>
+            <button
+              className="insert-btn"
+              onClick={handleInsert}
+              disabled={!linkUrl.trim()}
+            >
               Insert
             </button>
           </div>

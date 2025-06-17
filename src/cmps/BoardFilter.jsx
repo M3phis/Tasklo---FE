@@ -1,5 +1,4 @@
 import { FaSearch } from 'react-icons/fa'
-import { MdClose } from 'react-icons/md'
 
 export function BoardFilter({ filterBy, onSetFilterBy }) {
   function handleChange({ target }) {
