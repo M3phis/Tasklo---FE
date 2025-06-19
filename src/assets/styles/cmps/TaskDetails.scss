@@ -415,7 +415,7 @@
 
 .task-details-sidebar {
   flex: 2 1 0;
-  background: #f4f5f7;
+  background: #f7f8f9;
   border-radius: 0 0 10px 0;
   border-left: 1px solid #dfe1e6; /* Gray border on left */
   border-top: 1px solid #dfe1e6; /* Gray border on top */
@@ -427,7 +427,7 @@
   max-height: 700px;
   overflow: hidden; /* Sidebar doesn't scroll */
   margin-top: 0;
-  padding: 32px 24px 32px 24px;
+  padding: 16px 0px 32px 24px;
 }
 
 .task-details-activity {
@@ -446,7 +446,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: #44546f;
+    color: #172b4d;
     font-size: 15px;
     font-weight: 500;
     margin-bottom: 8px;
@@ -456,7 +456,7 @@
       align-items: center;
       font-size: 15px;
       font-weight: 500;
-      color: #44546f;
+      color: #172b4d;
       svg {
         margin-right: 6px;
         vertical-align: middle;
@@ -464,12 +464,14 @@
     }
 
     .show-details-btn {
-      background: #f4f5f7;
+      background: #e3e3e3;
       color: #172b4d;
       border: none;
       border-radius: 5px;
       font-size: 14px;
-      font-weight: 500;
+      line-height: 20px;
+      font-weight: 600;
+      letter-spacing: normal;
       padding: 6px 14px;
       cursor: pointer;
       box-shadow: 0 1px 0 rgba(9, 30, 66, 0.08);
