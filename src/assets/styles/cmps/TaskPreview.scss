@@ -4,86 +4,33 @@
     border-radius: $group-border-radius-medium;
     box-shadow: var(--ds-box-shadow);
     overflow: hidden;
-
-    &.editing {
-        cursor: default;
-
-        .task-content {
-            pointer-events: auto;
-
-            .task-header {
-                .task-title-edit {
-                    flex: 1;
-
-                    .card-title-editable {
-                        width: 100%;
-                        max-height: rem(120px);
-                        border-radius: $group-border-radius-small;
-                        padding: rem(8px) rem(12px);
-                        font-size: $group-font-size-base;
-                        font-weight: $group-font-weight-semibold;
-                        line-height: $group-line-height-base;
-                        color: var(--ds-text);
-                        background: var(--ds-background-input);
-                        outline: none;
-                        resize: none;
-                        border: none;
-                        font-family: inherit;
-                        min-height: rem(36px);
-
-                        // &:focus {
-                        //     box-shadow: 0 0 0 2px rgba(0, 121, 191, 0.3);
-                        // }
-                    }
-                }
-            }
-        }
-
-        .task-edit-controls {
-            margin-top: 8px;
-            background-color: transparent;
-
-            .save-card-title-edit-btn {
-                background: #0079bf;
-                color: white;
-                border: none;
-                border-radius: $group-border-radius-small;
-                padding: rem(6px) rem(12px);
-                font-size: rem(14px);
-                font-weight: $group-font-weight-medium;
-                transition: background-color 0.1s ease;
-
-                &:hover {
-                    background: #005a8b;
-                }
-            }
-        }
-    }
+    position: relative;
 
     &:hover {
         outline: 2px solid var(--ds-border-focused);
 
-        .edit-icon {
-            opacity: 1;
-        }
+        // .edit-icon {
+        //     opacity: 1;
+        // }
 
-        .task-done-btn {
-            opacity: 1;
-        }
+        // .task-done-btn {
+        //     opacity: 1;
+        // }
     }
 
     &.task-done {
         .task-title {
-            background-color: var(--ds-background-input);
             color: var(--ds-text-subtlest);
-            width: rem(210px);
-            margin-bottom: rem(4px);
+            // background-color: var(--ds-background-input);
+            // width: rem(210px);
+            // margin-bottom: rem(4px);
         }
 
         .task-done-btn {
-            opacity: 1;
+            background-color: none;
             width: $group-icon-size-medium;
             height: $group-icon-size-medium;
+            opacity: 1;
 
             svg {
                 width: $group-icon-size-small;
@@ -116,7 +63,7 @@
     border-radius: $group-border-radius-medium $group-border-radius-medium 0 0;
 
     &.has-color {
-        height: rem(32px);
+        height: rem(36px);
         background-size: cover;
     }
 
@@ -126,40 +73,41 @@
 
         .cover-image {
             width: 100%;
-            height: auto;
-            // max-height: rem(400px); TOadd?
+            max-height: rem(260px);
             object-fit: cover;
             display: block;
+            // height: auto;
         }
     }
 }
 
 .task-content {
     position: relative;
+    min-height: rem(24px);
     background-color: var(--ds-background-input);
-    color: var(--ds-text);
-    // width: rem(256px);
     padding: rem(8px) rem(12px) rem(4px);
-    border-radius: $group-border-radius-medium;
-    box-shadow: var(--ds-box-shadow);
-    overflow-wrap: break-word;
+    // color: var(--ds-text);
+    // overflow-wrap: break-word;
+    // width: rem(256px);
+    // box-shadow: var(--ds-box-shadow);
+    // border-radius: $group-border-radius-medium;
 }
 
 .task-cover+.task-content {
     border-radius: 0 0 $group-border-radius-medium $group-border-radius-medium;
 }
 
+
 .task-header {
     display: flex;
     flex-flow: row;
     align-items: flex-start;
     justify-content: flex-start;
-    gap: 0;
+    // gap: 0;
     // width: rem(232px);
 }
 
-.task-title,
-.card-title-editable {
+.task-title {
     width: rem(210px);
     color: var(--ds-text);
     font-size: $group-font-size-base;
@@ -173,23 +121,19 @@
     align-items: center;
     justify-content: center;
     background: none;
-    color: var(--ds-text-subtlest);
-    width: $group-icon-size-medium;
-    height: $group-icon-size-medium;
-    font-size: $group-font-size-base;
-    line-height: $group-line-height-base;
-    font-weight: $group-font-weight-medium;
+    color: var(--ds-icon-subtlest);
+    width: rem(16px);
+    height: rem(20px);
     border: none;
-    border-radius: $group-border-radius-small;
     margin: 0 rem(4px) 0 rem(-2px);
     padding: rem(2px);
-    opacity: 0;
+    // opacity: 0;
+    // border-radius: $group-border-radius-small;
 
     svg {
-        width: $group-icon-size-medium;
-        height: $group-icon-size-medium;
+        width: rem(22px);
+        height: rem(24px);
     }
-
 }
 
 .task-edit-btn,
@@ -219,139 +163,139 @@
     right: rem(28px);
 }
 
-.task-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 8px;
+.task-edit-btn.task-cover-btn,
+.task-delete-btn.task-cover-btn {
+    opacity: 1;
+    background-color: var(--ds-background-input);
+
+    &:hover {
+        opacity: 0.9;
+    }
 }
 
 .task-labels {
     display: flex;
     flex-wrap: wrap;
-    gap: rem(2px);
-    margin-bottom: rem(4px);
     min-height: rem(8px);
+    gap: rem(4px);
+    margin-bottom: rem(4px);
 }
 
 .task-label {
-    border-radius: rem(3px);
-    font-size: rem(12px);
-    font-weight: $group-font-weight-medium;
-    color: white;
-    transition: all 0.15s ease;
-    display: flex;
-    align-items: center;
-    position: relative;
-    line-height: 1;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    display: inline-flex;
+    border: none;
+    // align-items: center;
+    // position: relative;
+    // color: white;
 
     &.collapsed {
-        ////check
         height: rem(8px);
         width: rem(40px);
-        border-radius: rem(4px);
+        border-radius: rem(8px);
         padding: 0;
-        margin: rem(2px) rem(4px) rem(2px) 0;
-        border: 1px solid rgba(0, 0, 0, 0.12);
-
-        span {
-            display: none;
-        }
+        margin: 0;
+        border: none;
 
         &:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+            filter: brightness(1.15) saturate(1.1);
         }
     }
 
-    &:not(.collapsed) {
-        padding: rem(4px) rem(8px);
-        height: auto;
-        min-height: rem(20px);
-        max-width: rem(198px);
-        margin: 0 rem(4px) rem(4px) 0;
-        font-weight: $group-font-weight-regular;
-        letter-spacing: 0.02em;
+    // &:not(.collapsed) {
+    //     padding: rem(4px) rem(8px);
+    //     height: auto;
+    //     min-height: rem(20px);
+    //     max-width: rem(198px);
+    //     margin: 0 rem(4px) rem(4px) 0;
+    //     font-weight: $group-font-weight-regular;
+    //     letter-spacing: 0.02em;
 
-        span {
-            display: block;
-            line-height: rem(16px);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100%;
-        }
-    }
+    //     span {
+    //         display: block;
+    //         line-height: rem(16px);
+    //         white-space: nowrap;
+    //         overflow: hidden;
+    //         text-overflow: ellipsis;
+    //         max-width: 100%;
+    //     }
+    // }
 
-    &:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-    }
+    // &:hover {
+    //     transform: translateY(-1px);
+    //     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    // }
 
-    &:active {
-        transform: translateY(0);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
+    // &:active {
+    //     transform: translateY(0);
+    //     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    // }
 
-    &:focus {
-        outline: rem(2px) solid var(--ds-border-focused);
-        outline-offset: rem(2px);
-    }
+    // &:focus {
+    //     outline: rem(2px) solid var(--ds-border-focused);
+    //     outline-offset: rem(2px);
+    // }
 
-    &[style*="#f2d600"],
-    &[style*="#51e898"] {
-        color: var(--ds-text);
-        text-shadow: none;
-    }
+    // &[style*="#f2d600"],
+    // &[style*="#51e898"] {
+    //     color: var(--ds-text);
+    //     text-shadow: none;
+    // }
 
-    transition: width 0.2s ease,
-    height 0.2s ease,
-    padding 0.2s ease,
-    margin 0.2s ease,
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
+    // transition: width 0.2s ease,
+    // height 0.2s ease,
+    // padding 0.2s ease,
+    // margin 0.2s ease,
+    // transform 0.15s ease,
+    // box-shadow 0.15s ease;
 }
 
 // Task Badges
 .task-badges {
     display: flex;
-    gap: rem(4px);
     align-items: center;
-    flex: 1;
+    flex-wrap: wrap;
+    max-width: 100%;
+    min-height: rem(28px);
+    max-height: rem(56px);
+    column-gap: rem(4px);
+    // float: left;
+    // flex: 1;
 }
 
 .task-badge {
     display: flex;
     align-items: center;
-    gap: rem(4px);
-    padding: rem(2px) rem(4px);
-    border-radius: rem(3px);
-    font-size: rem(11px);
-    font-weight: $group-font-weight-regular;
-    line-height: rem(16px);
-    min-height: rem(16px);
-    border: none;
+    justify-content: center;
+    height: rem(24px);
+    padding: rem(2px);
+    margin-bottom: rem(4px);
+    font-size: rem(12px);
+    // gap: rem(4px);
+    // border-radius: rem(3px);
+    // line-height: rem(16px);
+    // border: none;
 
     svg {
-        width: rem(12px);
-        height: rem(12px);
-        flex-shrink: 0;
+        width: rem(14px); ///16
+        height: rem(14px); ///16
+        // flex-shrink: 0;
     }
 
-    span {
-        white-space: nowrap;
-    }
+    // span {
+    //     white-space: nowrap;
+    // }
 
-    // Description 
+    // Description badge styles
     &:not(.date-badge) {
         background-color: transparent;
         color: var(--ds-text-accent-gray);
-        padding: rem(2px) rem(4px);
+        width: rem(24px);
+        height: rem(24px);
+        padding: rem(2px);
+
     }
 
-    // Date badge states 
+    // Date badge states - todo!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     &.date-badge {
         background-color: transparent;
         color: var(--ds-text-accent-gray);
@@ -388,23 +332,26 @@
         }
     }
 
-    //Attachment
+    // Attachment badge styles
     &.attachment-badge {
+        width: rem(36px);
         background-color: transparent;
         color: var(--ds-text-accent-gray);
+
 
         svg {
             color: var(--ds-text-accent-gray);
         }
 
-        span {
-            color: var(--ds-text-accent-gray);
-            font-size: 11px;
-            // margin-left: 2px;
+        span:not(:has(svg)) {
+            padding-right: rem(4px);
+            padding-left: rem(2px);
         }
+
     }
 
     &.checklist-badge {
+        width: rem(47.64px);
         background-color: transparent;
         color: var(--ds-text-accent-gray);
 
@@ -414,27 +361,32 @@
 
         span {
             color: var(--ds-text-accent-gray);
-            font-size: rem(11px);
+            padding-right: rem(2px);
+            padding-left: rem(2px);
         }
 
-        // When all checklist items are completed
         &.completed {
             background-color: var(--ds-background-accent-green-bolder);
-            color: white;
+            color: var(--ds-text-inverse);
 
             svg {
-                color: white;
+                color: var(--ds-text-inverse)
             }
 
             span {
-                color: white;
+                color: var(--ds-text-inverse)
             }
         }
     }
 }
 
+// Task Members -todo!!!!!!!!!!!!!!!
+.task-members-section {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: rem(4px);
+}
 
-// Task Members
 .task-members {
     display: flex;
     gap: rem(4px);
