@@ -143,6 +143,9 @@ export function TaskPreview({
     return total > 0
   }
 
+  const hasCover = task.style?.backgroundImage || task.style?.backgroundColor || task.style?.background;
+
+
   return (
     <>
       <div
@@ -164,8 +167,6 @@ export function TaskPreview({
                   ? `url(${task.style.background})`
                   : 'none',
               backgroundSize: isImageUrl(task.style?.background) || task.style?.backgroundImage ? 'contain' : 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat'
             }}
           >
             {(task.style.backgroundImage || isImageUrl(task.style?.background)) && (
@@ -178,30 +179,29 @@ export function TaskPreview({
                 }}
               />
             )}
-
-            {isHovered && (
-              <>
-                <button
-                  className="task-edit-btn task-cover-btn"
-                  onClick={handleEditClick}
-                  title="Edit card"
-                >
-                  <EditIcon label="Edit card" color="#172B4D" />
-                </button>
-
-                {isDone && (
-                  <button
-                    className="task-delete-btn task-cover-btn"
-                    onClick={handleRemoveClick}
-                    title="Delete card"
-                  >
-                    <DeleteIcon label="Delete card" color="#172B4D" />
-                  </button>
-                )}
-              </>
-            )}
-
           </div>
+        )}
+
+        {isHovered && !isEditing && (
+          <>
+            <button
+              className={`task-edit-btn ${hasCover ? 'task-cover-btn' : ''}`}
+              onClick={handleEditClick}
+              title="Edit card"
+            >
+              <EditIcon label="Edit card" />
+            </button>
+
+            {isDone && (
+              <button
+                className={`task-delete-btn ${hasCover ? 'task-cover-btn' : ''}`}
+                onClick={handleRemoveClick}
+                title="Delete card"
+              >
+                <DeleteIcon label="Delete card" />
+              </button>
+            )}
+          </>
         )}
 
         <div className="task-content">
@@ -254,12 +254,12 @@ export function TaskPreview({
               <button
                 className="task-done-btn"
                 onClick={handleDoneToggle}
-                title={isDone ? 'Mark as undone' : 'Mark as done'}
+                title={isDone ? 'Mark incomplete' : 'Mark complete'}
               >
                 {isDone ? (
-                  <CheckCircleIcon label="Mark as incomplete" />
+                  <CheckCircleIcon label="Mark incomplete" />
                 ) : (
-                  <MediaServicesPreselectedIcon label="Mark as complete" />
+                  <MediaServicesPreselectedIcon label="Mark complete" primaryColor='#626F86' />
                 )}
               </button>
             )}
@@ -287,36 +287,40 @@ export function TaskPreview({
             )}
           </div>
 
-          <div className="task-info">
-            <div className="task-badges">
-              {task.dueDate && (
-                <div className={`task-badge date-badge ${getDateStatus()}`}>
-                  <ClockIcon label="Due date" color="currentColor" />
-                  <span>{formatDate()}</span>
-                </div>
-              )}
+          <div className="task-badges-section">
+            {(task.dueDate || task.description || getAttachmentCount() > 0 || hasChecklist()) && (
+              <div className="task-badges">
+                {task.dueDate && (
+                  <div className={`task-badge date-badge ${getDateStatus()}`}>
+                    <ClockIcon label="Due date" primaryColor=" #44546F" />
+                    <span>{formatDate()}</span>
+                  </div>
+                )}
 
-              {task.description && (
-                <div className="task-badge">
-                  <TextLengthenIcon label="TextLengthenIcon" color="currentColor" />
-                </div>
-              )}
+                {task.description && (
+                  <div className="task-badge">
+                    <TextLengthenIcon label="TextLengthenIcon" primaryColor=" #44546F" />
+                  </div>
+                )}
 
-              {getAttachmentCount() > 0 && (
-                <div className="task-badge attachment-badge">
-                  <AttachmentIcon label="Attachments" size="small" />
-                  <span>{getAttachmentCount()}</span>
-                </div>
-              )}
+                {getAttachmentCount() > 0 && (
+                  <div className="task-badge attachment-badge">
+                    <AttachmentIcon label="Attachments" size="small" primaryColor=" #44546F" />
+                    <span>{getAttachmentCount()}</span>
+                  </div>
+                )}
 
-              {hasChecklist() && (
-                <div className={`task-badge checklist-badge ${getChecklistCount().completed === getChecklistCount().total && getChecklistCount().total > 0 ? 'completed' : ''}`}>
-                  <TaskIcon label="Checklist" color="currentColor" />
-                  <span>{getChecklistCount().completed}/{getChecklistCount().total}</span>
-                </div>
-              )}
-            </div>
+                {hasChecklist() && (
+                  <div className={`task-badge checklist-badge ${getChecklistCount().completed === getChecklistCount().total && getChecklistCount().total > 0 ? 'completed' : ''}`}>
+                    <TaskIcon label="Checklist" primaryColor=" #44546F" />
+                    <span>{getChecklistCount().completed}/{getChecklistCount().total}</span>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
 
+          <div className="task-members-section">
             {task.memberIds && task.memberIds.length > 0 && (
               <div className="task-members">
                 {board.members
