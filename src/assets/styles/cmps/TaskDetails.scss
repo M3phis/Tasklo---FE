@@ -243,8 +243,8 @@
   .task-done-checkbox {
     position: relative;
     right: 10px;
-    width: 22px;
-    height: 22px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
     border: 1px solid rgba(0, 0, 0, 0.777);
     background: #fff;
@@ -420,7 +420,7 @@
   border-left: 1px solid #dfe1e6; /* Gray border on left */
   border-top: 1px solid #dfe1e6; /* Gray border on top */
   min-width: 260px;
-  max-width: 400px;
+  max-width: 444px;
   display: flex;
   flex-direction: column;
   height: 700px;
