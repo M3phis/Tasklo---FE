@@ -83,6 +83,12 @@
     // width: rem(256px);
     // box-shadow: var(--ds-box-shadow);
     // border-radius: $group-border-radius-medium;
+
+    &::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
 }
 
 .task-cover+.task-content {
@@ -247,6 +253,7 @@
     align-items: center;
     flex-wrap: wrap;
     max-width: 100%;
+    float: left;
     min-height: rem(28px);
     max-height: rem(56px);
     column-gap: rem(4px);
@@ -404,8 +411,9 @@
 .task-members {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    // align-items: center;
     justify-content: right;
+    float: right;
     margin-right: rem(-4px);
     margin-bottom: rem(4px);
     height: rem(24px);
