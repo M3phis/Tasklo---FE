@@ -8,14 +8,6 @@
 
     &:hover {
         outline: 2px solid var(--ds-border-focused);
-
-        // .edit-icon {
-        //     opacity: 1;
-        // }
-
-        // .task-done-btn {
-        //     opacity: 1;
-        // }
     }
 
     &.task-done {
@@ -293,19 +285,43 @@
         height: rem(24px);
         padding: rem(2px);
 
+        span {
+            padding: rem(3px);
+
+            svg {
+                color: var(--ds-text-accent-gray);
+            }
+        }
+
+        span:not(:has(svg)) {
+            padding: 0;
+            padding-right: rem(4px);
+            padding-left: rem(2px);
+        }
+
     }
 
-    // Date badge states - todo!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // Date badge
     &.date-badge {
         background-color: transparent;
         color: var(--ds-text-accent-gray);
 
-        svg {
-            color: var(--ds-text-accent-gray);
+        span {
+            padding: rem(3px);
+
+            svg {
+                color: var(--ds-text-accent-gray);
+            }
+        }
+
+        span:not(:has(svg)) {
+            padding: 0;
+            padding-right: rem(4px);
+            padding-left: rem(2px);
         }
 
         &.overdue {
-            background-color: var(--ds-background-accent-red-subtlest);
+            background-color: var(--ds-background-accent-red-subtler);
             color: var(--ds-text-accent-red);
 
             svg {
@@ -314,11 +330,11 @@
         }
 
         &.due-soon {
-            background-color: var(--ds-background-accent-orange-subtlest);
-            color: var(--ds-text-accent-orange);
+            background-color: var(--ds-background-accent-yellow-subtle);
+            color: var(--ds-text-warning-inverse);
 
             svg {
-                color: var(--ds-text-accent-orange);
+                color: var(--ds-text-warning-inverse);
             }
         }
 
@@ -332,38 +348,17 @@
         }
     }
 
-    // Attachment badge styles
+    // Attachment badge
     &.attachment-badge {
         width: rem(36px);
         background-color: transparent;
         color: var(--ds-text-accent-gray);
-
-
-        svg {
-            color: var(--ds-text-accent-gray);
-        }
-
-        span:not(:has(svg)) {
-            padding-right: rem(4px);
-            padding-left: rem(2px);
-        }
-
     }
 
     &.checklist-badge {
         width: rem(47.64px);
         background-color: transparent;
         color: var(--ds-text-accent-gray);
-
-        svg {
-            color: var(--ds-text-accent-gray);
-        }
-
-        span {
-            color: var(--ds-text-accent-gray);
-            padding-right: rem(2px);
-            padding-left: rem(2px);
-        }
 
         &.completed {
             background-color: var(--ds-background-accent-green-bolder);
@@ -380,44 +375,40 @@
     }
 }
 
-// Task Members -todo!!!!!!!!!!!!!!!
-.task-members-section {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: rem(4px);
-}
-
+// Task Members
 .task-members {
     display: flex;
-    gap: rem(4px);
     flex-wrap: wrap;
     align-items: center;
-    justify-content: flex-end;
-    margin-left: auto;
+    justify-content: right;
+    margin-right: rem(-4px);
+    margin-bottom: rem(4px);
+    height: rem(24px);
+    gap: rem(4px);
 
     .task-member-avatar {
-        width: rem(28px);
-        height: rem(28px);
-        border-radius: 50%;
-        overflow: hidden;
-        border: rem(2px) solid var(--ds-background-input);
-        box-shadow: var(--ds-box-shadow);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: var(--ds-background-accent-gray-subtlest);
-
+        border: 0;
+        height: rem(24px);
+        
         img {
-            width: 100%;
-            height: 100%;
+            width: rem(24px);
+            height: rem(24px);
+            border-radius: 100%;
             object-fit: cover;
+            opacity: 1;
+            // line-height: rem(10px);
+            // vertical-align: top;
         }
 
-        .member-initials {
-            font-size: rem(10px);
-            font-weight: $group-font-weight-regular;
-            color: var(--ds-text);
-            text-transform: uppercase;
+        & :hover {
+            opacity: 0.8;
         }
+
+        // .member-initials {
+        //     font-size: rem(10px);
+        //     font-weight: $group-font-weight-regular;
+        //     color: var(--ds-text);
+        //     text-transform: uppercase;
+        // }
     }
 }
