@@ -277,7 +277,7 @@
     //     white-space: nowrap;
     // }
 
-    // Description badge styles
+    // All badges 
     &:not(.date-badge) {
         background-color: transparent;
         color: var(--ds-text-accent-gray);
@@ -301,10 +301,19 @@
 
     }
 
+    // Description badge 
+    &.description-badge {
+        svg {
+            width: rem(12px); ///16
+            height: rem(12px); ///16
+        }
+    }
+
     // Date badge
     &.date-badge {
         background-color: transparent;
         color: var(--ds-text-accent-gray);
+        border-radius: rem(3px);
 
         span {
             padding: rem(3px);
@@ -348,6 +357,21 @@
         }
     }
 
+    //Comments badge
+    &.comments-badge {
+        width: rem(36.48px);
+        background-color: transparent;
+        color: var(--ds-text-accent-gray);
+
+        svg {
+            color: var(--ds-text-accent-gray);
+        }
+
+        span {
+            color: var(--ds-text-accent-gray);
+        }
+    }
+
     // Attachment badge
     &.attachment-badge {
         width: rem(36px);
@@ -359,6 +383,7 @@
         width: rem(47.64px);
         background-color: transparent;
         color: var(--ds-text-accent-gray);
+        border-radius: rem(3px);
 
         &.completed {
             background-color: var(--ds-background-accent-green-bolder);
@@ -389,7 +414,7 @@
     .task-member-avatar {
         border: 0;
         height: rem(24px);
-        
+
         img {
             width: rem(24px);
             height: rem(24px);

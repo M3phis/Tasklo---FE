@@ -6,10 +6,11 @@ import EditIcon from '@atlaskit/icon/core/edit'
 import DeleteIcon from '@atlaskit/icon/core/delete'
 import CheckCircleIcon from '@atlaskit/icon/core/check-circle'
 import MediaServicesPreselectedIcon from '@atlaskit/icon/glyph/media-services/preselected'
-import ClockIcon from '@atlaskit/icon/core/clock';
-import TextLengthenIcon from '@atlaskit/icon-lab/core/text-lengthen';
-import AttachmentIcon from '@atlaskit/icon/core/attachment';
+import ClockIcon from '@atlaskit/icon/core/clock'
+import TextLengthenIcon from '@atlaskit/icon-lab/core/text-lengthen'
+import AttachmentIcon from '@atlaskit/icon/core/attachment'
 import TaskIcon from '@atlaskit/icon/core/task'
+import CommentIcon from '@atlaskit/icon/core/comment'
 
 export function TaskPreview({
   task,
@@ -143,6 +144,14 @@ export function TaskPreview({
     return total > 0
   }
 
+  function getCommentsCount() {
+    if (!task.comments || !Array.isArray(task.comments)) return 0
+    return task.comments.length
+  }
+
+  function hasComments() {
+    return getCommentsCount() > 0
+  }
   const hasCover = task.style?.backgroundImage || task.style?.backgroundColor || task.style?.background;
 
 
@@ -298,8 +307,15 @@ export function TaskPreview({
                 )}
 
                 {task.description && (
-                  <div className="task-badge">
+                  <div className="task-badge description-badge">
                     <TextLengthenIcon label="TextLengthenIcon" primaryColor=" #44546F" />
+                  </div>
+                )}
+
+                {hasComments() && (
+                  <div className="task-badge comments-badge">
+                    <CommentIcon label="Comments" primaryColor=" #44546F" />
+                    <span>{getCommentsCount()}</span>
                   </div>
                 )}
 
