@@ -10,243 +10,62 @@
 
 .task-quick-edit {
     display: flex;
-    gap: 8px;
+    align-items: start;
+    gap: rem(6px);
 
     .quick-edit-card {
         width: rem(256px);
-        border-radius: $group-border-radius-medium;
-        box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25), 0 0 0 1px rgba(9, 30, 66, 0.08);
-        overflow: hidden;
+        // gap: rem(2px);
+        // overflow: hidden;
 
         .task-preview {
-            background: transparent;
-            box-shadow: none;
-            margin-bottom: 0;
-            border-radius: 0;
+            border-radius: rem(3px);
 
-            .task-content {
-                padding: 8px 12px 12px;
+            &.editing {
+                .task-content {
+                    min-height: rem(64px);
+                    border-radius: 0 0 $group-border-radius-medium $group-border-radius-medium;
 
-                .task-labels {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 4px;
-                    margin-bottom: 8px;
-                }
+                    .task-header {
+                        display: flow-root;
+                        margin-bottom: rem(4px);
 
-                .task-label {
-                    height: 8px;
-                    border-radius: $group-border-radius-mini;
-                    min-width: 40px;
-                    cursor: pointer;
-                    transition: all 0.1s ease;
-                    display: flex;
-                    align-items: center;
-                    padding: 0 8px;
-
-                    &.collapsed {
-                        min-width: 40px;
-                        padding: 0;
-                    }
-
-                    span {
-                        font-size: 12px;
-                        font-weight: $group-font-weight-medium;
-                        color: white;
-                        display: none;
-                    }
-
-                    &:not(.collapsed) {
-                        height: $group-icon-size-small;
-                        min-height: $group-icon-size-small;
-                        line-height: $group-icon-size-small;
-
-                        span {
-                            display: block;
-                        }
-                    }
-
-                    &:hover {
-                        opacity: 0.8;
-                    }
-                }
-
-                .task-header {
-                    margin-bottom: 8px;
-
-                    .task-title-edit {
-                        .card-title-editable {
-                            width: 100%;
-                            max-height: rem(120px);
-                            border-radius: $group-border-radius-small;
-                            padding: rem(8px) rem(12px);
-                            font-size: $group-font-size-base;
-                            font-weight: $group-font-weight-semibold;
-                            line-height: $group-line-height-base;
-                            color: var(--ds-text);
-                            background: var(--ds-background-input);
-                            outline: none;
-                            resize: none;
-                            font-family: inherit;
-                            min-height: rem(36px);
-
-                            // &:focus {
-                            //     box-shadow: 0 0 0 2px rgba(0, 121, 191, 0.3);
-                            // }
-                        }
-                    }
-
-                    .task-title {
-                        font-size: $group-font-size-base;
-                        font-weight: $group-font-weight-semibold;
-                        line-height: $group-line-height-base;
-                        color: var(--ds-text);
-                        word-wrap: break-word;
-                    }
-                }
-
-                .task-info {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    margin-top: 4px;
-                }
-
-                .task-badges {
-                    display: flex;
-                    gap: 4px;
-                    align-items: center;
-                    flex-wrap: wrap;
-                }
-
-                .task-badges {
-                    display: flex;
-                    gap: 4px;
-                    align-items: center;
-                    flex: 1;
-                }
-
-                .task-badge {
-                    display: flex;
-                    align-items: center;
-                    gap: 4px;
-                    padding: 2px 4px;
-                    border-radius: 3px;
-                    font-size: 11px;
-                    font-weight: 400;
-                    line-height: 16px;
-                    min-height: 16px;
-                    border: none;
-
-                    svg {
-                        width: 12px;
-                        height: 12px;
-                        flex-shrink: 0;
-                    }
-
-                    span {
-                        white-space: nowrap;
-                    }
-
-                    // Description 
-                    &:not(.date-badge) {
-                        background-color: transparent;
-                        color: var(--ds-text-accent-gray);
-                        padding: 2px 4px;
-
-                        &:hover {
-                            background-color: var(--ds-background-accent-gray-subtlest);
-                        }
-                    }
-
-                    // Date badge states 
-                    &.date-badge {
-                        background-color: transparent;
-                        color: var(--ds-text-accent-gray);
-
-                        &:hover {
-                            background-color: var(--ds-background-accent-gray-subtlest-hovered);
-                        }
-
-                        svg {
-                            color: var(--ds-text-accent-gray);
-                        }
-
-                        &.overdue {
-                            background-color: var(--ds-background-accent-red-subtlest);
-                            color: var(--ds-text-accent-red);
-
-                            &:hover {
-                                background-color: var(--ds-background-accent-red-subtlest-hovered);
+                        .task-title-edit {
+                            .card-title-editable {
+                                width: 100%;
+                                max-height: rem(120px);
+                                min-height: rem(56px);
+                                font-size: $group-font-size-base;
+                                font-weight: $group-font-weight-regular;
+                                line-height: $group-line-height-base;
+                                color: var(--ds-text);
+                                background: var(--ds-background-input);
+                                outline: none;
+                                resize: none;
+                                border: none;
+                                font-family: inherit;
+                                word-wrap: break-word;
+                                // padding: rem(8px) rem(12px);
                             }
 
-                            svg {
-                                color: var(--ds-text-accent-red);
-                            }
                         }
 
-                        &.due-soon {
-                            background-color: var(--ds-background-accent-orange-subtlest);
-                            color: var(--ds-text-accent-orange);
-
-                            &:hover {
-                                background-color: var(--ds-background-accent-orange-subtlest-hovered);
-                            }
-
-                            svg {
-                                color: var(--ds-text-accent-orange);
-                            }
-                        }
-
-                        &.done {
-                            background-color: var(--ds-background-accent-green-bolder);
-                            color: var(--ds-text-inverse);
-
-                            &:hover {
-                                background-color: var(--ds-background-accent-green-subtlest-hovered);
-                            }
-
-                            svg {
-                                color: var(--ds-text-inverse);
-                            }
-                        }
                     }
                 }
 
-                .task-members {
-                    display: flex;
-                    gap: 4px;
-                }
-
-                .task-member-avatar {
-                    width: rem(28px);
-                    height: rem(28px);
-                    border-radius: 50%;
-                    overflow: hidden;
-                    background: var(--ds-background-accent-gray-subtlest);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-
-                    img {
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                    }
-
-                    .member-initials {
-                        font-size: 12px;
-                        font-weight: $group-font-weight-semibold;
-                        color: var(--ds-text-subtle);
-                    }
+                &:hover {
+                    outline: none;
                 }
 
                 .task-edit-controls {
-                    margin-top: 4px;
+                    border-radius: $group-border-radius-small;
 
                     .save-card-title-edit-btn {
+                        width: rem(53.36px);
+                        height: rem(32px);
+                        margin-top: rem(8px);
                         background: var(--ds-background-accent-blue-bolder);
-                        color: white;
+                        color: var(--ds-text-inverse);
                         border: none;
                         border-radius: $group-border-radius-small;
                         padding: rem(6px) rem(12px);
@@ -260,69 +79,62 @@
                             background: var(--ds-background-accent-blue-bolder-hovered);
                         }
 
-                        &:focus {
-                            background: var(--ds-background-accent-blue-bolder);
-                            box-shadow: 0 0 0 2px rgba(0, 121, 191, 0.3);
-                        }
+                        // &:focus {
+                        //     background: var(--ds-background-accent-blue-bolder);
+                        //     box-shadow: 0 0 0 2px rgba(0, 121, 191, 0.3);
+                        // }
                     }
                 }
-            }
-        }
-
-        .task-cover {
-            height: rem(32px);
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            border-radius: $group-border-radius-medium $group-border-radius-medium 0 0;
-
-            &.has-image {
-                height: rem(32px);
-            }
-
-            &.has-color {
-                height: rem(32px);
-            }
-
-            .cover-image {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                border-radius: $group-border-radius-medium $group-border-radius-medium 0 0;
             }
         }
     }
 
     .quick-edit-actions {
-        min-width: 168px;
-        background-color: transparent;
+        // width: rem(157.46px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
 
         .action-button {
             display: flex;
             align-items: center;
-            gap: 8px;
-            width: 100%;
-            padding: 6px 12px;
-            margin-bottom: 4px;
-            border: none;
-            border-radius: $group-border-radius-small;
+            height: rem(32px);
             background-color: var(--ds-background-accent-gray-subtlest);
             color: var(--ds-text);
+            margin: 0;
+            margin-bottom: rem(4px);
+            padding: rem(6px) rem(12px) rem(6px) rem(10px);
+            border-radius: $group-border-radius-small;
+            font-family: inherit;
             font-size: $group-font-size-base;
-            font-weight: $group-font-weight-regular;
             line-height: $group-line-height-base;
-            text-align: left;
+            font-weight: $group-font-weight-medium;
             transition: background 0.1s ease;
+            // border: none;
+            // display: flex;
+            // align-items: center;
+            // gap: 8px;
+            // width: 100%;
+            // text-align: left;
 
             &:hover {
                 background: var(--ds-background-accent-gray-subtler);
             }
 
             svg {
-                width: $group-icon-size-small;
-                height: $group-icon-size-small;
-                flex-shrink: 0;
+                width: rem(16px);
+                height: rem(16px);
+                margin-right: rem(8px);
+                // flex-shrink: 0;
             }
+
+            &.clock-icon svg,
+            &.delete-icon svg {
+                width: rem(14px);
+                height: rem(14px);
+            }
+
         }
     }
 

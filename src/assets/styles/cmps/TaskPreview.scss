@@ -311,8 +311,8 @@
     // Description badge 
     &.description-badge {
         svg {
-            width: rem(12px); ///16
-            height: rem(12px); ///16
+            width: rem(16px); ///16
+            height: rem(16px); ///16
         }
     }
 
@@ -372,6 +372,9 @@
 
         svg {
             color: var(--ds-text-accent-gray);
+            width: rem(20px);
+            height: rem(16px);
+
         }
 
         span {
@@ -387,21 +390,30 @@
     }
 
     &.checklist-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: rem(47.64px);
         background-color: transparent;
         color: var(--ds-text-accent-gray);
         border-radius: rem(3px);
+
+        svg {
+            width: 20px;
+        }
 
         &.completed {
             background-color: var(--ds-background-accent-green-bolder);
             color: var(--ds-text-inverse);
 
             svg {
-                color: var(--ds-text-inverse)
+                fill: var(--ds-text-inverse);
+                // color: var(--ds-text-inverse);
+
             }
 
             span {
-                color: var(--ds-text-inverse)
+                color: var(--ds-text-inverse);
             }
         }
     }
