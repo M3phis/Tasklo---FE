@@ -36,6 +36,9 @@ export function TaskDetails({}) {
   const [activeButton, setActiveButton] = useState(null)
   const [showAttachmentMenu, setShowAttachmentMenu] = useState(null)
   const [editingAttachment, setEditingAttachment] = useState(null)
+  const [showFileMenu, setShowFileMenu] = useState(null)
+  const [editingFile, setEditingFile] = useState(null)
+  const [editingFileName, setEditingFileName] = useState('')
 
   const { handleUpdateTask } = useOutletContext()
   useEffect(() => {
@@ -249,6 +252,81 @@ export function TaskDetails({}) {
     }
     handleUpdateTask(updatedGroup)
   }
+
+  const handleOpenFile = (fileUrl) => {
+    window.open(fileUrl, '_blank')
+  }
+
+  const handleEditFile = (file) => {
+    setEditingFile(file)
+    setEditingFileName(file.name || file.title || '')
+    setShowFileMenu(null)
+  }
+
+  const handleSaveFileName = () => {
+    const updatedAttachments = task.attachments.map((att) => {
+      if (att.id === editingFile.id) {
+        // Update the property that exists (name or title)
+        if (att.name !== undefined) {
+          return { ...att, name: editingFileName }
+        } else {
+          return { ...att, title: editingFileName }
+        }
+      }
+      return att
+    })
+    const updatedTask = { ...task, attachments: updatedAttachments }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    handleUpdateTask(updatedGroup)
+    setEditingFile(null)
+    setEditingFileName('')
+  }
+
+  const handleCancelFileEdit = () => {
+    setEditingFile(null)
+    setEditingFileName('')
+  }
+
+  const handleDeleteFile = (fileId) => {
+    const updatedAttachments = task.attachments.filter(
+      (att) => att.id !== fileId
+    )
+    const updatedTask = { ...task, attachments: updatedAttachments }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    handleUpdateTask(updatedGroup)
+    setShowFileMenu(null)
+  }
+
+  const formatFileDate = (timestamp) => {
+    const date = new Date(timestamp)
+    return `Added ${date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    })}, ${date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+    })}`
+  }
+
+  const getFaviconUrl = (url) => {
+    try {
+      const domain = new URL(url).hostname
+      return `https://www.google.com/s2/favicons?domain=${domain}&sz=16`
+    } catch {
+      return null
+    }
+  }
+
+  // Debug: Log task data to see attachment structure
+  console.log('Task data:', task)
+  console.log('Task attachments:', task.attachments)
 
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
@@ -572,20 +650,37 @@ export function TaskDetails({}) {
                               }
                             >
                               <div className="link-icon">
-                                <svg
-                                  width="14"
-                                  height="14"
-                                  viewBox="0 0 14 14"
-                                  fill="none"
-                                >
-                                  <path
-                                    d="M11.5 1.5L6.5 6.5M11.5 1.5L8 1.5M11.5 1.5V5M6 2.5H4.5C3.11929 2.5 2 3.61929 2 5V9.5C2 10.8807 3.11929 12 4.5 12H9C10.3807 12 11.5 10.8807 11.5 9.5V8"
-                                    stroke="#ae2a19"
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
+                                {getFaviconUrl(attachment.url) ? (
+                                  <img
+                                    src={getFaviconUrl(attachment.url)}
+                                    alt="favicon"
+                                    width="16"
+                                    height="16"
+                                    onError={(e) => {
+                                      // Fallback to default icon if favicon fails
+                                      e.target.style.display = 'none'
+                                      e.target.parentElement.innerHTML = `
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                          <path d="M11.5 1.5L6.5 6.5M11.5 1.5L8 1.5M11.5 1.5V5M6 2.5H4.5C3.11929 2.5 2 3.61929 2 5V9.5C2 10.8807 3.11929 12 4.5 12H9C10.3807 12 11.5 10.8807 11.5 9.5V8" stroke="#ae2a19" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                        </svg>`
+                                    }}
                                   />
-                                </svg>
+                                ) : (
+                                  <svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    fill="none"
+                                  >
+                                    <path
+                                      d="M11.5 1.5L6.5 6.5M11.5 1.5L8 1.5M11.5 1.5V5M6 2.5H4.5C3.11929 2.5 2 3.61929 2 5V9.5C2 10.8807 3.11929 12 4.5 12H9C10.3807 12 11.5 10.8807 11.5 9.5V8"
+                                      stroke="#ae2a19"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    />
+                                  </svg>
+                                )}
                               </div>
                               <span className="attachment-link-text">
                                 {attachment.title || attachment.url}
@@ -658,13 +753,118 @@ export function TaskDetails({}) {
                   </div>
                 )}
 
-                {/* Files Section - Placeholder for future implementation */}
-                {task.attachments.filter((att) => att.type === 'file').length >
-                  0 && (
+                {/* Files Section */}
+                {task.attachments && task.attachments.length > 0 && (
                   <div className="attachment-section">
                     <h4 className="attachment-section-title">Files</h4>
                     <div className="attachment-files">
-                      {/* Files will be implemented here */}
+                      {task.attachments
+                        .filter((att) => {
+                          console.log('Attachment:', att)
+                          return att.url && (att.type === 'file' || !att.type)
+                        })
+                        .map((file) => (
+                          <div key={file.id} className="attachment-file-item">
+                            <div className="file-content">
+                              <img
+                                src={file.url}
+                                alt={file.name}
+                                className="file-thumbnail"
+                                onError={(e) => {
+                                  e.target.style.display = 'none'
+                                }}
+                              />
+                              <div className="file-info">
+                                <div className="file-name">
+                                  {file.name || file.title || 'Untitled'}
+                                </div>
+                                <div className="file-date">
+                                  {formatFileDate(
+                                    file.createdAt || file.addedAt || Date.now()
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="file-actions">
+                              <button
+                                className="file-open-btn"
+                                onClick={() => handleOpenFile(file.url)}
+                                title="Open in new tab"
+                              >
+                                <svg viewBox="0 0 16 16" fill="currentColor">
+                                  <path d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z" />
+                                  <path d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z" />
+                                </svg>
+                              </button>
+                              <button
+                                className="file-menu-btn"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  setShowFileMenu(
+                                    showFileMenu === file.id ? null : file.id
+                                  )
+                                }}
+                              >
+                                <svg viewBox="0 0 16 16" fill="currentColor">
+                                  <circle cx="8" cy="2.5" r="1.5" />
+                                  <circle cx="8" cy="8" r="1.5" />
+                                  <circle cx="8" cy="13.5" r="1.5" />
+                                </svg>
+                              </button>
+                              {showFileMenu === file.id && (
+                                <div className="file-edit-modal">
+                                  <div className="file-edit-header">
+                                    Edit attachment
+                                  </div>
+                                  {editingFile && editingFile.id === file.id ? (
+                                    <>
+                                      <input
+                                        className="file-edit-input"
+                                        value={editingFileName}
+                                        onChange={(e) =>
+                                          setEditingFileName(e.target.value)
+                                        }
+                                        placeholder="File name"
+                                        autoFocus
+                                      />
+                                      <div className="file-edit-actions">
+                                        <button
+                                          className="file-edit-save-btn"
+                                          onClick={handleSaveFileName}
+                                        >
+                                          Update
+                                        </button>
+                                        <button
+                                          className="file-edit-cancel-btn"
+                                          onClick={handleCancelFileEdit}
+                                        >
+                                          Cancel
+                                        </button>
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <div className="file-edit-menu">
+                                      <button
+                                        className="file-edit-menu-item"
+                                        onClick={() => handleEditFile(file)}
+                                      >
+                                        Edit
+                                      </button>
+                                      <button
+                                        className="file-edit-menu-item delete"
+                                        onClick={() =>
+                                          handleDeleteFile(file.id)
+                                        }
+                                      >
+                                        Delete
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
                     </div>
                   </div>
                 )}

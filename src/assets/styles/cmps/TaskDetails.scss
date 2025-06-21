@@ -741,23 +741,27 @@
 
   .attachment-link-item {
     background: #fff;
-    border: 1px solid #dfe1e6;
+    border: 1px solid #edeef2;
+    border-top: 0.2px solid #edeef1;
     border-radius: 3px;
     display: flex;
+    padding: 8px 6px;
+    height: 40px;
     align-items: center;
     justify-content: space-between;
     position: relative;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Small bottom shadow */
     transition: box-shadow 0.2s;
 
     &:hover {
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     }
 
     .attachment-link-content {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 12px 16px;
+      padding: 16px 6px 16px 0px; /* Further reduced to 6px for even thinner height */
       flex: 1;
       cursor: pointer;
       min-width: 0;
@@ -786,19 +790,24 @@
       padding: 8px;
 
       .attachment-menu-btn {
-        background: none;
+        background: #f4f5f7; /* Gray background */
         border: none;
         cursor: pointer;
-        padding: 4px;
+        padding: 4px 6px;
         border-radius: 3px;
         display: flex;
         align-items: center;
         justify-content: center;
-        opacity: 0;
-        transition: opacity 0.2s, background 0.2s;
+        opacity: 1; /* Always visible */
+        transition: background 0.2s;
 
         &:hover {
           background: #e4e6ea;
+        }
+
+        /* Horizontal dots instead of vertical */
+        svg {
+          transform: rotate(90deg);
         }
       }
 
@@ -836,6 +845,215 @@
 
     &:hover .attachment-menu-btn {
       opacity: 1;
+    }
+  }
+
+  /* Files section styling */
+  .attachment-files {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Match links gap */
+  }
+
+  .attachment-file-item {
+    right: 10px;
+    display: flex;
+    align-items: center; /* Center align like links */
+    padding: 8px 6px; /* Match links padding */
+    height: 40px; /* Match links height */
+    background: transparent; /* No background */
+    border: none; /* No border */
+    border-radius: 3px;
+    position: relative;
+    justify-content: space-between; /* Space between content and actions */
+    /* No hover effects as requested */
+
+    .file-content {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
+
+      .file-thumbnail {
+        width: 64px;
+        height: 48px;
+        border-radius: 4px;
+        object-fit: cover;
+        flex-shrink: 0;
+        background: #f4f5f7;
+        border: 1px solid #dfe1e6;
+      }
+
+      .file-info {
+        flex: 1;
+        min-width: 0;
+
+        .file-name {
+          font-size: 14px;
+          font-weight: 500;
+          color: #172b4d;
+          margin-bottom: 4px;
+          word-break: break-word;
+        }
+
+        .file-date {
+          font-size: 12px;
+          color: #6b778c;
+        }
+      }
+    }
+
+    .file-actions {
+      display: flex;
+      align-items: center;
+      opacity: 1; /* Always visible like links */
+
+      .file-open-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6b778c;
+        transition: background 0.2s, color 0.2s;
+
+        &:hover {
+          background: #e4e6ea;
+          color: #172b4d;
+        }
+
+        svg {
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      .file-menu-btn {
+        background: #f4f5f7; /* Gray background like links */
+        border: none;
+        cursor: pointer;
+        padding: 4px 6px;
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6b778c;
+        transition: background 0.2s, color 0.2s;
+
+        &:hover {
+          background: #e4e6ea;
+          color: #172b4d;
+        }
+
+        /* Horizontal dots instead of vertical */
+        svg {
+          width: 16px;
+          height: 16px;
+          transform: rotate(90deg);
+        }
+      }
+    }
+
+    /* File actions are always visible now */
+  }
+
+  /* File edit modal */
+  .file-edit-modal {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #fff;
+    border: 1px solid #dfe1e6;
+    border-radius: 3px;
+    box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25);
+    z-index: 100;
+    min-width: 200px;
+    padding: 12px;
+
+    .file-edit-header {
+      font-size: 12px;
+      font-weight: 600;
+      color: #5e6c84;
+      margin-bottom: 8px;
+      text-align: center;
+      border-bottom: 1px solid #dfe1e6;
+      padding-bottom: 8px;
+    }
+
+    .file-edit-input {
+      width: 100%;
+      border: 1px solid #dfe1e6;
+      border-radius: 3px;
+      padding: 8px 12px;
+      font-size: 14px;
+      color: #172b4d;
+      margin-bottom: 12px;
+
+      &:focus {
+        outline: none;
+        border-color: #4c9aff;
+      }
+    }
+
+    .file-edit-actions {
+      display: flex;
+      gap: 8px;
+
+      .file-edit-save-btn {
+        background: #0079bf;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        padding: 6px 12px;
+        font-size: 14px;
+        cursor: pointer;
+        flex: 1;
+
+        &:hover {
+          background: #026aa7;
+        }
+      }
+
+      .file-edit-cancel-btn {
+        background: #f4f5f7;
+        color: #172b4d;
+        border: none;
+        border-radius: 3px;
+        padding: 6px 12px;
+        font-size: 14px;
+        cursor: pointer;
+        flex: 1;
+
+        &:hover {
+          background: #e4e6ea;
+        }
+      }
+    }
+
+    .file-edit-menu {
+      .file-edit-menu-item {
+        width: 100%;
+        background: none;
+        border: none;
+        text-align: left;
+        padding: 8px 12px;
+        font-size: 14px;
+        color: #172b4d;
+        cursor: pointer;
+        border-radius: 3px;
+
+        &:hover {
+          background: #f4f5f7;
+        }
+
+        &.delete {
+          color: #b04632;
+        }
+      }
     }
   }
 }
