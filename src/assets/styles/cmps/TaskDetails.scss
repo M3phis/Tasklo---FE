@@ -1,7 +1,9 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: transparent;
+  background: rgba(0, 0, 0, 0.64); /* Semi-transparent dark background */
+  backdrop-filter: blur(3px); /* Blur effect */
+  -webkit-backdrop-filter: blur(3px); /* Safari support */
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -14,8 +16,8 @@
   border-radius: rem(12px);
   min-width: rem(700px);
   min-height: rem(700px);
-  max-width: rem(1080px);
-  width: 90vw;
+  max-width: rem(1080px); /* Back to original max-width */
+  width: 90vw; /* Back to original width */
   color: #172b4d;
   box-shadow: 0 rem(8px) rem(40px) rgba(0, 0, 0, 0.22);
   position: relative;
@@ -228,7 +230,6 @@
   display: flex;
   align-items: center;
   // right: 10px;
-  margin-bottom: 8px;
 
   .task-title-input {
     // padding: 8px 12px;
@@ -414,20 +415,21 @@
 }
 
 .task-details-sidebar {
-  flex: 2 1 0;
+  flex: 0 0 auto; /* Don't grow/shrink, use explicit width */
+  width: 433px; /* Reduced width since inner box has padding */
   background: #f7f8f9;
   border-radius: 0 0 10px 0;
   border-left: 1px solid #dfe1e6; /* Gray border on left */
   border-top: 1px solid #dfe1e6; /* Gray border on top */
   min-width: 260px;
-  max-width: 444px;
+  max-width: 433px; /* Adjusted maximum width */
   display: flex;
   flex-direction: column;
   height: 700px;
   max-height: 700px;
   overflow: hidden; /* Sidebar doesn't scroll */
   margin-top: 0;
-  padding: 16px 0px 32px 24px;
+  padding: 0; /* No padding on outer sidebar */
 }
 
 .task-details-activity {
@@ -435,10 +437,10 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  background: #f4f5f7;
+  background: #f7f8f9;
   height: 100%;
   border-radius: 0 0 10px 0;
-  padding: 0 0 0 0;
+  padding: 16px; /* 16px padding all around */
 }
 
 .task-details-activity {
@@ -447,14 +449,13 @@
     align-items: center;
     justify-content: space-between;
     color: #172b4d;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
-    margin-bottom: 8px;
 
     .activity-header-title {
       display: flex;
       align-items: center;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 500;
       color: #172b4d;
       svg {
@@ -484,38 +485,46 @@
   }
 
   .comment-input {
-    width: 100%;
+    width: 100%; /* Full width since parent has padding */
     background: #fff;
-    border: 1.5px solid #dfe1e6;
-    border-radius: rem(7px);
+    border: 1px solid #dfe1e6;
+    border-radius: 8px; /* More rounded like Trello */
     color: #172b4d;
-    font-size: rem(16px);
-    padding: rem(11px) rem(16px);
-    margin-bottom: rem(11px);
-    transition: border 0.2s;
+    font-size: 14px;
+    padding: 6px 12px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Subtle bottom shadow */
+    transition: border 0.2s, box-shadow 0.2s;
+
+    &::placeholder {
+      color: #6b778c;
+      font-size: 14px;
+    }
+
     &:focus {
-      border: 1.5px solid #4c9aff;
+      border: 1px solid #4c9aff;
       outline: none;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* Enhanced shadow on focus */
     }
   }
 
   .activity-list {
     display: flex;
     flex-direction: column;
-    gap: rem(19px);
+    // gap: 0px; /* Reduced spacing between activity items */
+    margin-top: 0px; /* Even closer to comment input */
 
     .activity-item {
       display: flex;
       align-items: flex-start;
-      gap: rem(11px);
+      gap: 8px; /* Reduced gap between avatar and content */
 
       .activity-avatar {
-        width: 36px !important;
-        height: 36px !important;
-        min-width: 36px !important;
-        min-height: 36px !important;
-        max-width: 36px !important;
-        max-height: 36px !important;
+        width: 28px !important; /* Smaller avatar */
+        height: 28px !important;
+        min-width: 28px !important;
+        min-height: 28px !important;
+        max-width: 28px !important;
+        max-height: 28px !important;
         border-radius: 50% !important;
         background: #e57373;
         color: #fff;
@@ -523,8 +532,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 16px;
-        margin-right: 8px;
+        font-size: 12px; /* Smaller font size for avatar text */
         box-sizing: border-box;
         flex-shrink: 0;
       }
@@ -532,16 +540,23 @@
       .activity-content {
         background: none;
         color: #172b4d;
-        font-size: rem(16px);
+        font-size: 14px;
+        line-height: 20px;
 
         b {
-          color: #4c9aff;
+          color: #172b4d; /* Darker blue/black color instead of bright blue */
+          font-weight: 600;
+        }
+
+        .activity-text {
+          display: inline;
         }
 
         .activity-date {
-          color: #44546f;
-          font-size: rem(15px);
-          margin-top: rem(3px);
+          color: #6b778c; /* Grayer color for date */
+          font-size: 12px;
+          margin-top: 4px;
+          display: block;
         }
       }
     }
@@ -599,7 +614,7 @@
   }
 }
 
-/* Layout: sidebar takes 2/5, main takes 3/5 */
+/* Layout: flexible proportions between main and sidebar */
 .task-details-layout {
   display: flex;
   gap: 0;
@@ -608,10 +623,11 @@
   max-height: 644px;
   overflow: hidden; /* Prevent overall modal from scrolling */
   flex: 1; /* Take remaining space after header */
+  width: 100%; /* Ensure full width usage */
 }
 
 .task-details-main {
-  flex: 3 1 0;
+  flex: 1 1 auto; /* Take remaining space after sidebar */
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -687,7 +703,7 @@
 
     .attachments-icon {
       position: relative;
-      right: 12px;
+      right: 7px;
       width: 20px;
       height: 20px;
       flex-shrink: 0;

@@ -713,8 +713,10 @@ export function TaskDetails({}) {
                 <div className="activity-item">
                   <span className="activity-avatar">TA</span>
                   <div className="activity-content">
-                    <b>Tomer Almog</b> added this card to{' '}
-                    <b>Questions For Next Meeting</b>
+                    <div className="activity-text">
+                      <b>Tomer Almog</b> added this card to{' '}
+                      <b>Questions For Next Meeting</b>
+                    </div>
                     <div className="activity-date">May 26, 2025, 7:21 PM</div>
                   </div>
                 </div>
