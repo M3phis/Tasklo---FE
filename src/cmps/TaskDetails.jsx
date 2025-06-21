@@ -324,6 +324,92 @@ export function TaskDetails({}) {
     }
   }
 
+  const formatActivityDate = (timestamp) => {
+    const date = new Date(timestamp)
+    const now = new Date()
+    const diffTime = Math.abs(now - date)
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+
+    if (diffDays === 1) {
+      return `Yesterday at ${date.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+      })}`
+    } else if (diffDays < 7) {
+      return `${diffDays} days ago`
+    } else {
+      return (
+        date.toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+        }) +
+        `, ${date.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+        })}`
+      )
+    }
+  }
+
+  const getActivityList = () => {
+    const activities = []
+
+    // Add task comments as activities
+    if (task.comments && task.comments.length > 0) {
+      task.comments.forEach((comment) => {
+        activities.push({
+          id: comment.id,
+          type: 'comment',
+          text: comment.txt,
+          createdAt: comment.createdAt,
+          byMember: comment.byMember,
+        })
+      })
+    }
+
+    // Add relevant board activities for this task
+    if (board.activities && board.activities.length > 0) {
+      board.activities
+        .filter((activity) => activity.task && activity.task.id === task.id)
+        .forEach((activity) => {
+          activities.push({
+            id: activity.id,
+            type: 'activity',
+            text: activity.txt,
+            createdAt: activity.createdAt,
+            byMember: activity.byMember,
+            task: activity.task,
+            group: activity.group,
+          })
+        })
+    }
+
+    // Add task creation activity if we have byMember info
+    if (task.byMember && task.createdAt) {
+      activities.push({
+        id: `created-${task.id}`,
+        type: 'created',
+        text: `added this card to ${group.title}`,
+        createdAt: task.createdAt,
+        byMember: task.byMember,
+      })
+    }
+
+    // Sort by creation date (newest first)
+    return activities.sort((a, b) => b.createdAt - a.createdAt)
+  }
+
+  const getInitials = (fullname) => {
+    if (!fullname) return '?'
+    return fullname
+      .split(' ')
+      .map((name) => name[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2)
+  }
+
   // Debug: Log task data to see attachment structure
   console.log('Task data:', task)
   console.log('Task attachments:', task.attachments)
@@ -792,8 +878,7 @@ export function TaskDetails({}) {
                                 title="Open in new tab"
                               >
                                 <svg viewBox="0 0 16 16" fill="currentColor">
-                                  <path d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z" />
-                                  <path d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z" />
+                                  <path d="M6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146z" />
                                 </svg>
                               </button>
                               <button
@@ -910,16 +995,31 @@ export function TaskDetails({}) {
                 placeholder="Write a comment..."
               />
               <div className="activity-list">
-                <div className="activity-item">
-                  <span className="activity-avatar">TA</span>
-                  <div className="activity-content">
-                    <div className="activity-text">
-                      <b>Tomer Almog</b> added this card to{' '}
-                      <b>Questions For Next Meeting</b>
+                {getActivityList().map((activity) => (
+                  <div key={activity.id} className="activity-item">
+                    <span className="activity-avatar">
+                      {getInitials(activity.byMember?.fullname)}
+                    </span>
+                    <div className="activity-content">
+                      <div className="activity-text">
+                        <b>{activity.byMember?.fullname || 'Unknown User'}</b>{' '}
+                        {activity.type === 'comment' ? (
+                          <>commented: "{activity.text}"</>
+                        ) : (
+                          activity.text
+                        )}
+                      </div>
+                      <div className="activity-date">
+                        {formatActivityDate(activity.createdAt)}
+                      </div>
                     </div>
-                    <div className="activity-date">May 26, 2025, 7:21 PM</div>
                   </div>
-                </div>
+                ))}
+                {getActivityList().length === 0 && (
+                  <div className="no-activity">
+                    <span>No activity yet.</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>

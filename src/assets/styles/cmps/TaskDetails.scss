@@ -560,6 +560,14 @@
         }
       }
     }
+
+    .no-activity {
+      text-align: center;
+      color: #6b778c;
+      font-size: 14px;
+      font-style: italic;
+      padding: 20px 0;
+    }
   }
 }
 
@@ -702,6 +710,7 @@
     margin-bottom: 12px;
 
     .attachments-icon {
+      transform: rotate(50deg);
       position: relative;
       right: 7px;
       width: 20px;
