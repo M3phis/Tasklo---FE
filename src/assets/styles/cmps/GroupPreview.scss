@@ -76,9 +76,14 @@
 .tasks-container {
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   scrollbar-color: var(--ds-background-neutral-hovered, #091e4224) var(--ds-background-neutral, #091e420f);
   scrollbar-width: thin;
+  scroll-behavior: smooth;
+  row-gap: rem(8px);
+  padding: rem(4px);
+  margin: 0 rem(4px);
 }
 
 .add-task-form {
@@ -132,7 +137,8 @@
   margin-bottom: rem(3px); //0
 }
 
-.add-btn, .save-card-title-edit-btn {
+.add-btn,
+.save-card-title-edit-btn {
   @include group-font-base;
   color: var(--ds-text-inverse);
   background: var(--ds-background-accent-blue-bolder);
