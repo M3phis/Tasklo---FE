@@ -92,15 +92,41 @@
         }
 
         .share-btn {
+            display: flex;
+            align-items: center;
             width: rem(83.58px);
             height: rem(32px);
+            border-radius: rem(3px);
+            background: rgba(0, 0, 0, 0.5);
             color: var(--ds-text-inverse);
-            background: var(--ds-background-neutral-hovered);
+            font-family: inherit;
             font-weight: $group-font-weight-medium;
+            margin: 0;
+            margin: 0 rem(4px);
+            padding-right: rem(12px);
+            padding-left: rem(8px);
+            padding-top: rem(1px);
+            padding-bottom: rem(1px);
+
+            span {
+                width: rem(24px);
+                height: rem(24px);
+                padding: rem(4px);
+            }
+
+            span:not(:has(svg)) {
+                width: rem(35.58px);
+                height: rem(20px);
+                padding: 0;
+                margin-left: rem(4px);
+
+            }
 
             &:hover {
-                background: var(--ds-background-neutral-pressed);
+                background: rgba(0, 0, 0, 0.6);
             }
+
+
         }
 
         .menu-btn {
