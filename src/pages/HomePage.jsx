@@ -1,97 +1,19 @@
-import { Link } from 'react-router-dom'
-import { FaTrello } from 'react-icons/fa'
-import { FaChevronDown } from 'react-icons/fa6'
-const LOGO = (
-  <svg
-    width="135"
-    height="55"
-    viewBox="0 0 135 55"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <text
-      x="80"
-      y="18"
-      text-anchor="middle"
-      font-family="Segoe UI, Arial, sans-serif"
-      font-size="11"
-      font-weight="bold"
-      fill="#0052CC"
-      letter-spacing="2"
-    >
-      TASKLIAN
-    </text>
-
-    <g>
-      <rect x="10" y="22" width="28" height="28" fill="url(#paint0_linear)" />
-      <rect x="16" y="28" width="7" height="16" rx="2" fill="#fff" />
-      <rect x="26" y="28" width="7" height="11" rx="2" fill="#fff" />
-      <defs>
-        <linearGradient
-          id="paint0_linear"
-          x1="10"
-          y1="22"
-          x2="38"
-          y2="50"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stop-color="#0052CC" />
-          <stop offset="1" stop-color="#2684FF" />
-        </linearGradient>
-      </defs>
-    </g>
-
-    <text
-      x="48"
-      y="44"
-      font-family="Segoe UI, Arial, sans-serif"
-      font-size="24"
-      font-weight="bold"
-      fill="#253858"
-    >
-      Tasklo
-    </text>
-  </svg>
-)
+import { useState } from 'react'
+import ideasImg from '../assets/img/ideas.png'
+import boardsImg from '../assets/img/boards.png'
+import hubImg from '../assets/img/taskhub.png'
 
 export function HomePage() {
+  const [selected, setSelected] = useState('ideas')
+
+  const imageMap = {
+    ideas: ideasImg,
+    boards: boardsImg,
+    hub: hubImg,
+  }
+
   return (
     <div className="landing-root">
-      <header className="landing-header">
-        <div className="header-left">
-          <div className="logo">{LOGO}</div>
-          <nav className="main-nav">
-            <button className="nav-btn">
-              Features <FaChevronDown />
-            </button>
-            <button className="nav-btn">
-              Solutions <FaChevronDown />
-            </button>
-            <button className="nav-btn">
-              Plans <FaChevronDown />
-            </button>
-            <button className="nav-btn">Pricing</button>
-            <button className="nav-btn">
-              Resources <FaChevronDown />
-            </button>
-          </nav>
-        </div>
-        <div className="header-right">
-          <a href="#" className="login-link">
-            Log in
-          </a>
-          <a href="#" className="cta-btn">
-            Get Tasklo for free
-          </a>
-        </div>
-      </header>
-      <div className="landing-banner">
-        Accelerate your teams' work with Tasklian Intelligence (AI) features 🤖
-        now available for all Premium and Enterprise! Learn more.
-        <a href="#" className="banner-link">
-          Learn more.
-        </a>
-      </div>
       <main className="landing-main">
         <section className="landing-content">
           <h1>Capture, organize, and tackle your to-dos from anywhere.</h1>
@@ -112,9 +34,10 @@ export function HomePage() {
             Watch video <span className="play-icon">▶</span>
           </a>
         </section>
+
         <section className="landing-visual">
           <video
-            height={630}
+            height={525}
             width={681}
             src="https://videos.ctfassets.net/rz1oowkt5gyp/4AJBdHGUKUIDo7Po3f2kWJ/3923727607407f50f70ccf34ab3e9d90/updatedhero-mobile-final.mp4"
             autoPlay
@@ -122,6 +45,68 @@ export function HomePage() {
           />
         </section>
       </main>
+
+      <section className="landing-info">
+        <header className="test">
+          <p className="header-info">Tasklo 101</p>
+          <h2>Your productivity powerhouse</h2>
+          <p className="header-context">
+            Stay organized and efficient with Ideas, Boards, and Task Hub. Every
+            to-do, idea, or responsibility—no matter how small—finds its place,
+            keeping you at the top of your game.
+          </p>
+        </header>
+
+        <div className="main-landing-info">
+          <section className="landing-info-text">
+            {['ideas', 'boards', 'hub'].map((key) => (
+              <div
+                key={key}
+                className={`landing-info-item ${
+                  selected === key ? 'active' : ''
+                }`}
+                onClick={() => setSelected(key)}
+              >
+                <h4>
+                  {key === 'ideas'
+                    ? 'Ideas'
+                    : key === 'boards'
+                    ? 'Boards'
+                    : 'Task Hub'}
+                </h4>
+                <p>
+                  {key === 'ideas' &&
+                    'Great ideas can strike anytime. Capture them instantly, keep them safe, and turn them into action when the time is right.'}
+                  {key === 'boards' &&
+                    'Your to-do list may be long, but it can be manageable! Keep tabs on everything from "to-dos to tackle" to "mission accomplished!”'}
+                  {key === 'hub' &&
+                    'Organize, drag, and drop. Your workspace for handling tasks in motion — visually and intuitively.'}
+                </p>
+              </div>
+            ))}
+          </section>
+
+          <section className="landing-info-image">
+            <div className="image-wrapper">
+              <img
+                key={selected}
+                src={imageMap[selected]}
+                alt=""
+                className="fade"
+              />
+              <div className="image-nav">
+                {['ideas', 'boards', 'hub'].map((key) => (
+                  <button
+                    key={key}
+                    className={`dot ${selected === key ? 'active' : ''}`}
+                    onClick={() => setSelected(key)}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
     </div>
   )
 }
