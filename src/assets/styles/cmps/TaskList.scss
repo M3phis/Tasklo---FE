@@ -1,16 +1,18 @@
 .task-list {
   display: flex;
   flex-direction: column;
-  // width: rem(264px);
   height: 100%;
   row-gap: rem(8px);
-  padding: rem(4px);
-  margin: 0 rem(4px);
   list-style: none;
 
-  scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: var(--ds-background-neutral-hovered) var(--ds-background-neutral);
+  // width: rem(264px);
+  // padding: rem(4px);
+  // margin: 0 rem(4px);
+  
+  // overflow: auto;
+  // scrollbar-color: var(--ds-background-neutral-hovered, #091e4224) var(--ds-background-neutral, #091e420f);
+  // scrollbar-width: thin;
+  // scroll-behavior: smooth;
   // flex: 1;
   
 }

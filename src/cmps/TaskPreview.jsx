@@ -6,10 +6,11 @@ import EditIcon from '@atlaskit/icon/core/edit'
 import DeleteIcon from '@atlaskit/icon/core/delete'
 import CheckCircleIcon from '@atlaskit/icon/core/check-circle'
 import MediaServicesPreselectedIcon from '@atlaskit/icon/glyph/media-services/preselected'
-import ClockIcon from '@atlaskit/icon/core/clock';
-import TextLengthenIcon from '@atlaskit/icon-lab/core/text-lengthen';
-import AttachmentIcon from '@atlaskit/icon/core/attachment';
-import TaskIcon from '@atlaskit/icon/core/task'
+import ClockIcon from '@atlaskit/icon/core/clock'
+import AttachmentIcon from '@atlaskit/icon/core/attachment'
+// import TextLengthenIcon from '@atlaskit/icon-lab/core/text-lengthen'
+// import TaskIcon from '@atlaskit/icon/core/task'
+// import CommentIcon from '@atlaskit/icon/core/comment'
 
 export function TaskPreview({
   task,
@@ -18,7 +19,13 @@ export function TaskPreview({
   onRemoveTask,
   onUpdateTask,
   isLabelsExtended,
-  setIsLabelExtended
+  setIsLabelExtended,
+  isEditing = false,
+  editableTitle = '',
+  onTitleChange = null,
+  onSaveTitle = null,
+  onCancelEdit = null,
+  inputRef = null
 }) {
   const navigate = useNavigate()
   const [isHovered, setIsHovered] = useState(false)
@@ -32,6 +39,8 @@ export function TaskPreview({
     if (ev.target.closest('.task-edit-btn') ||
       ev.target.closest('.task-delete-btn') ||
       ev.target.closest('.task-done-btn') ||
+      ev.target.closest('.quick-edit-backdrop') ||
+      ev.target.closest('.task-quick-edit') ||
       isQuickEditOpen) {
       return
     }
@@ -135,10 +144,21 @@ export function TaskPreview({
     return total > 0
   }
 
+  function getCommentsCount() {
+    if (!task.comments || !Array.isArray(task.comments)) return 0
+    return task.comments.length
+  }
+
+  function hasComments() {
+    return getCommentsCount() > 0
+  }
+  const hasCover = task.style?.backgroundImage || task.style?.backgroundColor || task.style?.background;
+
+
   return (
     <>
       <div
-        className={`task-preview ${isDone ? 'task-done' : ''}`}
+        className={`task-preview ${isDone ? 'task-done' : ''} ${isEditing ? 'editing' : ''}`}
         onClick={handleTaskClick}
         onMouseEnter={function () { setIsHovered(true) }}
         onMouseLeave={function () { setIsHovered(false) }}
@@ -156,8 +176,6 @@ export function TaskPreview({
                   ? `url(${task.style.background})`
                   : 'none',
               backgroundSize: isImageUrl(task.style?.background) || task.style?.backgroundImage ? 'contain' : 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat'
             }}
           >
             {(task.style.backgroundImage || isImageUrl(task.style?.background)) && (
@@ -170,34 +188,33 @@ export function TaskPreview({
                 }}
               />
             )}
-
-            {isHovered && (
-              <>
-                <button
-                  className="task-edit-btn task-cover-btn"
-                  onClick={handleEditClick}
-                  title="Edit card"
-                >
-                  <EditIcon label="Edit card" color="#172B4D" />
-                </button>
-
-                {isDone && (
-                  <button
-                    className="task-delete-btn task-cover-btn"
-                    onClick={handleRemoveClick}
-                    title="Delete card"
-                  >
-                    <DeleteIcon label="Delete card" color="#172B4D" />
-                  </button>
-                )}
-              </>
-            )}
-
           </div>
         )}
 
+        {isHovered && !isEditing && (
+          <>
+            <button
+              className={`task-edit-btn ${hasCover ? 'task-cover-btn' : ''}`}
+              onClick={handleEditClick}
+              title="Edit card"
+            >
+              <EditIcon label="Edit card" />
+            </button>
+
+            {isDone && (
+              <button
+                className={`task-delete-btn ${hasCover ? 'task-cover-btn' : ''}`}
+                onClick={handleRemoveClick}
+                title="Delete card"
+              >
+                <DeleteIcon label="Delete card" />
+              </button>
+            )}
+          </>
+        )}
+
         <div className="task-content">
-          {!task.style?.backgroundImage && !task.style?.backgroundColor && !task.style?.background && isHovered && (
+          {!task.style?.backgroundImage && !task.style?.backgroundColor && !task.style?.background && isHovered && !isEditing && (
             <>
               <button
                 className="task-edit-btn"
@@ -242,53 +259,91 @@ export function TaskPreview({
           )}
 
           <div className="task-header">
-            {(isDone || isHovered) && (
+            {(isDone || isHovered) && !isEditing && (
               <button
                 className="task-done-btn"
                 onClick={handleDoneToggle}
-                title={isDone ? 'Mark as undone' : 'Mark as done'}
+                title={isDone ? 'Mark incomplete' : 'Mark complete'}
               >
                 {isDone ? (
-                  <CheckCircleIcon label="Mark as incomplete" />
+                  <CheckCircleIcon label="Mark incomplete" />
                 ) : (
-                  <MediaServicesPreselectedIcon label="Mark as complete" />
+                  <MediaServicesPreselectedIcon label="Mark complete" primaryColor='#626F86' />
                 )}
               </button>
             )}
 
-            <div className="task-title">{task.title}</div>
+            {isEditing ? (
+              <div className="task-title-edit">
+                <textarea
+                  ref={inputRef}
+                  className="card-title-editable"
+                  value={editableTitle}
+                  onChange={onTitleChange}
+                  onKeyDown={(ev) => {
+                    if (ev.key === 'Escape') onCancelEdit()
+                    if (ev.key === 'Enter' && !ev.shiftKey) {
+                      ev.preventDefault()
+                      onSaveTitle()
+                    }
+                  }}
+                  autoFocus
+                  rows={1}
+                />
+              </div>
+            ) : (
+              <div className="task-title">{task.title}</div>
+            )}
           </div>
 
-          <div className="task-info">
-            <div className="task-badges">
-              {task.dueDate && (
-                <div className={`task-badge date-badge ${getDateStatus()}`}>
-                  <ClockIcon label="Due date" color="currentColor" />
-                  <span>{formatDate()}</span>
-                </div>
-              )}
+          <div className="task-badges-section">
+            {(task.dueDate || task.description || getAttachmentCount() > 0 || hasChecklist()) && (
+              <div className="task-badges">
+                {task.dueDate && (
+                  <div className={`task-badge date-badge ${getDateStatus()}`}>
+                    <ClockIcon label="Due date" primaryColor=" #44546F" />
+                    <span>{formatDate()}</span>
+                  </div>
+                )}
 
-              {task.description && (
-                <div className="task-badge">
-                  <TextLengthenIcon label="TextLengthenIcon" color="currentColor" />
-                </div>
-              )}
+                {task.description && (
+                  <div className="task-badge description-badge">
+                    {/* <TextLengthenIcon label="TextLengthenIcon" primaryColor=" #44546F" /> */}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill=" #44546F">
+                      <path d="M160-200v-80h400v80H160Zm0-160v-80h640v80H160Zm0-160v-80h640v80H160Zm0-160v-80h640v80H160Z" />
+                    </svg>
+                  </div>
+                )}
 
-              {getAttachmentCount() > 0 && (
-                <div className="task-badge attachment-badge">
-                  <AttachmentIcon label="Attachments" size="small" />
-                  <span>{getAttachmentCount()}</span>
-                </div>
-              )}
+                {hasComments() && (
+                  <div className="task-badge comments-badge">
+                    {/* <CommentIcon label="Comments" primaryColor=" #44546F" /> */}
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16 17H12.5L8.28037 20.4014C6.97772 21.4869 5 20.5606 5 18.865V16.1973C3.2066 15.1599 2 13.2208 2 11C2 7.68629 4.68629 5 8 5H16C19.3137 5 22 7.68629 22 11C22 14.3137 19.3137 17 16 17ZM16 7H8C5.79086 7 4 8.79086 4 11C4 12.8638 5.27477 14.4299 7 14.874V19L12 15H16C18.2091 15 20 13.2091 20 11C20 8.79086 18.2091 7 16 7Z" fill=" #44546F"></path></svg>
+                    <span>{getCommentsCount()}</span>
+                  </div>
+                )}
 
-              {hasChecklist() && (
-                <div className={`task-badge checklist-badge ${getChecklistCount().completed === getChecklistCount().total && getChecklistCount().total > 0 ? 'completed' : ''}`}>
-                  <TaskIcon label="Checklist" color="currentColor" />
-                  <span>{getChecklistCount().completed}/{getChecklistCount().total}</span>
-                </div>
-              )}
-            </div>
+                {getAttachmentCount() > 0 && (
+                  <div className="task-badge attachment-badge">
+                    <AttachmentIcon label="Attachments" size="small" primaryColor=" #44546F" />
+                    <span>{getAttachmentCount()}</span>
+                  </div>
+                )}
 
+                {hasChecklist() && (
+                  <div className={`task-badge checklist-badge ${getChecklistCount().completed === getChecklistCount().total && getChecklistCount().total > 0 ? 'completed' : ''}`}>
+                    {/* <TaskIcon label="Checklist" primaryColor=" #44546F" /> */}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill=" #44546F">
+                      <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q8 0 15 1.5t14 4.5l-74 74H200v560h560v-266l80-80v346q0 33-23.5 56.5T760-120H200Zm261-160L235-506l56-56 170 170 367-367 57 55-424 424Z" />
+                    </svg>
+                    <span>{getChecklistCount().completed}/{getChecklistCount().total}</span>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div className="task-members-section">
             {task.memberIds && task.memberIds.length > 0 && (
               <div className="task-members">
                 {board.members
@@ -308,9 +363,17 @@ export function TaskPreview({
             )}
           </div>
         </div>
+
+        {isEditing && (
+          <div className="task-edit-controls">
+            <button className="save-card-title-edit-btn" onClick={onSaveTitle}>
+              Save
+            </button>
+          </div>
+        )}
       </div>
 
-      {isQuickEditOpen && (
+      {isQuickEditOpen && !isEditing && (
         <TaskQuickEdit
           task={task}
           group={group}

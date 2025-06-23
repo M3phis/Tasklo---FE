@@ -6,8 +6,11 @@
 }
 
 .board-content {
-  margin-top: rem(12px); 
-  overflow: hidden;
+  margin-top: rem(12px);
+  overflow: auto;
+  overflow-y: hidden;
+  scrollbar-color: #fff6 #00000026;
+  scrollbar-width: auto;
 }
 
 .lists-container {

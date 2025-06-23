@@ -36,6 +36,9 @@ export function TaskDetails({}) {
   const [activeButton, setActiveButton] = useState(null)
   const [showAttachmentMenu, setShowAttachmentMenu] = useState(null)
   const [editingAttachment, setEditingAttachment] = useState(null)
+  const [showFileMenu, setShowFileMenu] = useState(null)
+  const [editingFile, setEditingFile] = useState(null)
+  const [editingFileName, setEditingFileName] = useState('')
 
   const { handleUpdateTask } = useOutletContext()
   useEffect(() => {
@@ -249,6 +252,167 @@ export function TaskDetails({}) {
     }
     handleUpdateTask(updatedGroup)
   }
+
+  const handleOpenFile = (fileUrl) => {
+    window.open(fileUrl, '_blank')
+  }
+
+  const handleEditFile = (file) => {
+    setEditingFile(file)
+    setEditingFileName(file.name || file.title || '')
+    setShowFileMenu(null)
+  }
+
+  const handleSaveFileName = () => {
+    const updatedAttachments = task.attachments.map((att) => {
+      if (att.id === editingFile.id) {
+        // Update the property that exists (name or title)
+        if (att.name !== undefined) {
+          return { ...att, name: editingFileName }
+        } else {
+          return { ...att, title: editingFileName }
+        }
+      }
+      return att
+    })
+    const updatedTask = { ...task, attachments: updatedAttachments }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    handleUpdateTask(updatedGroup)
+    setEditingFile(null)
+    setEditingFileName('')
+  }
+
+  const handleCancelFileEdit = () => {
+    setEditingFile(null)
+    setEditingFileName('')
+  }
+
+  const handleDeleteFile = (fileId) => {
+    const updatedAttachments = task.attachments.filter(
+      (att) => att.id !== fileId
+    )
+    const updatedTask = { ...task, attachments: updatedAttachments }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    handleUpdateTask(updatedGroup)
+    setShowFileMenu(null)
+  }
+
+  const formatFileDate = (timestamp) => {
+    const date = new Date(timestamp)
+    return `Added ${date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    })}, ${date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+    })}`
+  }
+
+  const getFaviconUrl = (url) => {
+    try {
+      const domain = new URL(url).hostname
+      return `https://www.google.com/s2/favicons?domain=${domain}&sz=16`
+    } catch {
+      return null
+    }
+  }
+
+  const formatActivityDate = (timestamp) => {
+    const date = new Date(timestamp)
+    const now = new Date()
+    const diffTime = Math.abs(now - date)
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+
+    if (diffDays === 1) {
+      return `Yesterday at ${date.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+      })}`
+    } else if (diffDays < 7) {
+      return `${diffDays} days ago`
+    } else {
+      return (
+        date.toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+        }) +
+        `, ${date.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+        })}`
+      )
+    }
+  }
+
+  const getActivityList = () => {
+    const activities = []
+
+    // Add task comments as activities
+    if (task.comments && task.comments.length > 0) {
+      task.comments.forEach((comment) => {
+        activities.push({
+          id: comment.id,
+          type: 'comment',
+          text: comment.txt,
+          createdAt: comment.createdAt,
+          byMember: comment.byMember,
+        })
+      })
+    }
+
+    // Add relevant board activities for this task
+    if (board.activities && board.activities.length > 0) {
+      board.activities
+        .filter((activity) => activity.task && activity.task.id === task.id)
+        .forEach((activity) => {
+          activities.push({
+            id: activity.id,
+            type: 'activity',
+            text: activity.txt,
+            createdAt: activity.createdAt,
+            byMember: activity.byMember,
+            task: activity.task,
+            group: activity.group,
+          })
+        })
+    }
+
+    // Add task creation activity if we have byMember info
+    if (task.byMember && task.createdAt) {
+      activities.push({
+        id: `created-${task.id}`,
+        type: 'created',
+        text: `added this card to ${group.title}`,
+        createdAt: task.createdAt,
+        byMember: task.byMember,
+      })
+    }
+
+    // Sort by creation date (newest first)
+    return activities.sort((a, b) => b.createdAt - a.createdAt)
+  }
+
+  const getInitials = (fullname) => {
+    if (!fullname) return '?'
+    return fullname
+      .split(' ')
+      .map((name) => name[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2)
+  }
+
+  // Debug: Log task data to see attachment structure
+  console.log('Task data:', task)
+  console.log('Task attachments:', task.attachments)
 
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
@@ -490,17 +654,25 @@ export function TaskDetails({}) {
 
             <div className="task-details-description">
               <div className="description-header">
-                <svg
-                  className="description-icon"
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="20px"
-                  viewBox="0 -960 960 960"
-                  width="20px"
-                  fill="#5f6368"
+                <div className="description-header-left">
+                  <svg
+                    className="description-icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="20px"
+                    viewBox="0 -960 960 960"
+                    width="20px"
+                    fill="#5f6368"
+                  >
+                    <path d="M160-200v-80h400v80H160Zm0-160v-80h640v80H160Zm0-160v-80h640v80H160Zm0-160v-80h640v80H160Z" />
+                  </svg>
+                  <h3>Description</h3>
+                </div>
+                <button
+                  className="section-action-btn"
+                  onClick={() => setIsEditing(true)}
                 >
-                  <path d="M160-200v-80h400v80H160Zm0-160v-80h640v80H160Zm0-160v-80h640v80H160Zm0-160v-80h640v80H160Z" />
-                </svg>
-                <h3>Description</h3>
+                  Edit
+                </button>
               </div>
               {isEditing ? (
                 <div className="description-edit">
@@ -539,17 +711,33 @@ export function TaskDetails({}) {
             {task.attachments && task.attachments.length > 0 && (
               <div className="task-details-attachments">
                 <div className="attachments-header">
-                  <svg
-                    className="attachments-icon"
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="20px"
-                    viewBox="0 -960 960 960"
-                    width="20px"
-                    fill="#5f6368"
+                  <div className="attachments-header-left">
+                    <svg
+                      className="attachments-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="20px"
+                      viewBox="0 -960 960 960"
+                      width="20px"
+                      fill="#5f6368"
+                    >
+                      <path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z" />
+                    </svg>
+                    <h3>Attachments</h3>
+                  </div>
+                  <button
+                    className="section-action-btn"
+                    onClick={(e) => {
+                      const rect = e.currentTarget.getBoundingClientRect()
+                      setAttachmentButtonPosition({
+                        x: rect.left,
+                        y: rect.bottom + 8,
+                      })
+                      setActiveButton('attachment')
+                      setShowAttachmentsModal(true)
+                    }}
                   >
-                    <path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z" />
-                  </svg>
-                  <h3>Attachments</h3>
+                    Add
+                  </button>
                 </div>
 
                 {/* Links Section */}
@@ -572,20 +760,37 @@ export function TaskDetails({}) {
                               }
                             >
                               <div className="link-icon">
-                                <svg
-                                  width="14"
-                                  height="14"
-                                  viewBox="0 0 14 14"
-                                  fill="none"
-                                >
-                                  <path
-                                    d="M11.5 1.5L6.5 6.5M11.5 1.5L8 1.5M11.5 1.5V5M6 2.5H4.5C3.11929 2.5 2 3.61929 2 5V9.5C2 10.8807 3.11929 12 4.5 12H9C10.3807 12 11.5 10.8807 11.5 9.5V8"
-                                    stroke="#ae2a19"
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
+                                {getFaviconUrl(attachment.url) ? (
+                                  <img
+                                    src={getFaviconUrl(attachment.url)}
+                                    alt="favicon"
+                                    width="16"
+                                    height="16"
+                                    onError={(e) => {
+                                      // Fallback to default icon if favicon fails
+                                      e.target.style.display = 'none'
+                                      e.target.parentElement.innerHTML = `
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                          <path d="M11.5 1.5L6.5 6.5M11.5 1.5L8 1.5M11.5 1.5V5M6 2.5H4.5C3.11929 2.5 2 3.61929 2 5V9.5C2 10.8807 3.11929 12 4.5 12H9C10.3807 12 11.5 10.8807 11.5 9.5V8" stroke="#ae2a19" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                        </svg>`
+                                    }}
                                   />
-                                </svg>
+                                ) : (
+                                  <svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 14 14"
+                                    fill="none"
+                                  >
+                                    <path
+                                      d="M11.5 1.5L6.5 6.5M11.5 1.5L8 1.5M11.5 1.5V5M6 2.5H4.5C3.11929 2.5 2 3.61929 2 5V9.5C2 10.8807 3.11929 12 4.5 12H9C10.3807 12 11.5 10.8807 11.5 9.5V8"
+                                      stroke="#ae2a19"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    />
+                                  </svg>
+                                )}
                               </div>
                               <span className="attachment-link-text">
                                 {attachment.title || attachment.url}
@@ -658,13 +863,117 @@ export function TaskDetails({}) {
                   </div>
                 )}
 
-                {/* Files Section - Placeholder for future implementation */}
-                {task.attachments.filter((att) => att.type === 'file').length >
-                  0 && (
+                {/* Files Section */}
+                {task.attachments && task.attachments.length > 0 && (
                   <div className="attachment-section">
                     <h4 className="attachment-section-title">Files</h4>
                     <div className="attachment-files">
-                      {/* Files will be implemented here */}
+                      {task.attachments
+                        .filter((att) => {
+                          console.log('Attachment:', att)
+                          return att.url && (att.type === 'file' || !att.type)
+                        })
+                        .map((file) => (
+                          <div key={file.id} className="attachment-file-item">
+                            <div className="file-content">
+                              <img
+                                src={file.url}
+                                alt={file.name}
+                                className="file-thumbnail"
+                                onError={(e) => {
+                                  e.target.style.display = 'none'
+                                }}
+                              />
+                              <div className="file-info">
+                                <div className="file-name">
+                                  {file.name || file.title || 'Untitled'}
+                                </div>
+                                <div className="file-date">
+                                  {formatFileDate(
+                                    file.createdAt || file.addedAt || Date.now()
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="file-actions">
+                              <button
+                                className="file-open-btn"
+                                onClick={() => handleOpenFile(file.url)}
+                                title="Open in new tab"
+                              >
+                                <svg viewBox="0 0 16 16" fill="currentColor">
+                                  <path d="M6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146z" />
+                                </svg>
+                              </button>
+                              <button
+                                className="file-menu-btn"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  setShowFileMenu(
+                                    showFileMenu === file.id ? null : file.id
+                                  )
+                                }}
+                              >
+                                <svg viewBox="0 0 16 16" fill="currentColor">
+                                  <circle cx="8" cy="2.5" r="1.5" />
+                                  <circle cx="8" cy="8" r="1.5" />
+                                  <circle cx="8" cy="13.5" r="1.5" />
+                                </svg>
+                              </button>
+                              {showFileMenu === file.id && (
+                                <div className="file-edit-modal">
+                                  <div className="file-edit-header">
+                                    Edit attachment
+                                  </div>
+                                  {editingFile && editingFile.id === file.id ? (
+                                    <>
+                                      <input
+                                        className="file-edit-input"
+                                        value={editingFileName}
+                                        onChange={(e) =>
+                                          setEditingFileName(e.target.value)
+                                        }
+                                        placeholder="File name"
+                                        autoFocus
+                                      />
+                                      <div className="file-edit-actions">
+                                        <button
+                                          className="file-edit-save-btn"
+                                          onClick={handleSaveFileName}
+                                        >
+                                          Update
+                                        </button>
+                                        <button
+                                          className="file-edit-cancel-btn"
+                                          onClick={handleCancelFileEdit}
+                                        >
+                                          Cancel
+                                        </button>
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <div className="file-edit-menu">
+                                      <button
+                                        className="file-edit-menu-item"
+                                        onClick={() => handleEditFile(file)}
+                                      >
+                                        Edit
+                                      </button>
+                                      <button
+                                        className="file-edit-menu-item delete"
+                                        onClick={() =>
+                                          handleDeleteFile(file.id)
+                                        }
+                                      >
+                                        Delete
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
                     </div>
                   </div>
                 )}
@@ -710,14 +1019,31 @@ export function TaskDetails({}) {
                 placeholder="Write a comment..."
               />
               <div className="activity-list">
-                <div className="activity-item">
-                  <span className="activity-avatar">TA</span>
-                  <div className="activity-content">
-                    <b>Tomer Almog</b> added this card to{' '}
-                    <b>Questions For Next Meeting</b>
-                    <div className="activity-date">May 26, 2025, 7:21 PM</div>
+                {getActivityList().map((activity) => (
+                  <div key={activity.id} className="activity-item">
+                    <span className="activity-avatar">
+                      {getInitials(activity.byMember?.fullname)}
+                    </span>
+                    <div className="activity-content">
+                      <div className="activity-text">
+                        <b>{activity.byMember?.fullname || 'Unknown User'}</b>{' '}
+                        {activity.type === 'comment' ? (
+                          <>commented: "{activity.text}"</>
+                        ) : (
+                          activity.text
+                        )}
+                      </div>
+                      <div className="activity-date">
+                        {formatActivityDate(activity.createdAt)}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ))}
+                {getActivityList().length === 0 && (
+                  <div className="no-activity">
+                    <span>No activity yet.</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>

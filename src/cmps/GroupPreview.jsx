@@ -1,6 +1,6 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useClickAway } from 'react-use'
-import { GroupListMenu } from './DynamicCmps.jsx/GroupListMenu'
+import { GroupListMenu } from './DynamicCmps/GroupListMenu'
 import { TaskList } from './TaskList'
 
 import AddIcon from '@atlaskit/icon/glyph/add'
@@ -25,6 +25,7 @@ export function GroupPreview({
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const menuTriggerRef = useRef(null)
   const formRef = useRef(null)
+  const containerRef = useRef(null)
 
   useClickAway(formRef, () => {
     if (isAddingTask) {
@@ -50,6 +51,12 @@ export function GroupPreview({
     }
   })
 
+  useEffect(() => {
+    if (isAddingTask && containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight
+    }
+  }, [isAddingTask])
+
   function handleAddTask(ev) {
     ev.preventDefault()
     if (!taskTitle.trim()) return
@@ -65,6 +72,9 @@ export function GroupPreview({
     }
 
     onUpdateTask(updatedGroup).then(() => {
+      if (containerRef.current) {
+        containerRef.current.scrollTo({ top: containerRef.current.scrollHeight, behavior: 'smooth' });
+      }
       setTaskTitle('')
     })
   }
@@ -173,7 +183,7 @@ export function GroupPreview({
         </button>
       </div>
 
-      <div className="tasks-container">
+      <div className="tasks-container" ref={containerRef}>
         <TaskList
           tasks={group.tasks}
           group={group}
@@ -182,38 +192,42 @@ export function GroupPreview({
           onOpenQuickEdit={onOpenQuickEdit}
           board={board}
         />
+
+        <div className="add-task-section">
+          {isAddingTask && (
+            <form ref={formRef} onSubmit={handleAddTask} className="add-task-form" style={group.style}>
+              <input
+                type="text"
+                value={taskTitle}
+                onChange={(ev) => setTaskTitle(ev.target.value)}
+                onKeyDown={handleTaskKeyDown}
+                placeholder="Enter a title..."
+                autoFocus
+                className="task-input"
+              />
+              <div className="add-task-actions" style={group.style}>
+                <button type="submit" className="add-btn">
+                  {' '}
+                  Add card{' '}
+                </button>
+                <button
+                  type="button"
+                  className="cancel-btn"
+                  onClick={() => {
+                    setIsAddingTask(false)
+                    setTaskTitle('')
+                  }}
+                >
+                  <CrossIcon label="" primaryColor='#091E42' />
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
       </div>
 
       <div className="add-task-section">
-        {isAddingTask ? (
-          <form ref={formRef} onSubmit={handleAddTask} className="add-task-form" style={group.style}>
-            <input
-              type="text"
-              value={taskTitle}
-              onChange={(ev) => setTaskTitle(ev.target.value)}
-              onKeyDown={handleTaskKeyDown}
-              placeholder="Enter a title..."
-              autoFocus
-              className="task-input"
-            />
-            <div className="add-task-actions" style={group.style}>
-              <button type="submit" className="add-btn">
-                {' '}
-                Add card{' '}
-              </button>
-              <button
-                type="button"
-                className="cancel-btn"
-                onClick={() => {
-                  setIsAddingTask(false)
-                  setTaskTitle('')
-                }}
-              >
-                <CrossIcon label="" primaryColor='#091E42' />
-              </button>
-            </div>
-          </form>
-        ) : (
+        {!isAddingTask && (
           <button
             className="add-task-btn"
             onClick={() => setIsAddingTask(true)}
@@ -222,6 +236,7 @@ export function GroupPreview({
           </button>
         )}
       </div>
+
 
       <GroupListMenu
         isOpen={isMenuOpen}
