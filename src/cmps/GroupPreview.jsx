@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react'
 import { useClickAway } from 'react-use'
 import { GroupListMenu } from './DynamicCmps/GroupListMenu'
 import { TaskList } from './TaskList'
+import { utilService } from '../services/util.service'
+import { userService } from '../services/user'
 
 import AddIcon from '@atlaskit/icon/glyph/add'
 import MoreIcon from '@atlaskit/icon/glyph/more'
@@ -33,6 +35,16 @@ export function GroupPreview({
         const newTask = {
           id: Date.now().toString(),
           title: taskTitle,
+          memberIds: [],
+          labelIds: [],
+          description: '',
+          comments: [],
+          attachments: [],
+          checklists: [],
+          createdAt: Date.now(),
+          dueDate: null,
+          status: 'in-progress',
+          style: {},
         }
 
         const updatedGroup = {
@@ -61,9 +73,29 @@ export function GroupPreview({
     ev.preventDefault()
     if (!taskTitle.trim()) return
 
+    const loggedInUser = userService.getLoggedinUser()
+
     const newTask = {
-      id: Date.now().toString(),
+      id: utilService.makeId(),
       title: taskTitle,
+      status: 'in-progress',
+      description: '',
+      comments: [],
+      memberIds: [],
+      labelIds: [],
+      createdAt: Date.now(),
+      dueDate: null,
+      byMember: loggedInUser || {
+        _id: 'guest',
+        username: 'guest',
+        fullname: 'Guest User',
+        imgUrl:
+          'https://cdn2.iconfinder.com/data/icons/audio-16/96/user_avatar_profile_login_button_account_member-1024.png',
+      },
+      style: {},
+      groupId: group.id,
+      attachments: [],
+      checklists: [],
     }
 
     const updatedGroup = {
