@@ -17,6 +17,8 @@ export function GroupPreview({
   onRemoveTask,
   onOpenQuickEdit,
 }) {
+
+
   const [isAddingTask, setIsAddingTask] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
@@ -43,6 +45,8 @@ export function GroupPreview({
         onUpdateTask(updatedGroup).then(() => {
           setTaskTitle('')
           setIsAddingTask(false)
+        }).catch(err => {
+          console.error('Error adding task:', err)
         })
       } else {
         setIsAddingTask(false)
@@ -130,8 +134,8 @@ export function GroupPreview({
   }
 
   return (
-    <div className="group-preview" style={group.style}>
-      <div className="group-header" style={group.style}>
+    <div className="group-preview" style={group.style || {}}>
+      <div className="group-header" style={group.style || {}}>
         {isEditing ? (
           <input
             type="text"
@@ -147,7 +151,7 @@ export function GroupPreview({
           <h3
             className="group-title-editable"
             onClick={handleTitleClick}
-            style={group.style}
+            style={group.style || {}}
             onMouseDown={(ev) => {
               const startX = ev.clientX
               const startY = ev.clientY
@@ -170,14 +174,14 @@ export function GroupPreview({
               document.addEventListener('mouseup', handleMouseUp)
             }}
           >
-            {group.title}
+            {group.title || 'Untitled List'}
           </h3>
         )}
         <button
           ref={menuTriggerRef}
           className="options-btn"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          style={group.style}
+          style={group.style || {}}
         >
           <MoreIcon label="" primaryColor=" #626F86" />
         </button>
@@ -195,7 +199,7 @@ export function GroupPreview({
 
         <div className="add-task-section">
           {isAddingTask && (
-            <form ref={formRef} onSubmit={handleAddTask} className="add-task-form" style={group.style}>
+            <form ref={formRef} onSubmit={handleAddTask} className="add-task-form" style={group.style || {}}>
               <input
                 type="text"
                 value={taskTitle}
@@ -205,7 +209,7 @@ export function GroupPreview({
                 autoFocus
                 className="task-input"
               />
-              <div className="add-task-actions" style={group.style}>
+              <div className="add-task-actions" style={group.style || {}}>
                 <button type="submit" className="add-btn">
                   {' '}
                   Add card{' '}
@@ -244,7 +248,7 @@ export function GroupPreview({
         onAddCard={() => setIsAddingTask(true)}
         onDeleteList={() => onRemoveList(group.id)}
         onChangeColor={handleChangeColor}
-        currentColor={group.style?.backgroundColor}
+        currentColor={group.style?.backgroundColor || {}}
         triggerRef={menuTriggerRef}
       />
     </div>
