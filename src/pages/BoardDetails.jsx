@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useOutletContext } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import {
   loadBoard,
   updateBoard,
@@ -8,14 +8,18 @@ import {
 } from '../store/board.actions'
 import { BoardHeader } from '../cmps/BoardHeader/BoardHeader'
 import { GroupList } from '../cmps/GroupList'
+import { BoardHeaderFilter, filterUtils, clearFilters } from '../cmps/BoardHeader/BoardHeaderFilter'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { Outlet } from 'react-router-dom'
 
 export function BoardDetails() {
   const { boardId } = useParams()
+  const dispatch = useDispatch()
   const board = useSelector((storeState) => storeState.boardModule.board)
   const [isLoading, setIsLoading] = useState(true)
   const [rsbIsOpen, setRsbIsOpen] = useState(false)
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
+  const filters = useSelector(state => state.boardModule.filters)
 
   useEffect(() => {
     loadBoard(boardId)
@@ -27,7 +31,6 @@ export function BoardDetails() {
   }, [boardId])
 
   function onDragEnd(result) {
-    console.log('result', result)
     if (!result.destination) {
       return
     }
@@ -166,6 +169,19 @@ export function BoardDetails() {
       })
   }
 
+  function handleClearAllFilters() {
+    dispatch(clearFilters())
+    showSuccessMsg('All filters cleared')
+  }
+
+  const filteredBoard = {
+    ...board,
+    groups: board?.groups?.map(group => ({
+      ...group,
+      tasks: filterUtils.filterTasks(group.tasks, filters, board)
+    }))
+  }
+
   if (isLoading) return <div>Loading...</div>
   if (!board) return <div>Board not found</div>
 
@@ -173,13 +189,17 @@ export function BoardDetails() {
     <section className="board-details">
       <BoardHeader
         board={board}
+        setFilterIsOpen={setIsFilterOpen}
+        activeFilterCount={filterUtils.getActiveFilterCount(filters)}
+        filteredTaskCount={filteredBoard?.groups?.reduce((total, group) => total + group.tasks.length, 0) || 0}
         setRsbIsOpen={setRsbIsOpen}
         onUpdateBoard={handleBoardUpdate}
+        onClearAllFilters={handleClearAllFilters}
       />
       <div className="board-content">
         <div className="lists-container">
           <GroupList
-            board={board}
+            board={filteredBoard}
             boardId={boardId}
             onAddGroup={handleAddGroup}
             onUpdateList={handleUpdateList}
@@ -190,6 +210,12 @@ export function BoardDetails() {
           />
         </div>
       </div>
+
+      <BoardHeaderFilter
+        isOpen={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+      />
+
       <Outlet context={{ handleUpdateTask }} />
     </section>
   )

@@ -1,18 +1,23 @@
 import { useEffect, useState } from "react"
 import { AvatarList } from "../BoardHeader/AvatarList"
 
-import StarUnstarredIcon from '@atlaskit/icon/core/star-unstarred';
-import StarStarredIcon from '@atlaskit/icon/core/star-starred';
-import PersonAddIcon from '@atlaskit/icon/core/person-add';
-import ShowMoreHorizontalIcon from '@atlaskit/icon/core/show-more-horizontal';
+import StarUnstarredIcon from '@atlaskit/icon/core/star-unstarred'
+import StarStarredIcon from '@atlaskit/icon/core/star-starred'
+import PersonAddIcon from '@atlaskit/icon/core/person-add'
+import ShowMoreHorizontalIcon from '@atlaskit/icon/core/show-more-horizontal'
 import FilterIcon from '@atlaskit/icon/core/filter'
 import CalendarIcon from '@atlaskit/icon/core/calendar'
-import AutomationIcon from '@atlaskit/icon/core/automation';
+import AutomationIcon from '@atlaskit/icon/core/automation'
 
 export function BoardHeader({
     board,
     setRsbIsOpen,
-    onUpdateBoard
+    onUpdateBoard,
+    setFilterIsOpen,
+    activeFilterCount,
+    filteredTaskCount,
+    onClearAllFilters
+
 }) {
     const [titleToEdit, setTitleToEdit] = useState(board.title)
 
@@ -31,11 +36,6 @@ export function BoardHeader({
         } else {
             console.log('Star toggled:', updatedBoard.isStarred)
         }
-    }
-
-    function onShareClick(ev) {
-        console.log('Share clicked - implement invite functionality')
-        alert('Share/Invite functionality - implement')
     }
 
     function handleChangeTitle({ target }) {
@@ -95,9 +95,31 @@ export function BoardHeader({
                         <AutomationIcon label="Automation" color="#172B4D" />
                     </button> */}
 
-                    <button className="header-btn">
-                        <FilterIcon label="Filter" color="#172B4D" />
-                    </button>
+                    {activeFilterCount > 0 ? (
+                        <div className="filter-count-inline" onClick={() => setFilterIsOpen(true)}>
+                            <FilterIcon label="Filter" color="white" />
+                            <div className="filter-count-badge">
+                                <span className="filter-circle"></span>
+                                <span className="filter-count-text">{filteredTaskCount}</span>
+                            </div>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onClearAllFilters();
+                                }}
+                                className="filter-clear-all-btn"
+                            >
+                                Clear all
+                            </button>
+                        </div>
+                    ) : (
+                        <button
+                            className="header-btn"
+                            onClick={() => setFilterIsOpen(true)}
+                        >
+                            <FilterIcon label="Filter" color="#172B4D" />
+                        </button>
+                    )}
 
                     <button className="header-btn" onClick={onToggleStar}>
                         {board.isStarred ?
@@ -106,7 +128,7 @@ export function BoardHeader({
                         }
                     </button>
 
-                    <button className="share-btn" onClick={onShareClick}>
+                    <button className="share-btn">
                         <PersonAddIcon label="Share" color="#FFFFFF" />
                         <span>Share</span>
                     </button>
@@ -118,6 +140,7 @@ export function BoardHeader({
                     )}
                 </div>
             </header>
+
         </>
     )
 }
