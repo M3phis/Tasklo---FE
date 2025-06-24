@@ -5,7 +5,8 @@
     width: rem(384px);
     max-height: rem(819px);
     background: var(--ds-background-input);
-    overflow-y: auto;
+    display: flex; // ← Added flex container
+    flex-direction: column; // ← Added column direction
     box-shadow: var(--ds-box-shadow);
     z-index: 1000;
     border-radius: rem(8px);
