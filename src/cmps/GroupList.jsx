@@ -34,7 +34,7 @@ export function GroupList({
       id: Date.now().toString(),
       title: groupTitle,
       tasks: [],
-      style: '',
+      style: {},
     }
 
     onAddGroup(newGroup).then(() => {
@@ -126,7 +126,7 @@ export function GroupList({
                           setGroupTitle('')
                         }}
                       >
-                        <CrossIcon label="" primaryColor="#091E42"/>
+                        <CrossIcon label="" primaryColor="#091E42" />
                       </button>
                     </div>
                   </form>

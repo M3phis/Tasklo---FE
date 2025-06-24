@@ -73,7 +73,10 @@ export function GroupPreview({
 
     onUpdateTask(updatedGroup).then(() => {
       if (containerRef.current) {
-        containerRef.current.scrollTo({ top: containerRef.current.scrollHeight, behavior: 'smooth' });
+        containerRef.current.scrollTo({
+          top: containerRef.current.scrollHeight,
+          behavior: 'smooth',
+        })
       }
       setTaskTitle('')
     })
@@ -122,16 +125,20 @@ export function GroupPreview({
     const updatedGroup = {
       ...group,
       style: {
-        ...group.style,
+        ...(typeof group.style === 'object' ? group.style : {}),
         backgroundColor: color,
       },
     }
     onUpdateList(updatedGroup)
   }
 
+  // Safe style handler to ensure style is always an object
+  const safeStyle =
+    typeof group.style === 'object' && group.style !== null ? group.style : {}
+
   return (
-    <div className="group-preview" style={group.style}>
-      <div className="group-header" style={group.style}>
+    <div className="group-preview" style={safeStyle}>
+      <div className="group-header" style={safeStyle}>
         {isEditing ? (
           <input
             type="text"
@@ -147,7 +154,7 @@ export function GroupPreview({
           <h3
             className="group-title-editable"
             onClick={handleTitleClick}
-            style={group.style}
+            style={safeStyle}
             onMouseDown={(ev) => {
               const startX = ev.clientX
               const startY = ev.clientY
@@ -177,7 +184,7 @@ export function GroupPreview({
           ref={menuTriggerRef}
           className="options-btn"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          style={group.style}
+          style={safeStyle}
         >
           <MoreIcon label="" primaryColor=" #626F86" />
         </button>
@@ -195,7 +202,12 @@ export function GroupPreview({
 
         <div className="add-task-section">
           {isAddingTask && (
-            <form ref={formRef} onSubmit={handleAddTask} className="add-task-form" style={group.style}>
+            <form
+              ref={formRef}
+              onSubmit={handleAddTask}
+              className="add-task-form"
+              style={safeStyle}
+            >
               <input
                 type="text"
                 value={taskTitle}
@@ -205,7 +217,7 @@ export function GroupPreview({
                 autoFocus
                 className="task-input"
               />
-              <div className="add-task-actions" style={group.style}>
+              <div className="add-task-actions" style={safeStyle}>
                 <button type="submit" className="add-btn">
                   {' '}
                   Add card{' '}
@@ -218,7 +230,7 @@ export function GroupPreview({
                     setTaskTitle('')
                   }}
                 >
-                  <CrossIcon label="" primaryColor='#091E42' />
+                  <CrossIcon label="" primaryColor="#091E42" />
                 </button>
               </div>
             </form>
@@ -236,7 +248,6 @@ export function GroupPreview({
           </button>
         )}
       </div>
-
 
       <GroupListMenu
         isOpen={isMenuOpen}
