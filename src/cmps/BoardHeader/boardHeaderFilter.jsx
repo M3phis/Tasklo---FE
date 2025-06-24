@@ -180,10 +180,6 @@ export function BoardHeaderFilter({ isOpen, onClose }) {
         updateFilters(newFilters)
     }
 
-    function clearAllFilters() {
-        dispatch(clearFilters())
-    }
-
     if (!isOpen) return null
 
     if (!board) {
@@ -579,7 +575,6 @@ export const filterUtils = {
                 if (dueDate < now || dueDate > nextMonth) return false
             }
 
-            // Label filters
             if (filters.labels?.noLabels && task.labelIds && task.labelIds.length > 0) {
                 return false
             }

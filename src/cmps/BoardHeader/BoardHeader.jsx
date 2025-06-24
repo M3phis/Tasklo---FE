@@ -104,8 +104,8 @@ export function BoardHeader({
                             </div>
                             <button
                                 onClick={(e) => {
-                                    e.stopPropagation();
-                                    onClearAllFilters();
+                                    e.stopPropagation()
+                                    onClearAllFilters()
                                 }}
                                 className="filter-clear-all-btn"
                             >
