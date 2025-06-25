@@ -78,7 +78,7 @@ export function TaskDetails({}) {
   }
 
   const handleUpdateChecklist = (updatedChecklist) => {
-    const updatedChecklists = task.checklists.map((checklist) =>
+    const updatedChecklists = (task.checklists || []).map((checklist) =>
       checklist.id === updatedChecklist.id ? updatedChecklist : checklist
     )
     const updatedTask = { ...task, checklists: updatedChecklists }
@@ -90,7 +90,7 @@ export function TaskDetails({}) {
   }
 
   const handleDeleteChecklist = (checklistId) => {
-    const updatedChecklists = task.checklists.filter(
+    const updatedChecklists = (task.checklists || []).filter(
       (checklist) => checklist.id !== checklistId
     )
     const updatedTask = { ...task, checklists: updatedChecklists }
@@ -231,7 +231,7 @@ export function TaskDetails({}) {
   }
 
   const handleDeleteAttachment = (attachmentId) => {
-    const updatedAttachments = task.attachments.filter(
+    const updatedAttachments = (task.attachments || []).filter(
       (att) => att.id !== attachmentId
     )
     const updatedTask = { ...task, attachments: updatedAttachments }
@@ -264,7 +264,7 @@ export function TaskDetails({}) {
   }
 
   const handleSaveFileName = () => {
-    const updatedAttachments = task.attachments.map((att) => {
+    const updatedAttachments = (task.attachments || []).map((att) => {
       if (att.id === editingFile.id) {
         // Update the property that exists (name or title)
         if (att.name !== undefined) {
@@ -291,7 +291,7 @@ export function TaskDetails({}) {
   }
 
   const handleDeleteFile = (fileId) => {
-    const updatedAttachments = task.attachments.filter(
+    const updatedAttachments = (task.attachments || []).filter(
       (att) => att.id !== fileId
     )
     const updatedTask = { ...task, attachments: updatedAttachments }
@@ -356,7 +356,11 @@ export function TaskDetails({}) {
     const activities = []
 
     // Add task comments as activities
-    if (task.comments && task.comments.length > 0) {
+    if (
+      task.comments &&
+      Array.isArray(task.comments) &&
+      task.comments.length > 0
+    ) {
       task.comments.forEach((comment) => {
         activities.push({
           id: comment.id,
@@ -1065,7 +1069,7 @@ export function TaskDetails({}) {
       {showMembersModal && (
         <MembersModal
           boardMembers={board.members}
-          cardMemberIds={task.memberIds}
+          cardMemberIds={task.memberIds || []}
           onClose={() => {
             setShowMembersModal(false)
             setActiveButton(null)
