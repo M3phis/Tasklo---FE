@@ -19,6 +19,9 @@
   max-width: rem(1080px); /* Back to original max-width */
   width: 90vw; /* Back to original width */
   color: #172b4d;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
   box-shadow: 0 rem(8px) rem(40px) rgba(0, 0, 0, 0.22);
   position: relative;
   display: flex;
@@ -239,6 +242,9 @@
     background: #fff;
     border: 0px solid #dfe1e6;
     color: #172b4d;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+      'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+      'Helvetica Neue', sans-serif;
     margin-bottom: 0;
   }
   .task-done-checkbox {
@@ -300,6 +306,9 @@
     font-weight: 500;
     line-height: 20px;
     letter-spacing: normal;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+      'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+      'Helvetica Neue', sans-serif;
     cursor: pointer;
     transition: background 0.2s, color 0.2s, box-shadow 0.2s;
     box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
@@ -382,7 +391,7 @@
 }
 
 .task-details-description {
-  margin-bottom: 24px;
+  // margin-bottom: 24px;
 
   .description-header {
     display: flex;
@@ -407,6 +416,9 @@
         font-size: 16px;
         font-weight: 600;
         color: #172b4d;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+          'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+          'Helvetica Neue', sans-serif;
         margin: 0;
         line-height: 20px;
       }
@@ -628,12 +640,17 @@
 }
 
 .section-action-btn {
-  background: #f4f5f7;
+  background: rgba(9, 30, 66, 0.06);
   color: #172b4d;
   border: none;
   border-radius: 3px;
-  font-size: 12px;
-  font-weight: 400;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: normal;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
   padding: 6px 12px;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
@@ -664,7 +681,7 @@
   flex: 1 1 auto; /* Take remaining space after sidebar */
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
   min-height: 0;
   max-height: 100%; /* Use full available height */
   overflow-y: auto;
@@ -753,6 +770,9 @@
         font-size: 16px;
         font-weight: 600;
         color: #172b4d;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+          'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+          'Helvetica Neue', sans-serif;
         margin: 0;
         line-height: 20px;
       }
@@ -818,6 +838,9 @@
       .attachment-link-text {
         color: #172b4d;
         font-size: 14px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+          'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+          'Helvetica Neue', sans-serif;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -828,6 +851,7 @@
     .attachment-actions {
       position: relative;
       padding: 8px;
+      overflow: visible; /* Allow menu to extend beyond container */
 
       .attachment-menu-btn {
         background: #f4f5f7; /* Gray background */
@@ -870,13 +894,16 @@
             background: none;
             border: none;
             text-align: left;
-            padding: 8px 16px;
-            font-size: 14px;
-            color: #172b4d;
+            padding: 6px 12px; /* Match section-action-btn padding */
+            font-size: 12px; /* Match section-action-btn font size */
+            font-weight: 400; /* Match section-action-btn font weight */
+            color: #172b4d; /* Match section-action-btn color */
             cursor: pointer;
+            transition: background 0.2s, color 0.2s; /* Match section-action-btn transition */
 
             &:hover {
-              background: #f4f5f7;
+              background: #e4e6eb; /* Match section-action-btn hover */
+              color: #172b4d;
             }
           }
         }
@@ -933,6 +960,9 @@
           font-size: 14px;
           font-weight: 500;
           color: #172b4d;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+            'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+            'Helvetica Neue', sans-serif;
           margin-bottom: 4px;
           word-break: break-word;
         }
@@ -945,9 +975,11 @@
     }
 
     .file-actions {
+      position: relative; /* Add relative positioning for absolute child */
       display: flex;
       align-items: center;
       opacity: 1; /* Always visible like links */
+      overflow: visible; /* Allow menu to extend beyond container */
 
       .file-open-btn {
         background: none;
@@ -1050,8 +1082,15 @@
         border-radius: 3px;
         padding: 6px 12px;
         font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: normal;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+          'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+          'Helvetica Neue', sans-serif;
         cursor: pointer;
         flex: 1;
+        transition: background 0.2s, color 0.2s;
 
         &:hover {
           background: #026aa7;
@@ -1059,17 +1098,20 @@
       }
 
       .file-edit-cancel-btn {
-        background: #f4f5f7;
-        color: #172b4d;
+        background: #f4f5f7; /* Match section-action-btn background */
+        color: #172b4d; /* Match section-action-btn color */
         border: none;
         border-radius: 3px;
-        padding: 6px 12px;
-        font-size: 14px;
+        padding: 6px 12px; /* Match section-action-btn padding */
+        font-size: 12px; /* Match section-action-btn font size */
+        font-weight: 400; /* Match section-action-btn font weight */
         cursor: pointer;
         flex: 1;
+        transition: background 0.2s, color 0.2s; /* Match section-action-btn transition */
 
         &:hover {
-          background: #e4e6ea;
+          background: #e4e6eb; /* Match section-action-btn hover */
+          color: #172b4d;
         }
       }
     }
@@ -1080,18 +1122,26 @@
         background: none;
         border: none;
         text-align: left;
-        padding: 8px 12px;
-        font-size: 14px;
-        color: #172b4d;
+        padding: 6px 12px; /* Match section-action-btn padding */
+        font-size: 12px; /* Match section-action-btn font size */
+        font-weight: 400; /* Match section-action-btn font weight */
+        color: #172b4d; /* Match section-action-btn color */
         cursor: pointer;
         border-radius: 3px;
+        transition: background 0.2s, color 0.2s; /* Match section-action-btn transition */
 
         &:hover {
-          background: #f4f5f7;
+          background: #e4e6eb; /* Match section-action-btn hover */
+          color: #172b4d;
         }
 
         &.delete {
           color: #b04632;
+
+          &:hover {
+            background: #e4e6eb;
+            color: #b04632; /* Keep delete color on hover */
+          }
         }
       }
     }
