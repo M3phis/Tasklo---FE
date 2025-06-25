@@ -54,11 +54,12 @@ export function TaskDetails({}) {
   }
 
   const handleToggleMember = (memberId) => {
+    const currentMemberIds = task.memberIds || []
     let updatedMemberIds
-    if (task.memberIds.includes(memberId)) {
-      updatedMemberIds = task.memberIds.filter((id) => id !== memberId)
+    if (currentMemberIds.includes(memberId)) {
+      updatedMemberIds = currentMemberIds.filter((id) => id !== memberId)
     } else {
-      updatedMemberIds = [...task.memberIds, memberId]
+      updatedMemberIds = [...currentMemberIds, memberId]
     }
     const updatedTask = { ...task, memberIds: updatedMemberIds }
     const updatedGroup = {
