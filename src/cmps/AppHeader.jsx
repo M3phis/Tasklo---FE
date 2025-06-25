@@ -35,7 +35,7 @@ export function AppHeader() {
     }
   }
 
-  if (userLoggedIn) return <LandingHeader />
+  if (!userLoggedIn) return <LandingHeader />
 
   return (
     <header className="app-header main-container full">

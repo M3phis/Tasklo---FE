@@ -21,7 +21,7 @@ const formatEpochForDisplay = (epoch) => {
   return formatDateForInput(new Date(epoch))
 }
 
-export function DatesModal({ task, onClose, onUpdateDates }) {
+export function DatesModal({ task, position, onClose, onUpdateDates }) {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [startDate, setStartDate] = useState(
     formatEpochForDisplay(task?.startDate) || ''
@@ -232,7 +232,20 @@ export function DatesModal({ task, onClose, onUpdateDates }) {
 
   return (
     <div className="dates-modal-overlay" onClick={onClose}>
-      <div className="dates-modal" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="dates-modal"
+        onClick={(e) => e.stopPropagation()}
+        style={
+          position
+            ? {
+                position: 'absolute',
+                top: position.y,
+                left: position.x,
+                transform: 'none',
+              }
+            : {}
+        }
+      >
         <div className="dates-modal-header">
           <span>Dates</span>
           <button className="date-close-btn" onClick={onClose}>
