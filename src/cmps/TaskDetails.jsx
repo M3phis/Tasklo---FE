@@ -26,21 +26,16 @@ export function TaskDetails({}) {
   const [datesButtonPosition, setDatesButtonPosition] = useState(null)
   const [taskLabelIds, setTaskLabelIds] = useState(task?.labelIds || [])
   const [showAttachmentsModal, setShowAttachmentsModal] = useState(false)
-  const [attachmentButtonPosition, setAttachmentButtonPosition] = useState({
-    x: 0,
-    y: 0,
-  })
+  const [attachmentButtonPosition, setAttachmentButtonPosition] = useState(null)
   const [showAddChecklistModal, setShowAddChecklistModal] = useState(false)
-  const [checklistButtonPosition, setChecklistButtonPosition] = useState({
-    x: 0,
-    y: 0,
-  })
+  const [checklistButtonPosition, setChecklistButtonPosition] = useState(null)
   const [activeButton, setActiveButton] = useState(null)
   const [showAttachmentMenu, setShowAttachmentMenu] = useState(null)
   const [editingAttachment, setEditingAttachment] = useState(null)
   const [showFileMenu, setShowFileMenu] = useState(null)
   const [editingFile, setEditingFile] = useState(null)
   const [editingFileName, setEditingFileName] = useState('')
+  const [membersButtonPosition, setMembersButtonPosition] = useState(null)
 
   const { handleUpdateTask } = useOutletContext()
   const dispatch = useDispatch()
@@ -120,6 +115,7 @@ export function TaskDetails({}) {
     board.labels?.filter((label) => task.labelIds?.includes(label.id)) || []
   const members = task.memberIds || []
   const hasLabels = taskLabels.length > 0
+  const hasMembers = members.length > 0
   const hasDueDate = task.dueDate
 
   // Format due date for display
@@ -519,6 +515,24 @@ export function TaskDetails({}) {
 
             <div className="task-details-actions-row">
               <button>+ Add</button>
+              {!hasMembers && (
+                <button
+                  className={`members-btn ${
+                    activeButton === 'members' ? 'active' : ''
+                  }`}
+                  onClick={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect()
+                    setMembersButtonPosition({
+                      x: rect.left,
+                      y: rect.bottom + 8,
+                    })
+                    setActiveButton('members')
+                    setShowMembersModal(true)
+                  }}
+                >
+                  Members
+                </button>
+              )}
               {!hasLabels && (
                 <button
                   className={`labels-btn ${
@@ -658,34 +672,46 @@ export function TaskDetails({}) {
             </div>
 
             <div className="task-details-info">
-              <div className="task-details-members-section">
-                <span className="section-header">Members</span>
-                <div className="task-members-list">
-                  {members.map((memberId) => {
-                    const member = board.members.find((m) => m._id === memberId)
-                    const initials = member?.fullname
-                      .split(' ')
-                      .map((n) => n[0])
-                      .join('')
-                      .toUpperCase()
-                    return (
-                      <span
-                        key={memberId}
-                        className="task-member-avatar"
-                        title={member?.fullname}
-                      >
-                        {initials}
-                      </span>
-                    )
-                  })}
-                  <button
-                    className="add-member-btn"
-                    onClick={() => setShowMembersModal(true)}
-                  >
-                    +
-                  </button>
+              {hasMembers && (
+                <div className="task-details-members-section">
+                  <span className="section-header">Members</span>
+                  <div className="task-members-list">
+                    {members.map((memberId) => {
+                      const member = board.members.find(
+                        (m) => m._id === memberId
+                      )
+                      const initials = member?.fullname
+                        .split(' ')
+                        .map((n) => n[0])
+                        .join('')
+                        .toUpperCase()
+                      return (
+                        <span
+                          key={memberId}
+                          className="task-member-avatar"
+                          title={member?.fullname}
+                        >
+                          {initials}
+                        </span>
+                      )
+                    })}
+                    <button
+                      className="add-member-btn"
+                      onClick={(e) => {
+                        const rect = e.currentTarget.getBoundingClientRect()
+                        setMembersButtonPosition({
+                          x: rect.left,
+                          y: rect.bottom + 8,
+                        })
+                        setActiveButton('members')
+                        setShowMembersModal(true)
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {hasLabels && (
                 <div className="task-details-labels-section">
@@ -1177,6 +1203,7 @@ export function TaskDetails({}) {
         <MembersModal
           boardMembers={board.members}
           cardMemberIds={task.memberIds || []}
+          position={membersButtonPosition}
           onClose={() => {
             setShowMembersModal(false)
             setActiveButton(null)
