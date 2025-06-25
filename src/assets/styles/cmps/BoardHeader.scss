@@ -5,7 +5,6 @@
     align-items: center;
     flex-grow: 1;
     flex-wrap: wrap;
-    width: 100%;
     height: rem(56px);
     background-color: var(--ds-background-accent-gray-subtlest); // transparent
     padding: rem(12px);
@@ -14,21 +13,37 @@
     .header-left {
         display: flex;
         align-items: center;
-        gap: 8px;
+        height: rem(32px);
+        // gap: rem(8px);
         flex: 1;
 
-        .board-title-input {
+        .board-title-display {
             background: transparent;
             color: var(--ds-text);
-            width: 100%;
-            height: rem(32px);
-            border: none;
+            line-height: rem(32px);
             font-weight: $group-font-weight-bold;
             font-size: rem(16px);
-            line-height: rem(32px);
-            padding: rem(6px) rem(8px);
+            padding: 0 rem(10px);
             border-radius: $group-border-radius-small;
-            transition: all 0.2s;
+            border: none;
+            outline: none;
+
+            &:hover {
+                background: var(--ds-background-neutral-subtle-hovered);
+            }
+        }
+
+        .board-title-input {
+            font-size: rem(18px);
+            background: transparent;
+            color: var(--ds-text);
+            line-height: rem(32px);
+            font-weight: $group-font-weight-bold;
+            padding: rem(3px) rem(10px);
+            margin: 0;
+            border-radius: $group-border-radius-small;
+            outline: none;
+            // border: 2px solid var(--ds-text);
 
             &::placeholder {
                 color: var(--ds-text-subtlest);
@@ -39,10 +54,11 @@
             }
 
             &:focus {
-                color: var(--ds-text);
                 background: var(--ds-background-input);
-                outline: none;
+                box-shadow: inset 0 0 0 1px var(--ds-border-focused);
                 border-radius: $group-border-radius-small;
+                border: 1px solid var(--ds-text);
+                // color: var(--ds-text);
             }
         }
     }

@@ -20,6 +20,7 @@ export function BoardHeader({
 
 }) {
     const [titleToEdit, setTitleToEdit] = useState(board.title)
+    const [isEditingTitle, setIsEditingTitle] = useState(false);
 
     useEffect(() => {
         setTitleToEdit(board.title)
@@ -43,47 +44,60 @@ export function BoardHeader({
         setTitleToEdit(value)
     }
 
-    function onKeyDown(ev) {
-        if (ev.key === 'Enter') {
-            const updatedBoard = { ...board, title: titleToEdit }
-
-            if (onUpdateBoard) {
-                onUpdateBoard(updatedBoard)
-            } else {
-                console.log('Title updated:', titleToEdit)
-            }
-            ev.target.blur()
-        } else if (ev.key === 'Escape') {
-            setTitleToEdit(board.title)
-            ev.target.blur()
+     function handleTitleClick() {
+        if (!isEditingTitle) {
+            setIsEditingTitle(true)
         }
     }
 
-    function onBlurTitle() {
-        if (titleToEdit !== board.title) {
-            const updatedBoard = { ...board, title: titleToEdit }
+     function handleKeyDown(ev) {
+        if (ev.key === 'Enter') {
+            ev.preventDefault()
+            ev.target.blur() // This will trigger handleTitleBlur
+        } else if (ev.key === 'Escape') {
+            setTitleToEdit(board.title) // Reset to original
+            setIsEditingTitle(false)
+        }
+    }
 
+    function handleTitleBlur() {
+        setIsEditingTitle(false)
+        if (titleToEdit.trim() && titleToEdit !== board.title) {
+            const updatedBoard = { ...board, title: titleToEdit.trim() }
             if (onUpdateBoard) {
                 onUpdateBoard(updatedBoard)
             } else {
                 console.log('Title updated on blur:', titleToEdit)
             }
+        } else {
+            setTitleToEdit(board.title || '')
         }
     }
 
     return (
         <>
             <header className="board-header">
-                <div className="header-left">
-                    <input
-                        className="board-title-input"
-                        type="text"
-                        value={titleToEdit}
-                        onChange={handleChangeTitle}
-                        onKeyDown={onKeyDown}
-                        onBlur={onBlurTitle}
-                        placeholder="Board title"
-                    />
+               <div className="header-left">
+                    {isEditingTitle ? (
+                        <input
+                            type="text"
+                            value={titleToEdit}
+                            onChange={handleChangeTitle}
+                            onBlur={handleTitleBlur}
+                            onKeyDown={handleKeyDown}
+                            onFocus={(e) => e.target.select()}
+                            autoFocus
+                            className={`board-title-input ${isEditingTitle ? 'editing' : ''}`}
+                            placeholder="Board title"
+                        />
+                    ) : (
+                        <h1
+                            className="board-title-display"
+                            onClick={handleTitleClick}
+                        >
+                            {board.title || 'Untitled Board'}
+                        </h1>
+                    )}
                 </div>
 
                 <div className="header-right">
