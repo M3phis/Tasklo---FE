@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 import { useState, useEffect } from 'react'
@@ -10,11 +10,11 @@ import MegaphoneIcon from '@atlaskit/icon/core/megaphone'
 import QuestionCircleIcon from '@atlaskit/icon/core/question-circle'
 import NotificationIcon from '@atlaskit/icon/core/notification'
 import { LandingHeader } from './LandingHeader.jsx'
-import { useLocation } from 'react-router-dom'
 
 export function AppHeader() {
   let userLoggedIn = true
   const location = useLocation()
+  const isRootPath = location.pathname === '/'
   const hideHeaderPaths = ['/signup', '/login', '/signup/details']
   const user = useSelector((storeState) => storeState.userModule.user)
   const [filterBy, setFilterBy] = useState(boardService.getEmptyFilter())
@@ -39,7 +39,7 @@ export function AppHeader() {
   }
   if (hideHeaderPaths.includes(location.pathname)) return null
 
-  if (userLoggedIn) return <LandingHeader />
+  if (isRootPath) return <LandingHeader />
 
   return (
     <header className="app-header main-container full">

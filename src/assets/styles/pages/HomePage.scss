@@ -269,6 +269,53 @@
     }
   }
 }
+.landing-signup-form {
+  display: flex;
+  gap: 10px;
+  margin-top: 1rem;
+  max-width: 440px;
+
+  .input-wrapper {
+    flex: 1;
+
+    input {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 1rem;
+      border: 1px solid #d1d1d1;
+      border-radius: 6px;
+      background-color: #fff;
+      color: #172b4d;
+      outline: none;
+
+      &::placeholder {
+        color: #a5adba;
+      }
+
+      &:focus {
+        border-color: #2684ff;
+        box-shadow: 0 0 0 2px rgba(38, 132, 255, 0.3);
+      }
+    }
+  }
+
+  button {
+    background-color: rgb(0, 101, 255);
+    color: #fff;
+    padding: 12px 18px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #0065ff;
+    }
+  }
+}
 
 @keyframes fadeInUp {
   0% {
