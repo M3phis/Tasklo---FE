@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react'
 import { useClickAway } from 'react-use'
 import { GroupListMenu } from './DynamicCmps/GroupListMenu'
 import { TaskList } from './TaskList'
+import { utilService } from '../services/util.service'
+import { userService } from '../services/user'
 
 import AddIcon from '@atlaskit/icon/glyph/add'
 import MoreIcon from '@atlaskit/icon/glyph/more'
@@ -40,10 +42,14 @@ export function GroupPreview({
           tasks: [...group.tasks, newTask],
         }
 
-        onUpdateTask(updatedGroup).then(() => {
-          setTaskTitle('')
-          setIsAddingTask(false)
-        })
+        onUpdateTask(updatedGroup)
+          .then(() => {
+            setTaskTitle('')
+            setIsAddingTask(false)
+          })
+          .catch((err) => {
+            console.error('Error adding task:', err)
+          })
       } else {
         setIsAddingTask(false)
         setTaskTitle('')
@@ -61,9 +67,29 @@ export function GroupPreview({
     ev.preventDefault()
     if (!taskTitle.trim()) return
 
+    const loggedInUser = userService.getLoggedinUser()
+
     const newTask = {
-      id: Date.now().toString(),
+      id: utilService.makeId(),
       title: taskTitle,
+      status: 'in-progress',
+      description: '',
+      comments: [],
+      memberIds: [],
+      labelIds: [],
+      createdAt: Date.now(),
+      dueDate: null,
+      byMember: loggedInUser || {
+        _id: 'guest',
+        username: 'guest',
+        fullname: 'Guest User',
+        imgUrl:
+          'https://cdn2.iconfinder.com/data/icons/audio-16/96/user_avatar_profile_login_button_account_member-1024.png',
+      },
+      style: {},
+      groupId: group.id,
+      attachments: [],
+      checklists: [],
     }
 
     const updatedGroup = {
@@ -73,7 +99,10 @@ export function GroupPreview({
 
     onUpdateTask(updatedGroup).then(() => {
       if (containerRef.current) {
-        containerRef.current.scrollTo({ top: containerRef.current.scrollHeight, behavior: 'smooth' });
+        containerRef.current.scrollTo({
+          top: containerRef.current.scrollHeight,
+          behavior: 'smooth',
+        })
       }
       setTaskTitle('')
     })
@@ -130,8 +159,8 @@ export function GroupPreview({
   }
 
   return (
-    <div className="group-preview" style={group.style}>
-      <div className="group-header" style={group.style}>
+    <div className="group-preview" style={group.style || {}}>
+      <div className="group-header" style={group.style || {}}>
         {isEditing ? (
           <input
             type="text"
@@ -147,7 +176,7 @@ export function GroupPreview({
           <h3
             className="group-title-editable"
             onClick={handleTitleClick}
-            style={group.style}
+            style={group.style || {}}
             onMouseDown={(ev) => {
               const startX = ev.clientX
               const startY = ev.clientY
@@ -170,14 +199,14 @@ export function GroupPreview({
               document.addEventListener('mouseup', handleMouseUp)
             }}
           >
-            {group.title}
+            {group.title || 'Untitled List'}
           </h3>
         )}
         <button
           ref={menuTriggerRef}
           className="options-btn"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          style={group.style}
+          style={group.style || {}}
         >
           <MoreIcon label="" primaryColor=" #626F86" />
         </button>
@@ -195,7 +224,12 @@ export function GroupPreview({
 
         <div className="add-task-section">
           {isAddingTask && (
-            <form ref={formRef} onSubmit={handleAddTask} className="add-task-form" style={group.style}>
+            <form
+              ref={formRef}
+              onSubmit={handleAddTask}
+              className="add-task-form"
+              style={group.style || {}}
+            >
               <input
                 type="text"
                 value={taskTitle}
@@ -205,7 +239,7 @@ export function GroupPreview({
                 autoFocus
                 className="task-input"
               />
-              <div className="add-task-actions" style={group.style}>
+              <div className="add-task-actions" style={group.style || {}}>
                 <button type="submit" className="add-btn">
                   {' '}
                   Add card{' '}
@@ -218,7 +252,7 @@ export function GroupPreview({
                     setTaskTitle('')
                   }}
                 >
-                  <CrossIcon label="" primaryColor='#091E42' />
+                  <CrossIcon label="" primaryColor="#091E42" />
                 </button>
               </div>
             </form>
@@ -237,14 +271,13 @@ export function GroupPreview({
         )}
       </div>
 
-
       <GroupListMenu
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
         onAddCard={() => setIsAddingTask(true)}
         onDeleteList={() => onRemoveList(group.id)}
         onChangeColor={handleChangeColor}
-        currentColor={group.style?.backgroundColor}
+        currentColor={group.style?.backgroundColor || {}}
         triggerRef={menuTriggerRef}
       />
     </div>

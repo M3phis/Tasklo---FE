@@ -1,4 +1,5 @@
 import { boardService } from '../services/board'
+import { filterReducer } from '../cmps/BoardHeader/BoardHeaderFilter'
 
 // Action Types
 export const SET_BOARDS = 'SET_BOARDS'
@@ -8,11 +9,14 @@ export const ADD_BOARD = 'ADD_BOARD'
 export const UPDATE_BOARD = 'UPDATE_BOARD'
 export const ADD_BOARD_ACTIVITY = 'ADD_BOARD_ACTIVITY'
 export const MOVE_CARD = 'MOVE_CARD'
+export const SET_FILTER = 'SET_FILTER'
+export const CLEAR_FILTERS = 'CLEAR_FILTERS'
 
 
 const initialState = {
     boards: [],
     board: null,
+    filters: filterReducer(undefined, {}),
     filterBy: boardService.getEmptyFilter(),
 }
 
@@ -54,7 +58,17 @@ export function boardReducer(state = initialState, action) {
         case MOVE_CARD:
             return { ...state, board: action.board }
 
+        case SET_FILTER:
+            return {
+                ...state,
+                filters: { ...state.filters, ...action.filters }
+            }
 
+        case CLEAR_FILTERS:
+            return {
+                ...state,
+                filters: filterReducer(undefined, {})
+            }
 
         default:
             return state

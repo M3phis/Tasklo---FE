@@ -20,7 +20,7 @@ export function MembersModal({
               .map((n) => n[0])
               .join('')
               .toUpperCase()
-            const isChecked = cardMemberIds.includes(member._id)
+            const isChecked = cardMemberIds?.includes(member._id) || false
             return (
               <label key={member._id} className="member-row">
                 <input

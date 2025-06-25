@@ -19,14 +19,16 @@ export function GroupList({
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [groupTitle, setGroupTitle] = useState('')
 
-  // Add null checks
-  if (!board) return null
+  if (!board) {
+    console.log('GroupList: board is null/undefined')
+    return null
+  }
+
   const { groups = [] } = board
 
   function handleAddGroup(ev) {
     ev.preventDefault()
     if (!groupTitle.trim()) {
-      showErrorMsg('List title cannot be empty')
       return
     }
 
@@ -34,13 +36,13 @@ export function GroupList({
       id: Date.now().toString(),
       title: groupTitle,
       tasks: [],
-      style: '',
+      style: {},
     }
 
     onAddGroup(newGroup).then(() => {
       setGroupTitle('')
       setIsAddingGroup(false)
-    })
+    }) 
   }
 
   return (
@@ -59,23 +61,22 @@ export function GroupList({
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    className={`group-list-item ${
-                      snapshot.isDragging && !snapshot.isDropAnimating
-                        ? 'dragging'
-                        : ''
-                    }`}
+                    className={`group-list-item ${snapshot.isDragging && !snapshot.isDropAnimating
+                      ? 'dragging'
+                      : ''
+                      }`}
                     style={
                       snapshot.isDragging && !snapshot.isDropAnimating
                         ? {
-                            ...provided.draggableProps?.style,
-                            opacity: 0.6,
-                            transform: `${provided.draggableProps?.style?.transform} rotate(6deg)`,
-                          }
+                          ...provided.draggableProps?.style,
+                          opacity: 0.6,
+                          transform: `${provided.draggableProps?.style?.transform} rotate(6deg)`,
+                        }
                         : {
-                            ...provided.draggableProps?.style,
-                            cursor: 'pointer',
-                            transition: 'all 0.2s ease',
-                          }
+                          ...provided.draggableProps?.style,
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease',
+                        }
                     }
                   >
                     <GroupPreview
@@ -126,7 +127,7 @@ export function GroupList({
                           setGroupTitle('')
                         }}
                       >
-                        <CrossIcon label="" primaryColor="#091E42"/>
+                        <CrossIcon label="" primaryColor="#091E42" />
                       </button>
                     </div>
                   </form>
