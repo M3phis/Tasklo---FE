@@ -1,6 +1,5 @@
 [
   {
-    "_id": "62e25d13b530b64caf3c5d1a",
     "title": "Project management",
     "createdAt": 1659002131617,
     "labels": [
@@ -1166,7 +1165,6 @@
     "isStarred": false
   },
   {
-    "_id": "62e25d9ab530b64caf3c5d1b",
     "title": "Demos management",
     "createdAt": 1659002266021,
     "labels": [
@@ -2148,7 +2146,6 @@
     "isStarred": false
   },
   {
-    "_id": "62e25ea2b530b64caf3c5d1c",
     "title": "Morning routine",
     "createdAt": 1659002529935,
     "labels": [
