@@ -1,8 +1,8 @@
 import { useParams, useNavigate, useOutletContext } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useState, useEffect } from 'react'
 import { boardService } from '../services/board'
-import { loadBoard, updateBoard } from '../store/board.actions'
+import { updateBoard } from '../store/board.actions'
 import { LabelsModal } from './LabelsModal'
 import { MembersModal } from './MembersModal'
 import { DatesModal } from './DatesModal'
@@ -20,27 +20,26 @@ export function TaskDetails({}) {
   const [description, setDescription] = useState(task?.description || '')
   const [isEditing, setIsEditing] = useState(false)
   const [showLabelsModal, setShowLabelsModal] = useState(false)
+  const [labelButtonPosition, setLabelButtonPosition] = useState(null)
   const [showMembersModal, setShowMembersModal] = useState(false)
   const [showDatesModal, setShowDatesModal] = useState(false)
+  const [datesButtonPosition, setDatesButtonPosition] = useState(null)
   const [taskLabelIds, setTaskLabelIds] = useState(task?.labelIds || [])
   const [showAttachmentsModal, setShowAttachmentsModal] = useState(false)
-  const [attachmentButtonPosition, setAttachmentButtonPosition] = useState({
-    x: 0,
-    y: 0,
-  })
+  const [attachmentButtonPosition, setAttachmentButtonPosition] = useState(null)
   const [showAddChecklistModal, setShowAddChecklistModal] = useState(false)
-  const [checklistButtonPosition, setChecklistButtonPosition] = useState({
-    x: 0,
-    y: 0,
-  })
+  const [checklistButtonPosition, setChecklistButtonPosition] = useState(null)
   const [activeButton, setActiveButton] = useState(null)
   const [showAttachmentMenu, setShowAttachmentMenu] = useState(null)
   const [editingAttachment, setEditingAttachment] = useState(null)
   const [showFileMenu, setShowFileMenu] = useState(null)
   const [editingFile, setEditingFile] = useState(null)
   const [editingFileName, setEditingFileName] = useState('')
+  const [membersButtonPosition, setMembersButtonPosition] = useState(null)
 
   const { handleUpdateTask } = useOutletContext()
+  const dispatch = useDispatch()
+
   useEffect(() => {
     setTaskLabelIds(task?.labelIds || [])
   }, [task])
@@ -116,6 +115,7 @@ export function TaskDetails({}) {
     board.labels?.filter((label) => task.labelIds?.includes(label.id)) || []
   const members = task.memberIds || []
   const hasLabels = taskLabels.length > 0
+  const hasMembers = members.length > 0
   const hasDueDate = task.dueDate
 
   // Format due date for display
@@ -212,17 +212,88 @@ export function TaskDetails({}) {
     } else {
       updatedLabelIds = [...taskLabelIds, labelId]
     }
+
+    // Update local state
     setTaskLabelIds(updatedLabelIds)
 
-    // Prepare updated task and group
+    // Update task in the board
     const updatedTask = { ...task, labelIds: updatedLabelIds }
     const updatedGroup = {
       ...group,
       tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
     }
-
-    // Call the update function (which updates the board and Redux)
     handleUpdateTask(updatedGroup)
+  }
+
+  const handleSaveLabel = async (updatedLabel) => {
+    try {
+      // Update the label in the board's labels array
+      const updatedLabels = board.labels.map((label) =>
+        label.id === updatedLabel.id ? updatedLabel : label
+      )
+
+      // Update the board with new labels
+      const updatedBoard = { ...board, labels: updatedLabels }
+
+      // Save to backend and update Redux
+      await updateBoard(updatedBoard)
+
+      console.log('Label updated successfully')
+    } catch (err) {
+      console.error('Failed to save label:', err)
+    }
+  }
+
+  const handleDeleteLabel = async (labelId) => {
+    try {
+      // Remove the label from board's labels array
+      const updatedLabels = board.labels.filter((label) => label.id !== labelId)
+
+      // Remove the label from all tasks that have it
+      const updatedGroups = board.groups.map((grp) => ({
+        ...grp,
+        tasks: grp.tasks.map((tsk) => ({
+          ...tsk,
+          labelIds: (tsk.labelIds || []).filter((id) => id !== labelId),
+        })),
+      }))
+
+      // Update local state if this task had the deleted label
+      if (taskLabelIds.includes(labelId)) {
+        setTaskLabelIds(taskLabelIds.filter((id) => id !== labelId))
+      }
+
+      // Create updated board
+      const updatedBoard = {
+        ...board,
+        labels: updatedLabels,
+        groups: updatedGroups,
+      }
+
+      // Save to backend and update Redux
+      await updateBoard(updatedBoard)
+
+      console.log('Label deleted successfully')
+    } catch (err) {
+      console.error('Failed to delete label:', err)
+    }
+  }
+
+  const handleCreateLabel = async (newLabel) => {
+    try {
+      // Add the new label to the board's labels array
+      const updatedLabels = [...board.labels, newLabel]
+
+      // Update the board with new labels
+      const updatedBoard = { ...board, labels: updatedLabels }
+
+      // Save to backend and update Redux
+      await updateBoard(updatedBoard)
+
+      console.log('Label created successfully')
+    } catch (err) {
+      console.error('Failed to create label:', err)
+    }
   }
 
   const handleEditAttachment = (attachment) => {
@@ -444,12 +515,35 @@ export function TaskDetails({}) {
 
             <div className="task-details-actions-row">
               <button>+ Add</button>
+              {!hasMembers && (
+                <button
+                  className={`members-btn ${
+                    activeButton === 'members' ? 'active' : ''
+                  }`}
+                  onClick={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect()
+                    setMembersButtonPosition({
+                      x: rect.left,
+                      y: rect.bottom + 8,
+                    })
+                    setActiveButton('members')
+                    setShowMembersModal(true)
+                  }}
+                >
+                  Members
+                </button>
+              )}
               {!hasLabels && (
                 <button
                   className={`labels-btn ${
                     activeButton === 'labels' ? 'active' : ''
                   }`}
-                  onClick={() => {
+                  onClick={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect()
+                    setLabelButtonPosition({
+                      x: rect.left,
+                      y: rect.bottom + 8,
+                    })
                     setActiveButton('labels')
                     setShowLabelsModal(true)
                   }}
@@ -460,7 +554,12 @@ export function TaskDetails({}) {
               {!hasDueDate && (
                 <button
                   className={activeButton === 'dates' ? 'active' : ''}
-                  onClick={() => {
+                  onClick={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect()
+                    setDatesButtonPosition({
+                      x: rect.left,
+                      y: rect.bottom + 8,
+                    })
                     setActiveButton('dates')
                     setShowDatesModal(true)
                   }}
@@ -573,34 +672,46 @@ export function TaskDetails({}) {
             </div>
 
             <div className="task-details-info">
-              <div className="task-details-members-section">
-                <span className="section-header">Members</span>
-                <div className="task-members-list">
-                  {members.map((memberId) => {
-                    const member = board.members.find((m) => m._id === memberId)
-                    const initials = member?.fullname
-                      .split(' ')
-                      .map((n) => n[0])
-                      .join('')
-                      .toUpperCase()
-                    return (
-                      <span
-                        key={memberId}
-                        className="task-member-avatar"
-                        title={member?.fullname}
-                      >
-                        {initials}
-                      </span>
-                    )
-                  })}
-                  <button
-                    className="add-member-btn"
-                    onClick={() => setShowMembersModal(true)}
-                  >
-                    +
-                  </button>
+              {hasMembers && (
+                <div className="task-details-members-section">
+                  <span className="section-header">Members</span>
+                  <div className="task-members-list">
+                    {members.map((memberId) => {
+                      const member = board.members.find(
+                        (m) => m._id === memberId
+                      )
+                      const initials = member?.fullname
+                        .split(' ')
+                        .map((n) => n[0])
+                        .join('')
+                        .toUpperCase()
+                      return (
+                        <span
+                          key={memberId}
+                          className="task-member-avatar"
+                          title={member?.fullname}
+                        >
+                          {initials}
+                        </span>
+                      )
+                    })}
+                    <button
+                      className="add-member-btn"
+                      onClick={(e) => {
+                        const rect = e.currentTarget.getBoundingClientRect()
+                        setMembersButtonPosition({
+                          x: rect.left,
+                          y: rect.bottom + 8,
+                        })
+                        setActiveButton('members')
+                        setShowMembersModal(true)
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {hasLabels && (
                 <div className="task-details-labels-section">
@@ -612,11 +723,21 @@ export function TaskDetails({}) {
                         className="task-label"
                         style={{ background: label.color }}
                         title={label.title}
-                      ></span>
+                      >
+                        {label.title}
+                      </span>
                     ))}
                     <button
                       className="add-label-btn"
-                      onClick={() => setShowLabelsModal(true)}
+                      onClick={(e) => {
+                        const rect = e.currentTarget.getBoundingClientRect()
+                        setLabelButtonPosition({
+                          x: rect.left,
+                          y: rect.bottom + 8,
+                        })
+                        setActiveButton('labels')
+                        setShowLabelsModal(true)
+                      }}
                     >
                       +
                     </button>
@@ -630,7 +751,14 @@ export function TaskDetails({}) {
                   <div className="due-date-display">
                     <span
                       className="due-date-text"
-                      onClick={() => setShowDatesModal(true)}
+                      onClick={(e) => {
+                        const rect = e.currentTarget.getBoundingClientRect()
+                        setDatesButtonPosition({
+                          x: rect.left,
+                          y: rect.bottom + 8,
+                        })
+                        setShowDatesModal(true)
+                      }}
                     >
                       {formatDueDate(task.dueDate)}
                       {isOverdue(task.dueDate) && (
@@ -1059,11 +1187,15 @@ export function TaskDetails({}) {
         <LabelsModal
           labels={board.labels}
           taskLabelIds={taskLabelIds}
+          position={labelButtonPosition}
           onClose={() => {
             setShowLabelsModal(false)
             setActiveButton(null)
           }}
           onToggleLabel={handleToggleLabel}
+          onSaveLabel={handleSaveLabel}
+          onDeleteLabel={handleDeleteLabel}
+          onCreateLabel={handleCreateLabel}
         />
       )}
 
@@ -1071,6 +1203,7 @@ export function TaskDetails({}) {
         <MembersModal
           boardMembers={board.members}
           cardMemberIds={task.memberIds || []}
+          position={membersButtonPosition}
           onClose={() => {
             setShowMembersModal(false)
             setActiveButton(null)
@@ -1082,6 +1215,7 @@ export function TaskDetails({}) {
       {showDatesModal && (
         <DatesModal
           task={task}
+          position={datesButtonPosition}
           onClose={() => {
             setShowDatesModal(false)
             setActiveButton(null)
