@@ -45,7 +45,7 @@ export function MembersModal({
       >
         <div className="members-modal-header">
           <span>Members</span>
-          <button className="close-btn" onClick={onClose}>
+          <button className="members-modal-close-btn" onClick={onClose}>
             ×
           </button>
         </div>
