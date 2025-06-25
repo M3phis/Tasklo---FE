@@ -17,8 +17,8 @@ import { AppHeader } from './cmps/AppHeader'
 import { AppFooter } from './cmps/AppFooter'
 import { UserMsg } from './cmps/UserMsg.jsx'
 import { LoginSignup } from './pages/LoginSignup.jsx'
-import { Login } from './pages/Login.jsx'
-import { Signup } from './pages/Signup.jsx'
+import { AuthForm } from './pages/AuthForm.jsx'
+import { SignupDetails } from './pages/SignupDetails.jsx'
 
 export function RootCmp() {
   return (
@@ -50,10 +50,9 @@ export function RootCmp() {
               </AuthGuard>
             }
           />
-          <Route path="login" element={<LoginSignup />}>
-            <Route index element={<Login />} />
-            <Route path="signup" element={<Signup />} />
-          </Route>
+          <Route path="login" element={<AuthForm mode="login" />}></Route>
+          <Route path="signup" element={<AuthForm mode="signup" />}></Route>
+          <Route path="/signup/details" element={<SignupDetails />} />
         </Routes>
       </main>
       <AppFooter />

@@ -10,9 +10,12 @@ import MegaphoneIcon from '@atlaskit/icon/core/megaphone'
 import QuestionCircleIcon from '@atlaskit/icon/core/question-circle'
 import NotificationIcon from '@atlaskit/icon/core/notification'
 import { LandingHeader } from './LandingHeader.jsx'
+import { useLocation } from 'react-router-dom'
 
 export function AppHeader() {
   let userLoggedIn = true
+  const location = useLocation()
+  const hideHeaderPaths = ['/signup', '/login', '/signup/details']
   const user = useSelector((storeState) => storeState.userModule.user)
   const [filterBy, setFilterBy] = useState(boardService.getEmptyFilter())
   const navigate = useNavigate()
@@ -34,6 +37,7 @@ export function AppHeader() {
       showErrorMsg('Cannot logout')
     }
   }
+  if (hideHeaderPaths.includes(location.pathname)) return null
 
   if (userLoggedIn) return <LandingHeader />
 
