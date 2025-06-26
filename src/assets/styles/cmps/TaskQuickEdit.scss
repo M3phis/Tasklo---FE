@@ -122,6 +122,17 @@
                 background: var(--ds-background-accent-gray-subtler);
             }
 
+            &:active,
+            &.active {
+                background: rgb(44, 62, 93);
+                color: rgb(255, 255, 255);
+
+                svg {
+                    fill: rgb(255, 255, 255);
+                    stroke: rgb(255, 255, 255);
+                }
+            }
+
             svg {
                 width: rem(16px);
                 height: rem(16px);
