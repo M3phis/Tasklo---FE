@@ -143,10 +143,25 @@ export function TaskQuickEdit({
     // Calculate position relative to the button that was clicked
     if (triggerRef && triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect()
-      setModalPosition({
-        x: rect.left,
-        y: rect.bottom + 4,
-      })
+      const viewportHeight = window.innerHeight
+      const buttonCenterY = rect.top + rect.height / 2
+      const isInBottomHalf = buttonCenterY > viewportHeight / 2
+      const gap = 4
+
+      if (isInBottomHalf) {
+        // Position above the button
+        setModalPosition({
+          x: rect.left,
+          y: rect.top - gap,
+          alignAbove: true,
+        })
+      } else {
+        // Position below the button (default)
+        setModalPosition({
+          x: rect.left,
+          y: rect.bottom + gap,
+        })
+      }
     }
     setActiveModal(modalType)
     setModalTriggerRef(triggerRef)

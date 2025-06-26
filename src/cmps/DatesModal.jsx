@@ -241,7 +241,7 @@ export function DatesModal({ task, position, onClose, onUpdateDates }) {
                 position: 'absolute',
                 top: position.y,
                 left: position.x,
-                transform: 'none',
+                transform: position.alignAbove ? 'translateY(-100%)' : 'none',
               }
             : {}
         }
