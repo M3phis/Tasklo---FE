@@ -24,7 +24,7 @@
             &.editing {
                 .task-content {
                     min-height: rem(64px);
-                    border-radius: 0 0 $group-border-radius-medium $group-border-radius-medium;
+                    border-radius: $group-border-radius-medium;
 
                     .task-header {
                         display: flow-root;
@@ -47,10 +47,12 @@
                                 word-wrap: break-word;
                                 // padding: rem(8px) rem(12px);
                             }
-
                         }
-
                     }
+                }
+
+                .task-cover+.task-content {
+                    border-radius: 0 0 $group-border-radius-medium $group-border-radius-medium;
                 }
 
                 &:hover {
