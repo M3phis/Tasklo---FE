@@ -14,7 +14,6 @@ export function MembersModal({
       .toUpperCase()
   }
 
-  // Separate members into card members and available board members
   const cardMembers = boardMembers.filter((member) =>
     cardMemberIds?.includes(member._id)
   )

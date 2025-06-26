@@ -15,7 +15,6 @@ export function TaskList({
 }) {
   const navigate = useNavigate()
 
-  // Add null checks
   if (!group || !board) return null
 
   return (
