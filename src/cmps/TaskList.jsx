@@ -10,6 +10,8 @@ export function TaskList({
   onUpdateTask,
   onOpenQuickEdit,
   board,
+  isLabelsExtended,
+  setIsLabelsExtended,
 }) {
   const navigate = useNavigate()
 
@@ -31,23 +33,22 @@ export function TaskList({
                   ref={provided.innerRef}
                   {...provided.draggableProps}
                   {...provided.dragHandleProps}
-                  className={`task-list-item ${
-                    snapshot.isDragging && !snapshot.isDropAnimating
-                      ? 'dragging'
-                      : ''
-                  }`}
+                  className={`task-list-item ${snapshot.isDragging && !snapshot.isDropAnimating
+                    ? 'dragging'
+                    : ''
+                    }`}
                   style={
                     snapshot.isDragging && !snapshot.isDropAnimating
                       ? {
-                          ...provided.draggableProps?.style,
-                          opacity: 0.6,
-                          transform: `${provided.draggableProps?.style?.transform} rotate(6deg)`,
-                        }
+                        ...provided.draggableProps?.style,
+                        opacity: 0.6,
+                        transform: `${provided.draggableProps?.style?.transform} rotate(6deg)`,
+                      }
                       : {
-                          ...provided.draggableProps?.style,
-                          cursor: 'pointer',
-                          transition: 'all 0.2s ease',
-                        }
+                        ...provided.draggableProps?.style,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                      }
                   }
                   onClick={() =>
                     navigate(`/board/${board._id}/${group.id}/${task.id}`)
@@ -62,6 +63,8 @@ export function TaskList({
                     onOpenQuickEdit={onOpenQuickEdit}
                     isEmptyPlaceholder={false}
                     board={board}
+                    isLabelsExtended={isLabelsExtended}
+                    setIsLabelsExtended={setIsLabelsExtended}
                   />
                 </li>
               )}

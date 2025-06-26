@@ -18,6 +18,7 @@ export function GroupList({
 }) {
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [groupTitle, setGroupTitle] = useState('')
+  const [isLabelsExtended, setIsLabelsExtended] = useState(false)
 
   if (!board) {
     console.log('GroupList: board is null/undefined')
@@ -42,7 +43,7 @@ export function GroupList({
     onAddGroup(newGroup).then(() => {
       setGroupTitle('')
       setIsAddingGroup(false)
-    }) 
+    })
   }
 
   return (
@@ -87,6 +88,8 @@ export function GroupList({
                       onRemoveList={onRemoveList}
                       onUpdateTask={onUpdateTask}
                       onRemoveTask={onRemoveTask}
+                      isLabelsExtended={isLabelsExtended}
+                      setIsLabelsExtended={setIsLabelsExtended}
                     />
                   </li>
                 )}

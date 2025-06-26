@@ -199,52 +199,54 @@
         }
     }
 
-    // &:not(.collapsed) {
-    //     padding: rem(4px) rem(8px);
-    //     height: auto;
-    //     min-height: rem(20px);
-    //     max-width: rem(198px);
-    //     margin: 0 rem(4px) rem(4px) 0;
-    //     font-weight: $group-font-weight-regular;
-    //     letter-spacing: 0.02em;
+    &:not(.collapsed) {
+        height: rem(16px);
+        min-width: rem(56px);
+        max-width: 100%;
+        padding: 0 rem(8px);
+        font-size: rem(12px);
+        border-radius: rem(4px);
+        font-weight: $group-font-weight-semibold;
+        line-height: rem(16px);
+        // letter-spacing: 0.02em;
+        margin: 0;
 
-    //     span {
-    //         display: block;
-    //         line-height: rem(16px);
-    //         white-space: nowrap;
-    //         overflow: hidden;
-    //         text-overflow: ellipsis;
-    //         max-width: 100%;
-    //     }
-    // }
+        span {
+            display: block;
+            line-height: rem(16px);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+    }
 
-    // &:hover {
-    //     transform: translateY(-1px);
-    //     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-    // }
+    &:hover {
+        filter: brightness(1.15) saturate(1.1);
+    }
 
-    // &:active {
-    //     transform: translateY(0);
-    //     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    // }
+    &:active {
+        transform: translateY(0);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
 
-    // &:focus {
-    //     outline: rem(2px) solid var(--ds-border-focused);
-    //     outline-offset: rem(2px);
-    // }
+    &:focus {
+        outline: rem(2px) solid var(--ds-border-focused);
+        outline-offset: rem(2px);
+    }
 
-    // &[style*="#f2d600"],
-    // &[style*="#51e898"] {
-    //     color: var(--ds-text);
-    //     text-shadow: none;
-    // }
+    &[style*="#f2d600"],
+    &[style*="#51e898"] {
+        color: var(--ds-text);
+        text-shadow: none;
+    }
 
-    // transition: width 0.2s ease,
-    // height 0.2s ease,
-    // padding 0.2s ease,
-    // margin 0.2s ease,
-    // transform 0.15s ease,
-    // box-shadow 0.15s ease;
+    transition: width 0.2s ease,
+    height 0.2s ease,
+    padding 0.2s ease,
+    margin 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 // Task Badges

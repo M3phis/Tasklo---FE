@@ -18,6 +18,8 @@ export function GroupPreview({
   onUpdateTask,
   onRemoveTask,
   onOpenQuickEdit,
+  isLabelsExtended,
+  setIsLabelsExtended
 }) {
   const [isAddingTask, setIsAddingTask] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
@@ -220,6 +222,8 @@ export function GroupPreview({
           onUpdateTask={onUpdateTask}
           onOpenQuickEdit={onOpenQuickEdit}
           board={board}
+          isLabelsExtended={isLabelsExtended}
+          setIsLabelsExtended={setIsLabelsExtended}
         />
 
         <div className="add-task-section">
