@@ -39,6 +39,13 @@ export function TaskDetailsDynamic({
   }, [])
 
   useLayoutEffect(() => {
+    // If position is explicitly provided (from TaskQuickEdit), use it directly
+    if (position && position.x !== undefined && position.y !== undefined) {
+      setCalculatedPosition(position)
+      return
+    }
+
+    // Otherwise, calculate from triggerRef (for TaskDetails)
     if (modalRef.current && triggerRef?.current) {
       const modalRect = modalRef.current.getBoundingClientRect()
       const triggerRect = triggerRef.current.getBoundingClientRect()
@@ -56,7 +63,7 @@ export function TaskDetailsDynamic({
 
       setCalculatedPosition({ x: newLeft, y: newTop })
     }
-  }, [windowSize, type, triggerRef])
+  }, [windowSize, type, triggerRef, position])
 
   // Wrapper function to prevent event propagation
   function handleClose(event) {
@@ -111,6 +118,7 @@ export function TaskDetailsDynamic({
           <LabelsModal
             labels={board.labels || []}
             taskLabelIds={task.labelIds || []}
+            position={calculatedPosition}
             onClose={handleClose}
             onToggleLabel={handleToggleLabel}
           />
@@ -121,6 +129,7 @@ export function TaskDetailsDynamic({
           <MembersModal
             boardMembers={board.members || []}
             cardMemberIds={task.memberIds || []}
+            position={calculatedPosition}
             onClose={handleClose}
             onToggleMember={handleToggleMember}
           />
@@ -130,6 +139,7 @@ export function TaskDetailsDynamic({
         return (
           <DatesModal
             task={task}
+            position={calculatedPosition}
             onClose={handleClose}
             onUpdateDates={handleUpdateDates}
           />

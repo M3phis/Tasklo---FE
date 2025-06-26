@@ -34,6 +34,7 @@ export function TaskQuickEdit({
     height: window.innerHeight,
   })
   const [calculatedPosition, setCalculatedPosition] = useState(position)
+  const [modalPosition, setModalPosition] = useState(null)
   const [menuSideClass, setMenuSideClass] = useState('')
   const [activeModal, setActiveModal] = useState(null)
   const [modalTriggerRef, setModalTriggerRef] = useState(null)
@@ -139,6 +140,14 @@ export function TaskQuickEdit({
   }
 
   function openModal(modalType, triggerRef) {
+    // Calculate position relative to the button that was clicked
+    if (triggerRef && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect()
+      setModalPosition({
+        x: rect.left,
+        y: rect.bottom + 4,
+      })
+    }
     setActiveModal(modalType)
     setModalTriggerRef(triggerRef)
   }
@@ -325,7 +334,7 @@ export function TaskQuickEdit({
           group={group}
           onClose={closeModal}
           onUpdateTask={onUpdateTask}
-          position={calculatedPosition}
+          position={modalPosition}
           triggerRef={modalTriggerRef}
         />
       )}
