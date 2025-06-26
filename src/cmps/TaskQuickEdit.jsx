@@ -140,7 +140,6 @@ export function TaskQuickEdit({
   }
 
   function openModal(modalType, triggerRef) {
-    // Calculate position relative to the button that was clicked
     if (triggerRef && triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect()
       const viewportHeight = window.innerHeight
@@ -149,14 +148,12 @@ export function TaskQuickEdit({
       const gap = 4
 
       if (isInBottomHalf) {
-        // Position above the button
         setModalPosition({
           x: rect.left,
           y: rect.top - gap,
           alignAbove: true,
         })
       } else {
-        // Position below the button (default)
         setModalPosition({
           x: rect.left,
           y: rect.bottom + gap,
@@ -175,7 +172,6 @@ export function TaskQuickEdit({
     setModalTriggerRef(null)
   }
 
-  // Add a global event listener to catch modal overlay clicks
   useEffect(() => {
     function handleGlobalClick(event) {
       if (
@@ -315,8 +311,8 @@ export function TaskQuickEdit({
 
             {/* <button className="action-button"><ArrowRightIcon label="Move" color="currentColor" /><span>Move</span></button> */}
 
-            <button className="action-button">
-              {/* <CopyIcon label="Copy card" color="currentColor" /> */}
+            {/* <button className="action-button">
+              <CopyIcon label="Copy card" color="currentColor" />
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path
                   fillRule="evenodd"
@@ -326,7 +322,7 @@ export function TaskQuickEdit({
                 ></path>
               </svg>
               <span>Copy card</span>
-            </button>
+            </button> */}
 
             <button
               className={`action-button delete-icon ${

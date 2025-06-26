@@ -39,13 +39,11 @@ export function TaskDetailsDynamic({
   }, [])
 
   useLayoutEffect(() => {
-    // If position is explicitly provided (from TaskQuickEdit), use it directly
     if (position && position.x !== undefined && position.y !== undefined) {
       setCalculatedPosition(position)
       return
     }
 
-    // Otherwise, calculate from triggerRef (for TaskDetails)
     if (modalRef.current && triggerRef?.current) {
       const modalRect = modalRef.current.getBoundingClientRect()
       const triggerRect = triggerRef.current.getBoundingClientRect()
@@ -65,7 +63,6 @@ export function TaskDetailsDynamic({
     }
   }, [windowSize, type, triggerRef, position])
 
-  // Wrapper function to prevent event propagation
   function handleClose(event) {
     if (event) {
       event.stopPropagation()
@@ -162,7 +159,6 @@ export function TaskDetailsDynamic({
 
   if (!type) return null
 
-  // Render modal content using React portal to escape the TaskList DOM hierarchy
   const modalContent = (
     <div
       ref={modalRef}
@@ -179,6 +175,5 @@ export function TaskDetailsDynamic({
     </div>
   )
 
-  // Use createPortal to render outside the current component tree
   return createPortal(modalContent, document.body)
 }
