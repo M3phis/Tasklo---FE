@@ -142,16 +142,6 @@ export function TaskDetailsDynamic({
           />
         )
 
-      case MODAL_TYPES.COPY_CARD:
-        return (
-          <TaskCopyModal
-            task={task}
-            board={board}
-            group={group}
-            onClose={handleClose}
-          />
-        )
-
       default:
         return null
     }
