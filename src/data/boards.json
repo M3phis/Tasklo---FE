@@ -1,5 +1,6 @@
 [
   {
+    "_id": "62e22fe4b530b64caf3c5d18",
     "title": "Project management",
     "createdAt": 1659002131617,
     "labels": [
@@ -136,7 +137,7 @@
               "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
             },
             "style": {
-              "background": "#EF7564"
+              "background": "#FF8A85"
             },
             "groupId": "44rmv",
             "attachments": [
@@ -306,7 +307,7 @@
               "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
             },
             "style": {
-              "background": "#29CCE5"
+              "background": "#60C6D2"
             },
             "groupId": "rc5YG",
             "attachments": [],
@@ -376,7 +377,7 @@
               "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
             },
             "style": {
-              "background": "#EF7564"
+              "background": "#FF8A85"
             },
             "groupId": "wimX0",
             "attachments": [],
@@ -433,7 +434,7 @@
               "imgUrl": "https://avatars.githubusercontent.com/u/97507642?s=400&u=b98ba078731ece6a7ff8c9e3aafc29dfed49029a&v=4"
             },
             "style": {
-              "background": "#EF7564"
+              "background": "#FF8A85"
             },
             "groupId": "ngswt",
             "attachments": []
@@ -515,7 +516,7 @@
               "imgUrl": "http://res.cloudinary.com/donatello-cloud/image/upload/v1659021122/IMG_3404_lzbiqc.jpg"
             },
             "style": {
-              "background": "#172B4D"
+              "background": "#8590A2"
             },
             "groupId": "ngswt",
             "attachments": []
@@ -544,7 +545,7 @@
               "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
             },
             "style": {
-              "background": "#CD8DE5"
+              "background": "#9F8FEF"
             },
             "groupId": "f85ay",
             "attachments": []
@@ -666,7 +667,7 @@
               "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
             },
             "style": {
-              "background": "#7BC86C"
+              "background": "#4BCE97"
             },
             "groupId": "f85ay",
             "attachments": []
@@ -709,7 +710,7 @@
               "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
             },
             "style": {
-              "background": "#FF8ED4"
+              "background": "#E774BB"
             },
             "groupId": "XEOBx",
             "attachments": []
@@ -773,7 +774,7 @@
               "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
             },
             "style": {
-              "background": "#F5DD29"
+              "background": "#F5CD47"
             },
             "groupId": "XEOBx",
             "attachments": [
@@ -853,7 +854,7 @@
               "imgUrl": "https://cdn2.iconfinder.com/data/icons/audio-16/96/user_avatar_profile_login_button_account_member-1024.png"
             },
             "style": {
-              "background": "#6DECA9"
+              "background": "#4BCE97"
             },
             "groupId": "XEOBx",
             "attachments": []
@@ -1165,6 +1166,7 @@
     "isStarred": false
   },
   {
+    "_id": "62e559824958611981969eee",
     "title": "Demos management",
     "createdAt": 1659002266021,
     "labels": [
@@ -1275,7 +1277,7 @@
               "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
             },
             "style": {
-              "background": "#5BA4CF"
+              "background": "#579DFF"
             },
             "groupId": "fqxkw",
             "attachments": []
@@ -1397,7 +1399,7 @@
               "imgUrl": "http://res.cloudinary.com/donatello-cloud/image/upload/v1659021122/IMG_3404_lzbiqc.jpg"
             },
             "style": {
-              "background": "#7BC86C"
+              "background": "#4BCE97"
             },
             "groupId": "fqxkw",
             "attachments": [],
@@ -2146,6 +2148,7 @@
     "isStarred": false
   },
   {
+    "_id": "62e559cf4958611981969ef0",
     "title": "Morning routine",
     "createdAt": 1659002529935,
     "labels": [

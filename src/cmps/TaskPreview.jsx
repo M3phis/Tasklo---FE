@@ -36,6 +36,7 @@ export function TaskPreview({
   function handleTaskClick(ev) {
     if (
       ev.target.closest('.task-edit-btn') ||
+      ev.target.closest('.task-edit-btn') ||
       ev.target.closest('.task-delete-btn') ||
       ev.target.closest('.task-done-btn') ||
       ev.target.closest('.quick-edit-backdrop') ||
@@ -136,6 +137,22 @@ export function TaskPreview({
     )
   }
 
+  function getFirstImageAttachment() {
+    if (!task.attachments || !Array.isArray(task.attachments)) return null
+    return task.attachments.find((attachment) => isImageUrl(attachment.url))
+  }
+
+  function hasValidCover() {
+    return (
+      task.style?.backgroundColor ||
+      (task.style?.background &&
+        (task.style.background.startsWith('#') ||
+          task.style.background.startsWith('rgb') ||
+          task.style.background.includes('images.unsplash.com'))) ||
+      task.style?.backgroundImage
+    )
+  }
+
   function getAttachmentCount() {
     if (!task.attachments || !Array.isArray(task.attachments)) return 0
     return task.attachments.length
@@ -172,10 +189,7 @@ export function TaskPreview({
     return getCommentsCount() > 0
   }
 
-  const hasCover =
-    task.style?.backgroundImage ||
-    task.style?.backgroundColor ||
-    task.style?.background
+  const hasCover = hasValidCover() || getFirstImageAttachment()
 
   return (
     <>
@@ -191,35 +205,39 @@ export function TaskPreview({
           setIsHovered(false)
         }}
       >
-        {(task.style?.backgroundImage ||
-          task.style?.backgroundColor ||
-          task.style?.background) && (
+        {hasValidCover() && (
           <div
             className={`task-cover ${
-              isImageUrl(task.style?.background) || task.style?.backgroundImage
+              (task.style?.background &&
+                task.style.background.includes('images.unsplash.com')) ||
+              task.style?.backgroundImage
                 ? 'has-image'
                 : 'has-color'
             }`}
             style={{
-              backgroundColor: !isImageUrl(task.style?.background)
-                ? task.style.backgroundColor || task.style.background
-                : '#FFFFFF',
-              backgroundImage: task.style.backgroundImage
+              backgroundColor:
+                task.style?.backgroundColor ||
+                (task.style?.background &&
+                (task.style.background.startsWith('#') ||
+                  task.style.background.startsWith('rgb'))
+                  ? task.style.background
+                  : !isImageUrl(task.style?.background)
+                  ? task.style.background
+                  : '#FFFFFF'),
+              backgroundImage: task.style?.backgroundImage
                 ? `url(${task.style.backgroundImage})`
                 : isImageUrl(task.style?.background)
                 ? `url(${task.style.background})`
                 : 'none',
               backgroundSize:
-                isImageUrl(task.style?.background) ||
-                task.style?.backgroundImage
-                  ? 'contain'
-                  : 'cover',
+                task.style?.coverSize === 'centered' ? 'contain' : 'cover',
             }}
           >
-            {(task.style.backgroundImage ||
-              isImageUrl(task.style?.background)) && (
+            {((task.style?.background &&
+              task.style.background.includes('images.unsplash.com')) ||
+              task.style?.backgroundImage) && (
               <img
-                src={task.style.backgroundImage || task.style.background}
+                src={task.style?.backgroundImage || task.style.background}
                 alt=""
                 className="cover-image"
                 onError={(e) => {
@@ -227,6 +245,19 @@ export function TaskPreview({
                 }}
               />
             )}
+          </div>
+        )}
+
+        {!hasValidCover() && getFirstImageAttachment() && (
+          <div className="task-attachment-preview">
+            <img
+              src={getFirstImageAttachment().url}
+              alt={getFirstImageAttachment().title || 'Attachment'}
+              className="attachment-preview-image"
+              onError={(e) => {
+                e.target.style.display = 'none'
+              }}
+            />
           </div>
         )}
 
@@ -255,9 +286,8 @@ export function TaskPreview({
         )}
 
         <div className="task-content">
-          {!task.style?.backgroundImage &&
-            !task.style?.backgroundColor &&
-            !task.style?.background &&
+          {!hasValidCover() &&
+            !getFirstImageAttachment() &&
             isHovered &&
             !isEditing && (
               <>
@@ -289,7 +319,7 @@ export function TaskPreview({
                   <div
                     key={label.id}
                     className={`task-label ${
-                      !isLabelsExtended ? 'collapsed' : 'expanded'
+                      !isLabelsExtended ? 'collapsed' : ''
                     }`}
                     style={{
                       backgroundColor: label.color || '#b3bac5',
@@ -361,6 +391,7 @@ export function TaskPreview({
 
                 {task.description && (
                   <div className="task-badge description-badge">
+                    {/* <TextLengthenIcon label="TextLengthenIcon" primaryColor=" #44546F" /> */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 -960 960 960"
@@ -373,6 +404,7 @@ export function TaskPreview({
 
                 {hasComments() && (
                   <div className="task-badge comments-badge">
+                    {/* <CommentIcon label="Comments" primaryColor=" #44546F" /> */}
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path
                         fillRule="evenodd"
