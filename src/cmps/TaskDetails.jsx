@@ -381,10 +381,21 @@ export function TaskDetails({}) {
   const handleUpdateCover = (coverData) => {
     const updatedTask = {
       ...task,
-      cover: {
-        type: coverData.type,
-        value: coverData.value,
-        size: coverData.size,
+      style: {
+        ...task.style,
+        ...(coverData.type === 'color'
+          ? {
+              backgroundColor: coverData.value,
+              backgroundImage: undefined,
+              background: undefined,
+              coverSize: coverData.size,
+            }
+          : {
+              background: coverData.value,
+              backgroundColor: undefined,
+              backgroundImage: undefined,
+              coverSize: coverData.size,
+            }),
       },
     }
     const updatedGroup = {
@@ -392,18 +403,26 @@ export function TaskDetails({}) {
       tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
     }
     handleUpdateTask(updatedGroup)
-    setShowCoverModal(false)
+    // Don't close modal - let user make multiple selections
   }
 
   const handleRemoveCover = () => {
-    const updatedTask = { ...task }
-    delete updatedTask.cover
+    const updatedTask = {
+      ...task,
+      style: {
+        ...task.style,
+        backgroundColor: undefined,
+        backgroundImage: undefined,
+        background: undefined,
+        coverSize: undefined,
+      },
+    }
     const updatedGroup = {
       ...group,
       tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
     }
     handleUpdateTask(updatedGroup)
-    setShowCoverModal(false)
+    // Don't close modal
   }
 
   const formatFileDate = (timestamp) => {
@@ -525,7 +544,77 @@ export function TaskDetails({}) {
     <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal-content task-details-modal">
         {/* HEADER */}
-        <div className="task-details-header">
+        <div
+          className={`task-details-header ${
+            task.style?.backgroundColor ||
+            (task.style?.background &&
+              (task.style.background.startsWith('#') ||
+                task.style.background.startsWith('rgb') ||
+                task.style.background.includes('images.unsplash.com'))) ||
+            task.style?.backgroundImage
+              ? 'has-cover'
+              : ''
+          }`}
+          style={{
+            ...(task.style?.backgroundColor
+              ? {
+                  backgroundColor: task.style.backgroundColor,
+                  height: '116px',
+                }
+              : {}),
+            ...(task.style?.background
+              ? task.style.background.startsWith('#') ||
+                task.style.background.startsWith('rgb')
+                ? {
+                    backgroundColor: task.style.background,
+                    height: '116px',
+                  }
+                : task.style.background.includes('images.unsplash.com')
+                ? {
+                    backgroundImage: `url(${task.style.background})`,
+                    backgroundSize:
+                      task.style?.coverSize === 'centered'
+                        ? 'contain'
+                        : 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                    height: '160px',
+                  }
+                : {}
+              : {}),
+            ...(task.style?.backgroundImage
+              ? {
+                  backgroundImage: `url(${task.style.backgroundImage})`,
+                  backgroundSize:
+                    task.style?.coverSize === 'centered' ? 'contain' : 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
+                  height: '160px',
+                }
+              : {}),
+          }}
+          onMouseEnter={(e) => {
+            if (
+              task.style?.backgroundColor ||
+              (task.style?.background &&
+                (task.style.background.startsWith('#') ||
+                  task.style.background.startsWith('rgb') ||
+                  task.style.background.includes('images.unsplash.com'))) ||
+              task.style?.backgroundImage
+            ) {
+              const removeCoverBtn = e.currentTarget.querySelector(
+                '.header-remove-cover-btn'
+              )
+              if (removeCoverBtn) removeCoverBtn.style.display = 'block'
+            }
+          }}
+          onMouseLeave={(e) => {
+            const removeCoverBtn = e.currentTarget.querySelector(
+              '.header-remove-cover-btn'
+            )
+            if (removeCoverBtn) removeCoverBtn.style.display = 'none'
+          }}
+        >
           <div className="task-details-header-left">
             <div className="task-list-title-badge">{group.title}</div>
           </div>
@@ -609,6 +698,41 @@ export function TaskDetails({}) {
               </svg>
             </button>
           </div>
+
+          {/* Hover Remove Cover Button */}
+          {(task.style?.backgroundColor ||
+            (task.style?.background &&
+              (task.style.background.startsWith('#') ||
+                task.style.background.startsWith('rgb') ||
+                task.style.background.includes('images.unsplash.com'))) ||
+            task.style?.backgroundImage) && (
+            <button
+              className="header-remove-cover-btn"
+              onClick={handleRemoveCover}
+              style={{
+                position: 'absolute',
+                bottom: '8px',
+                right: '8px',
+                display: 'none',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '4px 8px',
+                borderRadius: '3px',
+                fontSize: '12px',
+                color: '#172B4D',
+                fontWeight: 500,
+              }}
+              onMouseEnter={(e) =>
+                (e.target.style.backgroundColor = 'rgba(255,255,255,0.2)')
+              }
+              onMouseLeave={(e) =>
+                (e.target.style.backgroundColor = 'transparent')
+              }
+            >
+              Remove cover
+            </button>
+          )}
         </div>
 
         <div className="task-details-layout">

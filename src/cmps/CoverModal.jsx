@@ -7,9 +7,15 @@ export function CoverModal({
   onUpdateCover,
   onRemoveCover,
 }) {
-  const [selectedCoverType, setSelectedCoverType] = useState('full') // 'full' or 'centered'
-  const [selectedColor, setSelectedColor] = useState(null)
-  const [selectedPhoto, setSelectedPhoto] = useState(null)
+  const [selectedCoverType, setSelectedCoverType] = useState(
+    task?.style?.coverSize || 'full'
+  ) // 'full' or 'centered'
+  const [selectedColor, setSelectedColor] = useState(
+    task?.style?.backgroundColor || null
+  )
+  const [selectedPhoto, setSelectedPhoto] = useState(
+    task?.style?.background || task?.style?.backgroundImage || null
+  )
   const modalRef = useRef(null)
 
   useEffect(() => {
@@ -28,13 +34,43 @@ export function CoverModal({
   const handleColorSelect = (color) => {
     setSelectedColor(color)
     setSelectedPhoto(null) // Clear photo selection when color is selected
-    // Don't close modal, just select the color
+    if (onUpdateCover) {
+      onUpdateCover({
+        type: 'color',
+        value: color,
+        size: selectedCoverType,
+      })
+    }
   }
 
   const handlePhotoSelect = (photoUrl) => {
     setSelectedPhoto(photoUrl)
     setSelectedColor(null) // Clear color selection when photo is selected
-    // Don't close modal, just select the photo
+    if (onUpdateCover) {
+      onUpdateCover({
+        type: 'photo',
+        value: photoUrl,
+        size: selectedCoverType,
+      })
+    }
+  }
+
+  const handleSizeChange = (newSize) => {
+    setSelectedCoverType(newSize)
+    // If there's already a selected cover, update it with the new size
+    if (selectedColor) {
+      onUpdateCover({
+        type: 'color',
+        value: selectedColor,
+        size: newSize,
+      })
+    } else if (selectedPhoto) {
+      onUpdateCover({
+        type: 'photo',
+        value: selectedPhoto,
+        size: newSize,
+      })
+    }
   }
 
   const handleRemoveCover = () => {
@@ -83,7 +119,7 @@ export function CoverModal({
               className={`cover-size-option ${
                 selectedCoverType === 'full' ? 'selected' : ''
               }`}
-              onClick={() => setSelectedCoverType('full')}
+              onClick={() => handleSizeChange('full')}
             >
               <div className="size-preview-full"></div>
             </div>
@@ -91,7 +127,7 @@ export function CoverModal({
               className={`cover-size-option ${
                 selectedCoverType === 'centered' ? 'selected' : ''
               }`}
-              onClick={() => setSelectedCoverType('centered')}
+              onClick={() => handleSizeChange('centered')}
             >
               <div className="size-preview-centered"></div>
             </div>
@@ -150,12 +186,12 @@ export function CoverModal({
           <h4 className="cover-modal-section-title">Photos from Unsplash</h4>
           <div className="cover-photos-grid">
             {[
-              'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=90&h=60&fit=crop',
-              'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=90&h=60&fit=crop',
-              'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=90&h=60&fit=crop',
-              'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=90&h=60&fit=crop',
-              'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=90&h=60&fit=crop',
-              'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=90&h=60&fit=crop',
+              'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=160&fit=crop',
+              'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=160&fit=crop',
+              'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=160&fit=crop',
+              'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400&h=160&fit=crop',
+              'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=400&h=160&fit=crop',
+              'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=160&fit=crop',
             ].map((src, index) => (
               <img
                 key={index}
