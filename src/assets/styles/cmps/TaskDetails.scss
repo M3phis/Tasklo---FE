@@ -771,6 +771,7 @@
   min-height: 0;
   max-height: 100%; /* Use full available height */
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 32px 32px 32px 32px;
   position: relative;
 
