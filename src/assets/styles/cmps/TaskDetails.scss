@@ -209,8 +209,8 @@
 
 .task-details-header {
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: space-between;
   background: #fff;
   border-bottom: 1px solid #dfe1e6;
   padding: 0;
@@ -218,6 +218,13 @@
   position: relative;
   z-index: 2;
   border-radius: 12px 12px 0 0;
+}
+
+.task-details-header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-right: 24px;
 }
 
 .task-details-header-left {

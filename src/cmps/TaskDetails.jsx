@@ -9,6 +9,7 @@ import { DatesModal } from './DatesModal'
 import { Checklist } from './Checklist'
 import { AttachmentsModal } from './AttachmentsModal'
 import { AddChecklistModal } from './AddChecklistModal'
+import { CoverModal } from './CoverModal'
 
 export function TaskDetails({}) {
   const { boardId, groupId, taskId } = useParams()
@@ -36,6 +37,8 @@ export function TaskDetails({}) {
   const [editingFile, setEditingFile] = useState(null)
   const [editingFileName, setEditingFileName] = useState('')
   const [membersButtonPosition, setMembersButtonPosition] = useState(null)
+  const [showCoverModal, setShowCoverModal] = useState(false)
+  const [coverButtonPosition, setCoverButtonPosition] = useState(null)
 
   const { handleUpdateTask } = useOutletContext()
   const dispatch = useDispatch()
@@ -375,6 +378,34 @@ export function TaskDetails({}) {
     setShowFileMenu(null)
   }
 
+  const handleUpdateCover = (coverData) => {
+    const updatedTask = {
+      ...task,
+      cover: {
+        type: coverData.type,
+        value: coverData.value,
+        size: coverData.size,
+      },
+    }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    handleUpdateTask(updatedGroup)
+    setShowCoverModal(false)
+  }
+
+  const handleRemoveCover = () => {
+    const updatedTask = { ...task }
+    delete updatedTask.cover
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    handleUpdateTask(updatedGroup)
+    setShowCoverModal(false)
+  }
+
   const formatFileDate = (timestamp) => {
     const date = new Date(timestamp)
     return `Added ${date.toLocaleDateString('en-US', {
@@ -498,7 +529,86 @@ export function TaskDetails({}) {
           <div className="task-details-header-left">
             <div className="task-list-title-badge">{group.title}</div>
           </div>
-          <div className="task-details-header-right"></div>
+          <div
+            className="task-details-header-right"
+            style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+          >
+            <button
+              className="cover-btn"
+              onClick={(e) => {
+                if (showCoverModal) {
+                  setShowCoverModal(false)
+                } else {
+                  const rect = e.currentTarget.getBoundingClientRect()
+                  setCoverButtonPosition({
+                    x: rect.left,
+                    y: rect.bottom + 4,
+                  })
+                  setShowCoverModal(true)
+                }
+              }}
+              title="Cover"
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '8px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '32px',
+                height: '32px',
+              }}
+              onMouseEnter={(e) => (e.target.style.backgroundColor = '#f4f5f7')}
+              onMouseLeave={(e) =>
+                (e.target.style.backgroundColor = 'transparent')
+              }
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M2 3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3z"
+                  stroke="#44546F"
+                  strokeWidth="1.5"
+                />
+                <path
+                  d="m5 8 2-2 1.5 1.5L11 5l3 3v4a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1l3-3z"
+                  fill="#44546F"
+                />
+                <circle cx="6.5" cy="5.5" r="1" fill="#44546F" />
+              </svg>
+            </button>
+            <button
+              className="task-details-close-btn"
+              onClick={handleClose}
+              title="Close"
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '8px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '32px',
+                height: '32px',
+              }}
+              onMouseEnter={(e) => (e.target.style.backgroundColor = '#f4f5f7')}
+              onMouseLeave={(e) =>
+                (e.target.style.backgroundColor = 'transparent')
+              }
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path
+                  d="M13.5 1.5L1.5 13.5M1.5 1.5l12 12"
+                  stroke="#6b778c"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
 
         <div className="task-details-layout">
@@ -1182,6 +1292,16 @@ export function TaskDetails({}) {
           </div>
         </div>
       </div>
+
+      {showCoverModal && (
+        <CoverModal
+          task={task}
+          position={coverButtonPosition}
+          onClose={() => setShowCoverModal(false)}
+          onUpdateCover={handleUpdateCover}
+          onRemoveCover={handleRemoveCover}
+        />
+      )}
 
       {showLabelsModal && (
         <LabelsModal
