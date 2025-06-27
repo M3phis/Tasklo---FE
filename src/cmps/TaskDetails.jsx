@@ -1246,19 +1246,31 @@ export function TaskDetails({}) {
                 {/* Files Section */}
                 {task.attachments && task.attachments.length > 0 && (
                   <div className="attachment-section">
-                    <h4 className="attachment-section-title">Files</h4>
+                    <h4 className="attachment-section-title">Files & Images</h4>
                     <div className="attachment-files">
                       {task.attachments
                         .filter((att) => {
                           console.log('Attachment:', att)
-                          return att.url && (att.type === 'file' || !att.type)
+                          return (
+                            att.url &&
+                            (att.type === 'file' ||
+                              att.type === 'image' ||
+                              !att.type)
+                          )
                         })
                         .map((file) => (
                           <div key={file.id} className="attachment-file-item">
                             <div className="file-content">
                               <img
-                                src={file.url}
-                                alt={file.name}
+                                src={
+                                  file.type === 'image'
+                                    ? file.url.replace(
+                                        '/upload/',
+                                        '/upload/w_100,h_100,c_fill/'
+                                      )
+                                    : file.url
+                                }
+                                alt={file.name || file.title}
                                 className="file-thumbnail"
                                 onError={(e) => {
                                   e.target.style.display = 'none'
