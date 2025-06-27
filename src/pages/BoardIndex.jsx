@@ -24,6 +24,16 @@ export function BoardIndex() {
     loadBoards()
   }, [])
 
+  useEffect(() => {
+    const root = document.documentElement
+    root.style.setProperty(
+      '--dynamic-boardheader-background',
+      'rgb(241, 242, 244)'
+    )
+    root.style.setProperty('--dynamic-appheader-background', 'white')
+    root.style.setProperty('--dynamic-header-color', '#172b4d')
+  })
+
   function onRemoveBoard(boardId) {
     removeBoard(boardId)
       .then(() => showSuccessMsg('Board removed'))

@@ -80,8 +80,8 @@ export function LandingHeader() {
           <Link to="/login" className="login-link">
             Log in
           </Link>
-          <Link to="/signup" className="cta-btn">
-            Get Tasklo for free
+          <Link to="/board" className="cta-btn">
+            Try as a guest for free!
           </Link>
         </div>
       </header>

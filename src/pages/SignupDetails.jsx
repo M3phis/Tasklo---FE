@@ -7,7 +7,7 @@ import leftImg from '../assets/img/leftloginim.svg'
 export function SignupDetails() {
   const location = useLocation()
   const navigate = useNavigate()
-  const email = location.state?.email || ''
+  const email = location.state.email || ''
 
   const [formData, setFormData] = useState({
     fullname: '',
@@ -73,8 +73,8 @@ export function SignupDetails() {
         <label className="checkbox-line">
           <input
             type="checkbox"
-            name="subscribe"
-            checked={formData.subscribe}
+            name="marketingConsent"
+            checked={formData.marketingConsent}
             onChange={handleChange}
           />
           Yes! Send me news and updates about Tasklo.

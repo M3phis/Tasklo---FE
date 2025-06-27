@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import ideasImg from '../assets/img/ideas.png'
 import boardsImg from '../assets/img/boards.png'
@@ -24,7 +25,9 @@ export function HomePage() {
             <div className="input-wrapper">
               <input name="email" type="email" placeholder="Email" />
             </div>
+            {/* <Link to="/signup" > */}
             <button type="submit">Sign up – it’s free!</button>
+            {/* </Link> */}
           </form>
           <div className="privacy-note">
             By entering my email, I acknowledge the{' '}

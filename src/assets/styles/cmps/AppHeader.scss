@@ -1,7 +1,7 @@
 .app-header {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  background-color: rgb(255, 255, 255);
+  background-color: var(--dynamic-appheader-background);
   padding: 8px;
   width: 100vw;
   height: 48px;
@@ -179,7 +179,7 @@
   .logo-text {
     font-size: 14px;
     font-weight: 700;
-    color: #172b4d;
+    color: var(--dynamic-header-color);
     line-height: 1;
     margin-top: 1px;
     letter-spacing: 0;
