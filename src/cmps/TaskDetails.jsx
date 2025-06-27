@@ -10,6 +10,7 @@ import { Checklist } from './Checklist'
 import { AttachmentsModal } from './AttachmentsModal'
 import { AddChecklistModal } from './AddChecklistModal'
 import { CoverModal } from './CoverModal'
+import { AddToCardModal } from './AddToCardModal'
 
 export function TaskDetails({}) {
   const { boardId, groupId, taskId } = useParams()
@@ -39,12 +40,17 @@ export function TaskDetails({}) {
   const [membersButtonPosition, setMembersButtonPosition] = useState(null)
   const [showCoverModal, setShowCoverModal] = useState(false)
   const [coverButtonPosition, setCoverButtonPosition] = useState(null)
+  const [showAddToCardModal, setShowAddToCardModal] = useState(false)
+  const [addToCardButtonPosition, setAddToCardButtonPosition] = useState(null)
+  const [isEditingTitle, setIsEditingTitle] = useState(false)
+  const [titleValue, setTitleValue] = useState(task?.title || '')
 
   const { handleUpdateTask } = useOutletContext()
   const dispatch = useDispatch()
 
   useEffect(() => {
     setTaskLabelIds(task?.labelIds || [])
+    setTitleValue(task?.title || '')
   }, [task])
 
   if (!board || !group || !task) {
@@ -78,6 +84,56 @@ export function TaskDetails({}) {
       tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
     }
     handleUpdateTask(updatedGroup)
+  }
+
+  const handleDoneToggle = (ev) => {
+    ev.stopPropagation()
+
+    const isDone = task?.status === 'done'
+    const updatedTask = {
+      ...task,
+      status: isDone ? 'in-progress' : 'done',
+      ...(isDone ? {} : { completedAt: new Date().toISOString() }),
+    }
+
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+
+    handleUpdateTask(updatedGroup)
+  }
+
+  const handleTitleClick = () => {
+    setIsEditingTitle(true)
+  }
+
+  const handleTitleSave = async () => {
+    if (titleValue.trim() === '') return
+
+    const updatedTask = { ...task, title: titleValue.trim() }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+
+    handleUpdateTask(updatedGroup)
+    setIsEditingTitle(false)
+  }
+
+  const handleTitleCancel = () => {
+    setTitleValue(task?.title || '')
+    setIsEditingTitle(false)
+  }
+
+  const handleTitleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      handleTitleSave()
+    }
+    if (e.key === 'Escape') {
+      handleTitleCancel()
+    }
   }
 
   const handleUpdateChecklist = (updatedChecklist) => {
@@ -737,18 +793,79 @@ export function TaskDetails({}) {
 
         <div className="task-details-layout">
           <div className="task-details-main">
-            <div className="task-details-title-row">
-              <input
-                type="checkbox"
+            <div
+              className={`task-details-title-row ${
+                task?.status === 'done' ? 'task-done' : ''
+              }`}
+            >
+              <button
                 className="task-done-checkbox"
-                // checked={task.status === 'done'}
-                // onChange={handleDoneToggle}
-              />
-              <input className="task-title-input" value={task.title} readOnly />
+                onClick={handleDoneToggle}
+                title={
+                  task?.status === 'done' ? 'Mark incomplete' : 'Mark complete'
+                }
+              >
+                {task?.status === 'done' ? (
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <circle cx="8" cy="8" r="8" fill="#4CAF50" />
+                    <path
+                      d="M12.326 5.48l-1.152-.96L6.75 9.828L4.826 7.52l-1.152.96l2.5 3a.75.75 0 0 0 1.152 0Z"
+                      fill="white"
+                    />
+                  </svg>
+                ) : (
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <circle
+                      cx="8"
+                      cy="8"
+                      r="7"
+                      stroke="#626F86"
+                      strokeWidth="2"
+                      fill="none"
+                    />
+                  </svg>
+                )}
+              </button>
+              {isEditingTitle ? (
+                <textarea
+                  className="task-title-input editing"
+                  value={titleValue}
+                  onChange={(e) => setTitleValue(e.target.value)}
+                  onKeyDown={handleTitleKeyDown}
+                  onBlur={handleTitleSave}
+                  rows={1}
+                  autoFocus
+                  style={{
+                    height: 'auto',
+                    minHeight: '36px',
+                  }}
+                  onInput={(e) => {
+                    e.target.style.height = 'auto'
+                    e.target.style.height = e.target.scrollHeight + 'px'
+                  }}
+                />
+              ) : (
+                <div className="task-title-display" onClick={handleTitleClick}>
+                  {task.title}
+                </div>
+              )}
             </div>
 
             <div className="task-details-actions-row">
-              <button>+ Add</button>
+              <button
+                className={activeButton === 'add' ? 'active' : ''}
+                onClick={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect()
+                  setAddToCardButtonPosition({
+                    x: rect.left,
+                    y: rect.bottom + 8,
+                  })
+                  setActiveButton('add')
+                  setShowAddToCardModal(true)
+                }}
+              >
+                + Add
+              </button>
               {!hasMembers && (
                 <button
                   className={`members-btn ${
@@ -802,23 +919,15 @@ export function TaskDetails({}) {
                     <svg
                       width="16"
                       height="16"
-                      fill="none"
-                      viewBox="0 0 16 16"
+                      viewBox="0 0 24 24"
                       style={{ marginRight: 4 }}
+                      fill={activeButton === 'dates' ? 'white' : '#44546F'}
                     >
+                      <path d="M13 6C13 5.44772 12.5523 5 12 5C11.4477 5 11 5.44772 11 6V12C11 12.2652 11.1054 12.5196 11.2929 12.7071L13.7929 15.2071C14.1834 15.5976 14.8166 15.5976 15.2071 15.2071C15.5976 14.8166 15.5976 14.1834 15.2071 13.7929L13 11.5858V6Z" />
                       <path
-                        d="M8 2v6l4.2 2.5"
-                        stroke={activeButton === 'dates' ? 'white' : '#44546F'}
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <circle
-                        cx="8"
-                        cy="8"
-                        r="6.25"
-                        stroke={activeButton === 'dates' ? 'white' : '#44546F'}
-                        strokeWidth="1.5"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"
                       />
                     </svg>
                     Dates
@@ -841,37 +950,14 @@ export function TaskDetails({}) {
                   <svg
                     width="16"
                     height="16"
-                    fill="none"
-                    viewBox="0 0 16 16"
+                    viewBox="0 0 24 24"
                     style={{ marginRight: 4 }}
+                    fill={activeButton === 'checklist' ? 'white' : '#44546F'}
                   >
-                    <rect
-                      x="2"
-                      y="4"
-                      width="12"
-                      height="10"
-                      rx="2"
-                      stroke={
-                        activeButton === 'checklist' ? 'white' : '#44546F'
-                      }
-                      strokeWidth="1.5"
-                    />
                     <path
-                      d="M5 2v2M11 2v2"
-                      stroke={
-                        activeButton === 'checklist' ? 'white' : '#44546F'
-                      }
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M5.5 8.5l2 2 3-3"
-                      stroke={
-                        activeButton === 'checklist' ? 'white' : '#44546F'
-                      }
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M6 4C4.89543 4 4 4.89543 4 6V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V13C20 12.4477 19.5523 12 19 12C18.4477 12 18 12.4477 18 13V18H6V6L16 6C16.5523 6 17 5.55228 17 5C17 4.44772 16.5523 4 16 4H6ZM8.73534 10.3223C8.36105 9.91618 7.72841 9.89038 7.3223 10.2647C6.91619 10.639 6.89039 11.2716 7.26467 11.6777L10.8768 15.597C11.4143 16.1231 12.2145 16.1231 12.7111 15.6264L13.0754 15.2683C13.3699 14.9785 13.6981 14.6556 14.0516 14.3075C15.0614 13.313 16.0713 12.3169 17.014 11.3848L17.0543 11.3449C18.7291 9.68869 20.0004 8.42365 20.712 7.70223C21.0998 7.30904 21.0954 6.67589 20.7022 6.28805C20.309 5.90022 19.6759 5.90457 19.2881 6.29777C18.5843 7.01131 17.3169 8.27244 15.648 9.92281L15.6077 9.96263C14.6662 10.8937 13.6572 11.8889 12.6483 12.8825L11.8329 13.6851L8.73534 10.3223Z"
                     />
                   </svg>
                   Checklist
@@ -891,14 +977,17 @@ export function TaskDetails({}) {
               >
                 <span style={{ display: 'flex', alignItems: 'center' }}>
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="20"
-                    viewBox="0 -960 960 960"
-                    width="20"
-                    fill={activeButton === 'attachment' ? 'white' : '#5f6368'}
-                    style={{ marginRight: 4, transform: 'rotate(50deg)' }}
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    style={{ marginRight: 4 }}
+                    fill={activeButton === 'attachment' ? 'white' : '#44546F'}
                   >
-                    <path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z" />
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M11.6426 17.9647C10.1123 19.46 7.62736 19.4606 6.10092 17.9691C4.57505 16.478 4.57769 14.0467 6.10253 12.5566L13.2505 5.57184C14.1476 4.6952 15.5861 4.69251 16.4832 5.56921C17.3763 6.44184 17.3778 7.85135 16.4869 8.72199L9.78361 15.2722C9.53288 15.5172 9.12807 15.5163 8.86954 15.2636C8.61073 15.0107 8.60963 14.6158 8.86954 14.3618L15.0989 8.27463C15.4812 7.90109 15.4812 7.29546 15.0989 6.92192C14.7167 6.54838 14.0969 6.54838 13.7146 6.92192L7.48523 13.0091C6.45911 14.0118 6.46356 15.618 7.48523 16.6163C8.50674 17.6145 10.1511 17.6186 11.1679 16.6249L17.8712 10.0747C19.5274 8.45632 19.5244 5.83555 17.8676 4.2165C16.2047 2.59156 13.5266 2.59657 11.8662 4.21913L4.71822 11.2039C2.42951 13.4404 2.42555 17.083 4.71661 19.3218C7.00774 21.5606 10.7323 21.5597 13.0269 19.3174L19.7133 12.7837C20.0956 12.4101 20.0956 11.8045 19.7133 11.431C19.331 11.0574 18.7113 11.0574 18.329 11.431L11.6426 17.9647Z"
+                    />
                   </svg>
                   Attachment
                 </span>
@@ -1094,13 +1183,16 @@ export function TaskDetails({}) {
                   <div className="attachments-header-left">
                     <svg
                       className="attachments-icon"
-                      xmlns="http://www.w3.org/2000/svg"
-                      height="20px"
-                      viewBox="0 -960 960 960"
-                      width="20px"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
                       fill="#5f6368"
                     >
-                      <path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z" />
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M11.6426 17.9647C10.1123 19.46 7.62736 19.4606 6.10092 17.9691C4.57505 16.478 4.57769 14.0467 6.10253 12.5566L13.2505 5.57184C14.1476 4.6952 15.5861 4.69251 16.4832 5.56921C17.3763 6.44184 17.3778 7.85135 16.4869 8.72199L9.78361 15.2722C9.53288 15.5172 9.12807 15.5163 8.86954 15.2636C8.61073 15.0107 8.60963 14.6158 8.86954 14.3618L15.0989 8.27463C15.4812 7.90109 15.4812 7.29546 15.0989 6.92192C14.7167 6.54838 14.0969 6.54838 13.7146 6.92192L7.48523 13.0091C6.45911 14.0118 6.46356 15.618 7.48523 16.6163C8.50674 17.6145 10.1511 17.6186 11.1679 16.6249L17.8712 10.0747C19.5274 8.45632 19.5244 5.83555 17.8676 4.2165C16.2047 2.59156 13.5266 2.59657 11.8662 4.21913L4.71822 11.2039C2.42951 13.4404 2.42555 17.083 4.71661 19.3218C7.00774 21.5606 10.7323 21.5597 13.0269 19.3174L19.7133 12.7837C20.0956 12.4101 20.0956 11.8045 19.7133 11.431C19.331 11.0574 18.7113 11.0574 18.329 11.431L11.6426 17.9647Z"
+                      />
                     </svg>
                     <h3>Attachments</h3>
                   </div>
@@ -1472,7 +1564,9 @@ export function TaskDetails({}) {
           position={labelButtonPosition}
           onClose={() => {
             setShowLabelsModal(false)
-            setActiveButton(null)
+            if (!showAddToCardModal) {
+              setActiveButton(null)
+            }
           }}
           onToggleLabel={handleToggleLabel}
           onSaveLabel={handleSaveLabel}
@@ -1488,7 +1582,9 @@ export function TaskDetails({}) {
           position={membersButtonPosition}
           onClose={() => {
             setShowMembersModal(false)
-            setActiveButton(null)
+            if (!showAddToCardModal) {
+              setActiveButton(null)
+            }
           }}
           onToggleMember={handleToggleMember}
         />
@@ -1500,7 +1596,9 @@ export function TaskDetails({}) {
           position={datesButtonPosition}
           onClose={() => {
             setShowDatesModal(false)
-            setActiveButton(null)
+            if (!showAddToCardModal) {
+              setActiveButton(null)
+            }
           }}
           onUpdateDates={handleUpdateDates}
         />
@@ -1512,7 +1610,9 @@ export function TaskDetails({}) {
           position={attachmentButtonPosition}
           onClose={() => {
             setShowAttachmentsModal(false)
-            setActiveButton(null)
+            if (!showAddToCardModal) {
+              setActiveButton(null)
+            }
           }}
           onAddAttachment={handleAddAttachment}
         />
@@ -1523,9 +1623,41 @@ export function TaskDetails({}) {
           position={checklistButtonPosition}
           onClose={() => {
             setShowAddChecklistModal(false)
-            setActiveButton(null)
+            if (!showAddToCardModal) {
+              setActiveButton(null)
+            }
           }}
           onAddChecklist={handleAddChecklist}
+        />
+      )}
+
+      {showAddToCardModal && (
+        <AddToCardModal
+          position={addToCardButtonPosition}
+          onClose={() => {
+            setShowAddToCardModal(false)
+            setActiveButton(null)
+          }}
+          onOpenLabels={(position) => {
+            setLabelButtonPosition(position)
+            setShowLabelsModal(true)
+          }}
+          onOpenDates={(position) => {
+            setDatesButtonPosition(position)
+            setShowDatesModal(true)
+          }}
+          onOpenChecklist={(position) => {
+            setChecklistButtonPosition(position)
+            setShowAddChecklistModal(true)
+          }}
+          onOpenMembers={(position) => {
+            setMembersButtonPosition(position)
+            setShowMembersModal(true)
+          }}
+          onOpenAttachment={(position) => {
+            setAttachmentButtonPosition(position)
+            setShowAttachmentsModal(true)
+          }}
         />
       )}
     </div>
