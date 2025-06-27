@@ -65,7 +65,7 @@ export function BoardDetails() {
       root.style.setProperty('--dynamic-appheader-background', color2)
       root.style.setProperty(' --dynamic-header-color', textColor)
     }
-  }, [board])
+  }, [])
 
   function onDragEnd(result) {
     if (!result.destination) {
