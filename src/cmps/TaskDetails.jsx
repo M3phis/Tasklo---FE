@@ -925,7 +925,20 @@ export function TaskDetails({}) {
                           className="task-member-avatar"
                           title={member?.fullname}
                         >
-                          {initials}
+                          {member?.imgUrl ? (
+                            <img
+                              src={member.imgUrl}
+                              alt={member.fullname}
+                              style={{
+                                width: '100%',
+                                height: '100%',
+                                borderRadius: '50%',
+                                objectFit: 'cover',
+                              }}
+                            />
+                          ) : (
+                            initials
+                          )}
                         </span>
                       )
                     })}
@@ -1389,7 +1402,20 @@ export function TaskDetails({}) {
                 {getActivityList().map((activity) => (
                   <div key={activity.id} className="activity-item">
                     <span className="activity-avatar">
-                      {getInitials(activity.byMember?.fullname)}
+                      {activity.byMember?.imgUrl ? (
+                        <img
+                          src={activity.byMember.imgUrl}
+                          alt={activity.byMember.fullname}
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            borderRadius: '50%',
+                            objectFit: 'cover',
+                          }}
+                        />
+                      ) : (
+                        getInitials(activity.byMember?.fullname)
+                      )}
                     </span>
                     <div className="activity-content">
                       <div className="activity-text">

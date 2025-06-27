@@ -68,7 +68,20 @@ export function MembersModal({
                 onClick={() => handleMemberClick(member._id)}
               >
                 <div className="member-avatar">
-                  {getInitials(member.fullname)}
+                  {member.imgUrl ? (
+                    <img
+                      src={member.imgUrl}
+                      alt={member.fullname}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        borderRadius: '50%',
+                        objectFit: 'cover',
+                      }}
+                    />
+                  ) : (
+                    getInitials(member.fullname)
+                  )}
                 </div>
                 <span className="member-name">{member.fullname}</span>
                 <button className="member-remove-btn">×</button>
@@ -91,7 +104,20 @@ export function MembersModal({
                 onClick={() => handleMemberClick(member._id)}
               >
                 <div className="member-avatar">
-                  {getInitials(member.fullname)}
+                  {member.imgUrl ? (
+                    <img
+                      src={member.imgUrl}
+                      alt={member.fullname}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        borderRadius: '50%',
+                        objectFit: 'cover',
+                      }}
+                    />
+                  ) : (
+                    getInitials(member.fullname)
+                  )}
                 </div>
                 <span className="member-name">{member.fullname}</span>
               </div>
