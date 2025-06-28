@@ -173,6 +173,12 @@ export function boardReducer(state = initialState, action) {
             }
             return { ...state, board }
 
+        case 'ADD_ACTIVITY':
+            board = {
+                ...state.board,
+                activities: [...(state.board.activities || []), action.activity]
+            }
+            return { ...state, board }
         default:
             return state
     }

@@ -27,7 +27,8 @@ import {
   SOCKET_EVENT_TASK_UPDATED,
   SOCKET_EVENT_TASK_DELETED,
   SOCKET_EVENT_TASK_MOVED,
-  SOCKET_EVENT_BOARD_UPDATED
+  SOCKET_EVENT_BOARD_UPDATED,
+  SOCKET_EVENT_ACTIVITY_ADDED
 } from '../services/socket.service'
 import { BoardMenu } from '../cmps/BoardMenu'
 
@@ -154,6 +155,17 @@ export function BoardDetails() {
       }
     }
 
+    const handleActivityAdded = (data) => {
+      if (data.boardId === boardId) {
+        console.log('📝 Activity added:', data.activity)
+        store.dispatch({
+          type: 'ADD_ACTIVITY',
+          boardId: data.boardId,
+          activity: data.activity
+        })
+      }
+    }
+
     socketService.on(SOCKET_EVENT_GROUP_ADDED, handleGroupAdded)
     socketService.on(SOCKET_EVENT_GROUP_UPDATED, handleGroupUpdated)
     socketService.on(SOCKET_EVENT_GROUP_DELETED, handleGroupDeleted)
@@ -164,6 +176,7 @@ export function BoardDetails() {
     socketService.on(SOCKET_EVENT_TASK_MOVED, handleTaskMoved)
 
     socketService.on(SOCKET_EVENT_BOARD_UPDATED, handleBoardUpdated)
+    socketService.on(SOCKET_EVENT_ACTIVITY_ADDED, handleActivityAdded)
 
     return () => {
       console.log('🔌 Cleaning up socket listeners for board:', boardId)
@@ -178,6 +191,7 @@ export function BoardDetails() {
       socketService.off(SOCKET_EVENT_TASK_MOVED, handleTaskMoved)
 
       socketService.off(SOCKET_EVENT_BOARD_UPDATED, handleBoardUpdated)
+      socketService.on(SOCKET_EVENT_ACTIVITY_ADDED, handleActivityAdded)
     }
   }, [boardId])
 

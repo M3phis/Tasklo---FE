@@ -133,6 +133,9 @@ function createSocketService() {
         deleteTask(boardId, taskId, groupId) {
             socket.emit(SOCKET_EMIT_TASK_DELETE, { boardId, taskId, groupId })
         },
+        addActivity(boardId, activity) {
+            socket.emit(SOCKET_EMIT_ACTIVITY_ADD, { boardId, activity })
+        },
 
         getWatchedBoards() {
             return Array.from(watchedBoards)
@@ -254,6 +257,18 @@ function createDummySocketService() {
                 listeners = listenersMap[SOCKET_EVENT_GROUP_DELETED]
             }
 
+            if (eventName === SOCKET_EMIT_ACTIVITY_ADD) {
+                listeners = listenersMap[SOCKET_EVENT_ACTIVITY_ADDED]
+                data = {
+                    ...data,
+                    activity: {
+                        ...data.activity,
+                        id: `activity_${Date.now()}`,
+                        timestamp: new Date()
+                    }
+                }
+            }
+
             const crossTabEvents = [
                 SOCKET_EVENT_GROUP_ADDED,
                 SOCKET_EVENT_GROUP_UPDATED,
@@ -262,7 +277,8 @@ function createDummySocketService() {
                 SOCKET_EVENT_TASK_UPDATED,
                 SOCKET_EVENT_TASK_DELETED,
                 SOCKET_EVENT_TASK_MOVED,
-                SOCKET_EVENT_BOARD_UPDATED
+                SOCKET_EVENT_BOARD_UPDATED,
+                SOCKET_EVENT_ACTIVITY_ADDED
             ]
 
             let actualEventName = eventName
@@ -273,6 +289,7 @@ function createDummySocketService() {
             if (eventName === SOCKET_EMIT_GROUP_UPDATE) actualEventName = SOCKET_EVENT_GROUP_UPDATED
             if (eventName === SOCKET_EMIT_TASK_DELETE) actualEventName = SOCKET_EVENT_TASK_DELETED
             if (eventName === SOCKET_EMIT_GROUP_DELETE) actualEventName = SOCKET_EVENT_GROUP_DELETED
+            if (eventName === SOCKET_EMIT_ACTIVITY_ADD) actualEventName = SOCKET_EVENT_ACTIVITY_ADDED
 
             if (crossTabEvents.includes(actualEventName)) {
                 localStorage.setItem('dummy-socket-event', JSON.stringify({
@@ -342,6 +359,10 @@ function createDummySocketService() {
         moveTask(boardId, taskId, sourceGroupId, targetGroupId) {
             console.log('Dummy: moving task', { boardId, taskId, sourceGroupId, targetGroupId })
             this.emit(SOCKET_EMIT_TASK_MOVE, { boardId, taskId, sourceGroupId, targetGroupId })
+        },
+        addActivity(boardId, activity) {
+            console.log('Dummy: adding activity', { boardId, activity })
+            this.emit(SOCKET_EMIT_ACTIVITY_ADD, { boardId, activity })
         },
 
         getWatchedBoards() {
