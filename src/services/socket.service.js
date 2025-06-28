@@ -116,7 +116,7 @@ function createSocketService() {
         },
         moveGroup(boardId, groupId, sourceIndex, targetIndex) {
             console.log('Moving group', { boardId, groupId, sourceIndex, targetIndex })
-            this.emit(SOCKET_EMIT_GROUP_MOVE, {
+            socket.emit(SOCKET_EMIT_GROUP_MOVE, {
                 boardId,
                 groupId,
                 sourceIndex,
