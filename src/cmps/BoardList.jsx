@@ -1,4 +1,5 @@
 import { BoardPreview } from './BoardPreview'
+import { CreateMenuContainer } from './CreateMenuContainer.jsx'
 import StarUnstarredIcon from '@atlaskit/icon/core/star-unstarred'
 import StarStarredIcon from '@atlaskit/icon/core/star-starred'
 
@@ -30,8 +31,22 @@ export function BoardList({
             </div>
           </li>
         ))}
+
         {!starBoards && (
-          <div className="create-board-preview">Create new board </div>
+          <li>
+            <CreateMenuContainer
+              placement="right"
+              trigger={({ onClick, ref }) => (
+                <div
+                  ref={ref}
+                  className="create-board-preview"
+                  onClick={onClick}
+                >
+                  Create new board
+                </div>
+              )}
+            />
+          </li>
         )}
       </ul>
     </section>

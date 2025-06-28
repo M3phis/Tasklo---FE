@@ -1,4 +1,5 @@
 import { FaSearch } from 'react-icons/fa'
+import { CreateMenuContainer } from './CreateMenuContainer.jsx'
 
 export function BoardFilter({ filterBy, onSetFilterBy }) {
   function handleChange({ target }) {
@@ -21,7 +22,15 @@ export function BoardFilter({ filterBy, onSetFilterBy }) {
           onChange={handleChange}
         />
       </form>
-      <button className="create-btn">Create</button>
+
+      <CreateMenuContainer
+        placement="bottom"
+        trigger={({ onClick, ref }) => (
+          <button ref={ref} className="create-btn" onClick={onClick}>
+            Create
+          </button>
+        )}
+      />
     </section>
   )
 }
