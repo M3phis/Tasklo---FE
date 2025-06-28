@@ -1,6 +1,8 @@
 import io from 'socket.io-client'
 import { userService } from './user'
 
+export const SOCKET_EMIT_ACTIVITY_ADD = 'activity-add'
+
 export const SOCKET_EVENT_ADD_MSG = 'chat-add-msg'
 export const SOCKET_EMIT_SEND_MSG = 'chat-send-msg'
 export const SOCKET_EMIT_SET_TOPIC = 'chat-set-topic'
@@ -23,9 +25,11 @@ export const SOCKET_EMIT_BOARD_UNWATCH = 'board-unwatch'
 export const SOCKET_EVENT_GROUP_ADDED = 'group-added'
 export const SOCKET_EVENT_GROUP_UPDATED = 'group-updated'
 export const SOCKET_EVENT_GROUP_DELETED = 'group-deleted'
+export const SOCKET_EVENT_GROUP_MOVED = 'group-moved'
 export const SOCKET_EMIT_GROUP_ADD = 'group-add'
 export const SOCKET_EMIT_GROUP_UPDATE = 'group-update'
 export const SOCKET_EMIT_GROUP_DELETE = 'group-delete'
+export const SOCKET_EMIT_GROUP_MOVE = 'group-move'
 
 // Task/Card events 
 export const SOCKET_EVENT_TASK_ADDED = 'task-added'
@@ -109,6 +113,15 @@ function createSocketService() {
 
         deleteGroup(boardId, groupId) {
             socket.emit(SOCKET_EMIT_GROUP_DELETE, { boardId, groupId })
+        },
+        moveGroup(boardId, groupId, sourceIndex, targetIndex) {
+            console.log('Moving group', { boardId, groupId, sourceIndex, targetIndex })
+            this.emit(SOCKET_EMIT_GROUP_MOVE, {
+                boardId,
+                groupId,
+                sourceIndex,
+                targetIndex
+            })
         },
 
         // Task methods
@@ -249,6 +262,10 @@ function createDummySocketService() {
                 listeners = listenersMap[SOCKET_EVENT_GROUP_UPDATED]
             }
 
+            if (eventName === SOCKET_EMIT_GROUP_MOVE) {
+                listeners = listenersMap[SOCKET_EVENT_GROUP_MOVED]
+            }
+
             if (eventName === SOCKET_EMIT_TASK_DELETE) {
                 listeners = listenersMap[SOCKET_EVENT_TASK_DELETED]
             }
@@ -273,6 +290,7 @@ function createDummySocketService() {
                 SOCKET_EVENT_GROUP_ADDED,
                 SOCKET_EVENT_GROUP_UPDATED,
                 SOCKET_EVENT_GROUP_DELETED,
+                SOCKET_EVENT_GROUP_MOVED,
                 SOCKET_EVENT_TASK_ADDED,
                 SOCKET_EVENT_TASK_UPDATED,
                 SOCKET_EVENT_TASK_DELETED,
@@ -287,6 +305,7 @@ function createDummySocketService() {
             if (eventName === SOCKET_EMIT_TASK_MOVE) actualEventName = SOCKET_EVENT_TASK_MOVED
             if (eventName === SOCKET_EMIT_TASK_UPDATE) actualEventName = SOCKET_EVENT_TASK_UPDATED
             if (eventName === SOCKET_EMIT_GROUP_UPDATE) actualEventName = SOCKET_EVENT_GROUP_UPDATED
+            if (eventName === SOCKET_EMIT_GROUP_MOVE) actualEventName = SOCKET_EVENT_GROUP_MOVED
             if (eventName === SOCKET_EMIT_TASK_DELETE) actualEventName = SOCKET_EVENT_TASK_DELETED
             if (eventName === SOCKET_EMIT_GROUP_DELETE) actualEventName = SOCKET_EVENT_GROUP_DELETED
             if (eventName === SOCKET_EMIT_ACTIVITY_ADD) actualEventName = SOCKET_EVENT_ACTIVITY_ADDED
@@ -339,6 +358,16 @@ function createDummySocketService() {
         deleteGroup(boardId, groupId) {
             console.log('Dummy: deleting group', { boardId, groupId })
             this.emit(SOCKET_EMIT_GROUP_DELETE, { boardId, groupId })
+        },
+
+        moveGroup(boardId, groupId, sourceIndex, targetIndex) {
+            console.log('Moving group', { boardId, groupId, sourceIndex, targetIndex })
+            this.emit(SOCKET_EMIT_GROUP_MOVE, {
+                boardId,
+                groupId,
+                sourceIndex,
+                targetIndex
+            })
         },
 
         addTask(boardId, groupId, taskData) {

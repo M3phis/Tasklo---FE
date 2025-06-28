@@ -247,6 +247,8 @@ export function BoardDetails() {
       const [group] = groups.splice(startIdx, 1)
       groups.splice(endIdx, 0, group)
       updateBoardOptimistic({ ...board, groups })
+
+      socketService.moveGroup(boardId, movedGroup.id, startIdx, endIdx)
     }
 
     if (result.type === 'task') {
