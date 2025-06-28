@@ -45,9 +45,9 @@ export const SOCKET_EMIT_TASK_MOVE = 'task-move'
 export const SOCKET_EVENT_ACTIVITY_ADDED = 'activity-added'
 
 
-const baseUrl = (process.env.NODE_ENV === 'production') ? '' : '//localhost:3030'
-// export const socketService = createSocketService()
-export const socketService = createDummySocketService()
+const baseUrl = (process.env.NODE_ENV === 'production') ? '' : '//localhost:3031'
+export const socketService = createSocketService()
+// export const socketService = createDummySocketService()
 
 window.socketService = socketService
 
