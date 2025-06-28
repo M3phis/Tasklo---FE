@@ -17,6 +17,7 @@ import {
 } from '../cmps/BoardHeader/BoardHeaderFilter'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { Outlet } from 'react-router-dom'
+import { BoardMenu } from '../cmps/BoardMenu'
 
 export function BoardDetails() {
   const { boardId } = useParams()
@@ -288,6 +289,13 @@ export function BoardDetails() {
       <BoardHeaderFilter
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
+      />
+
+      <BoardMenu
+        isOpen={rsbIsOpen}
+        onClose={() => setRsbIsOpen(false)}
+        board={board}
+        onUpdateBoard={handleBoardUpdate}
       />
 
       <Outlet context={{ handleUpdateTask }} />
