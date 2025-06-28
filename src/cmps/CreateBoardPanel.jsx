@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { addBoard } from '../store/board.actions.js'
 
 export function CreateBoardPanel({ onClose, anchorRef, placement = 'bottom' }) {
   const [title, setTitle] = useState('')
@@ -55,10 +56,36 @@ export function CreateBoardPanel({ onClose, anchorRef, placement = 'bottom' }) {
     }
   }, [anchorRef, placement])
 
-  function handleSubmit(ev) {
+  function createEmptyBoard(title, selectedBg) {
+    const isImage = selectedBg.startsWith('http')
+    return {
+      title,
+      createdAt: Date.now(),
+      labels: [],
+      createdBy: null,
+      members: [],
+      groups: [],
+      activities: [],
+      isStarred: false,
+      style: {
+        background: isImage ? selectedBg : null,
+        color: isImage ? null : selectedBg,
+      },
+    }
+  }
+
+  async function handleSubmit(ev) {
     ev.preventDefault()
     if (!title.trim()) return
-    onClose()
+
+    try {
+      const newBoard = createEmptyBoard(title, selectedBg)
+      const savedBoard = await addBoard(newBoard)
+      console.log('Created board:', savedBoard)
+      onClose()
+    } catch (err) {
+      console.error('Failed to create board:', err)
+    }
   }
 
   return (

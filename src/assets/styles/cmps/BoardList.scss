@@ -1,6 +1,7 @@
 .board-list {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  max-width: calc(4 * 260px);
 
   li {
     display: grid;
@@ -54,7 +55,6 @@
   flex-wrap: wrap;
   align-content: center;
   justify-content: center;
-  margin-inline-start: 9px;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: rgba(9, 30, 66, 0.06);
