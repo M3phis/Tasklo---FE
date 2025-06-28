@@ -2,7 +2,14 @@ import { Link } from 'react-router-dom'
 
 export function BoardPreview({ board }) {
   const { title, style, members, isStarred } = board
-  const isImage = style?.background?.startsWith('http')
+
+  // Handle both string URLs and objects with url property
+  const backgroundUrl =
+    typeof style?.background === 'string'
+      ? style.background
+      : style?.background?.url
+
+  const isImage = backgroundUrl?.startsWith('http')
 
   return (
     <Link to={`/board/${board._id}`} className="board-preview">
@@ -10,7 +17,7 @@ export function BoardPreview({ board }) {
         {isImage ? (
           <img
             className="board-preview-img"
-            src={style.background}
+            src={backgroundUrl}
             alt="board background"
           />
         ) : (

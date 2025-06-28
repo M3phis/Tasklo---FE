@@ -583,13 +583,18 @@ export function TaskDetails({}) {
   }
 
   const getInitials = (fullname) => {
-    if (!fullname) return '?'
+    if (!fullname) return ''
     return fullname
       .split(' ')
-      .map((name) => name[0])
+      .map((word) => word.charAt(0).toUpperCase())
       .join('')
-      .toUpperCase()
-      .slice(0, 2)
+  }
+
+  const getBackgroundUrl = () => {
+    if (!task.style?.background) return null
+    return typeof task.style.background === 'string'
+      ? task.style.background
+      : task.style.background?.url
   }
 
   // Debug: Log task data to see attachment structure
@@ -603,10 +608,10 @@ export function TaskDetails({}) {
         <div
           className={`task-details-header ${
             task.style?.backgroundColor ||
-            (task.style?.background &&
-              (task.style.background.startsWith('#') ||
-                task.style.background.startsWith('rgb') ||
-                task.style.background.includes('images.unsplash.com'))) ||
+            (getBackgroundUrl() &&
+              (getBackgroundUrl().startsWith('#') ||
+                getBackgroundUrl().startsWith('rgb') ||
+                getBackgroundUrl().includes('images.unsplash.com'))) ||
             task.style?.backgroundImage
               ? 'has-cover'
               : ''
@@ -618,16 +623,16 @@ export function TaskDetails({}) {
                   height: '116px',
                 }
               : {}),
-            ...(task.style?.background
-              ? task.style.background.startsWith('#') ||
-                task.style.background.startsWith('rgb')
+            ...(getBackgroundUrl()
+              ? getBackgroundUrl().startsWith('#') ||
+                getBackgroundUrl().startsWith('rgb')
                 ? {
-                    backgroundColor: task.style.background,
+                    backgroundColor: getBackgroundUrl(),
                     height: '116px',
                   }
-                : task.style.background.includes('images.unsplash.com')
+                : getBackgroundUrl().includes('images.unsplash.com')
                 ? {
-                    backgroundImage: `url(${task.style.background})`,
+                    backgroundImage: `url(${getBackgroundUrl()})`,
                     backgroundSize:
                       task.style?.coverSize === 'centered'
                         ? 'contain'
@@ -652,10 +657,10 @@ export function TaskDetails({}) {
           onMouseEnter={(e) => {
             if (
               task.style?.backgroundColor ||
-              (task.style?.background &&
-                (task.style.background.startsWith('#') ||
-                  task.style.background.startsWith('rgb') ||
-                  task.style.background.includes('images.unsplash.com'))) ||
+              (getBackgroundUrl() &&
+                (getBackgroundUrl().startsWith('#') ||
+                  getBackgroundUrl().startsWith('rgb') ||
+                  getBackgroundUrl().includes('images.unsplash.com'))) ||
               task.style?.backgroundImage
             ) {
               const removeCoverBtn = e.currentTarget.querySelector(
@@ -757,10 +762,10 @@ export function TaskDetails({}) {
 
           {/* Hover Remove Cover Button */}
           {(task.style?.backgroundColor ||
-            (task.style?.background &&
-              (task.style.background.startsWith('#') ||
-                task.style.background.startsWith('rgb') ||
-                task.style.background.includes('images.unsplash.com'))) ||
+            (getBackgroundUrl() &&
+              (getBackgroundUrl().startsWith('#') ||
+                getBackgroundUrl().startsWith('rgb') ||
+                getBackgroundUrl().includes('images.unsplash.com'))) ||
             task.style?.backgroundImage) && (
             <button
               className="header-remove-cover-btn"

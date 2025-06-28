@@ -43,12 +43,19 @@ export function BoardDetails() {
     const root = document.documentElement
 
     if (board.style.background) {
-      root.style.setProperty(
-        '--dynamic-board-background',
-        `url(${board.style.background})`
-      )
-      extractColorsFromImage(board.style.background)
-      root.style.setProperty('--dynamic-board-background-color', 'none')
+      const backgroundUrl =
+        typeof board.style.background === 'string'
+          ? board.style.background
+          : board.style.background?.url
+
+      if (backgroundUrl) {
+        root.style.setProperty(
+          '--dynamic-board-background',
+          `url(${backgroundUrl})`
+        )
+        extractColorsFromImage(backgroundUrl)
+        root.style.setProperty('--dynamic-board-background-color', 'none')
+      }
     } else if (board.style.color) {
       root.style.setProperty(
         '--dynamic-board-background-color',
@@ -64,9 +71,9 @@ export function BoardDetails() {
 
       root.style.setProperty('--dynamic-boardheader-background', color1)
       root.style.setProperty('--dynamic-appheader-background', color2)
-      root.style.setProperty(' --dynamic-header-color', textColor)
+      root.style.setProperty('--dynamic-header-color', textColor)
     }
-  }, [])
+  }, [board])
 
   function onDragEnd(result) {
     if (!result.destination) {
@@ -211,6 +218,12 @@ export function BoardDetails() {
 
   async function extractColorsFromImage(imgUrl) {
     try {
+      // Check if required libraries are available
+      if (typeof ColorThief === 'undefined' || typeof chroma === 'undefined') {
+        console.warn('ColorThief or chroma library not available')
+        return
+      }
+
       const img = new Image()
       img.crossOrigin = 'anonymous'
       img.src = imgUrl
@@ -236,6 +249,11 @@ export function BoardDetails() {
       root.style.setProperty('--dynamic-header-color', textColor)
     } catch (err) {
       console.error('Error extracting colors from image:', err)
+      // Set fallback colors if extraction fails
+      const root = document.documentElement
+      root.style.setProperty('--dynamic-boardheader-background', '#f4f5f7')
+      root.style.setProperty('--dynamic-appheader-background', '#e4e6ea')
+      root.style.setProperty('--dynamic-header-color', '#172b4d')
     }
   }
 
@@ -294,6 +312,7 @@ export function BoardDetails() {
       <BoardMenu
         isOpen={rsbIsOpen}
         onClose={() => setRsbIsOpen(false)}
+        onReopen={() => setRsbIsOpen(true)}
         board={board}
         onUpdateBoard={handleBoardUpdate}
       />
