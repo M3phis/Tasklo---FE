@@ -501,6 +501,14 @@ export function BoardDetails() {
         onClose={() => setIsFilterOpen(false)}
       />
 
+      <BoardMenu
+        isOpen={rsbIsOpen}
+        onClose={() => setRsbIsOpen(false)}
+        onReopen={() => setRsbIsOpen(true)}
+        board={board}
+        onUpdateBoard={handleBoardUpdate}
+      />
+
       <Outlet context={{ handleUpdateTask }} />
     </section>
   )
