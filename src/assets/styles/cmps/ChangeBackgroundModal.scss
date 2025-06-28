@@ -79,6 +79,7 @@
   display: flex;
   padding: 16px;
   gap: 8px;
+  border-bottom: 1px solid #dfe1e6;
 
   .tab-group {
     flex: 1;
@@ -170,6 +171,11 @@
       transform: scale(1.05);
     }
   }
+}
+
+.change-background-close-btn {
+  background: none;
+  border: none;
 }
 
 .colors-grid {
