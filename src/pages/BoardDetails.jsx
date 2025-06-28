@@ -1,6 +1,6 @@
 import chroma from 'chroma-js'
 import ColorThief from 'colorthief'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useParams, useOutletContext } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -29,6 +29,7 @@ import {
   SOCKET_EVENT_TASK_MOVED,
   SOCKET_EVENT_BOARD_UPDATED
 } from '../services/socket.service'
+import { BoardMenu } from '../cmps/BoardMenu'
 
 export function BoardDetails() {
   const { boardId } = useParams()
@@ -38,6 +39,9 @@ export function BoardDetails() {
   const [rsbIsOpen, setRsbIsOpen] = useState(false)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const filters = useSelector((state) => state.boardModule.filters)
+
+  // Cache for extracted colors to avoid re-processing same images
+  const colorCache = useRef(new Map())
 
   useEffect(() => {
     loadBoard(boardId)
@@ -183,12 +187,19 @@ export function BoardDetails() {
     const root = document.documentElement
 
     if (board.style.background) {
-      root.style.setProperty(
-        '--dynamic-board-background',
-        `url(${board.style.background})`
-      )
-      extractColorsFromImage(board.style.background)
-      root.style.setProperty('--dynamic-board-background-color', 'none')
+      const backgroundUrl =
+        typeof board.style.background === 'string'
+          ? board.style.background
+          : board.style.background?.url
+
+      if (backgroundUrl) {
+        root.style.setProperty(
+          '--dynamic-board-background',
+          `url(${backgroundUrl})`
+        )
+        extractColorsFromImage(backgroundUrl)
+        root.style.setProperty('--dynamic-board-background-color', 'none')
+      }
     } else if (board.style.color) {
       root.style.setProperty(
         '--dynamic-board-background-color',
@@ -204,9 +215,9 @@ export function BoardDetails() {
 
       root.style.setProperty('--dynamic-boardheader-background', color1)
       root.style.setProperty('--dynamic-appheader-background', color2)
-      root.style.setProperty(' --dynamic-header-color', textColor)
+      root.style.setProperty('--dynamic-header-color', textColor)
     }
-  }, [])
+  }, [board?.style?.background, board?.style?.color])
 
   function onDragEnd(result) {
     if (!result.destination) {
@@ -375,6 +386,28 @@ export function BoardDetails() {
 
   async function extractColorsFromImage(imgUrl) {
     try {
+      // Check cache first
+      if (colorCache.current.has(imgUrl)) {
+        const cachedColors = colorCache.current.get(imgUrl)
+        const root = document.documentElement
+        root.style.setProperty(
+          '--dynamic-boardheader-background',
+          cachedColors.color1
+        )
+        root.style.setProperty(
+          '--dynamic-appheader-background',
+          cachedColors.color2
+        )
+        root.style.setProperty('--dynamic-header-color', cachedColors.textColor)
+        return
+      }
+
+      // Check if required libraries are available
+      if (typeof ColorThief === 'undefined' || typeof chroma === 'undefined') {
+        console.warn('ColorThief or chroma library not available')
+        return
+      }
+
       const img = new Image()
       img.crossOrigin = 'anonymous'
       img.src = imgUrl
@@ -394,12 +427,24 @@ export function BoardDetails() {
       const textColor =
         chroma.contrast(baseColor, 'white') > 4.5 ? 'white' : 'black'
 
+      // Cache the results (limit cache size to prevent memory leaks)
+      if (colorCache.current.size > 10) {
+        const firstKey = colorCache.current.keys().next().value
+        colorCache.current.delete(firstKey)
+      }
+      colorCache.current.set(imgUrl, { color1, color2, textColor })
+
       const root = document.documentElement
       root.style.setProperty('--dynamic-boardheader-background', color1)
       root.style.setProperty('--dynamic-appheader-background', color2)
       root.style.setProperty('--dynamic-header-color', textColor)
     } catch (err) {
       console.error('Error extracting colors from image:', err)
+      // Set fallback colors if extraction fails
+      const root = document.documentElement
+      root.style.setProperty('--dynamic-boardheader-background', '#f4f5f7')
+      root.style.setProperty('--dynamic-appheader-background', '#e4e6ea')
+      root.style.setProperty('--dynamic-header-color', '#172b4d')
     }
   }
 
@@ -455,7 +500,7 @@ export function BoardDetails() {
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
       />
-   
+
       <Outlet context={{ handleUpdateTask }} />
     </section>
   )

@@ -133,8 +133,17 @@ export function TaskPreview({
     return (
       url.startsWith('http') ||
       url.startsWith('https') ||
-      url.startsWith('data:')
+      url.startsWith('data:') ||
+      url.includes('images.unsplash.com') ||
+      url.includes('cloudinary.com')
     )
+  }
+
+  function getBackgroundUrl() {
+    if (!task.style?.background) return null
+    return typeof task.style.background === 'string'
+      ? task.style.background
+      : task.style.background?.url
   }
 
   function getFirstImageAttachment() {
@@ -143,12 +152,13 @@ export function TaskPreview({
   }
 
   function hasValidCover() {
+    const backgroundUrl = getBackgroundUrl()
     return (
       task.style?.backgroundColor ||
-      (task.style?.background &&
-        (task.style.background.startsWith('#') ||
-          task.style.background.startsWith('rgb') ||
-          task.style.background.includes('images.unsplash.com'))) ||
+      (backgroundUrl &&
+        (backgroundUrl.startsWith('#') ||
+          backgroundUrl.startsWith('rgb') ||
+          backgroundUrl.includes('images.unsplash.com'))) ||
       task.style?.backgroundImage
     )
   }
@@ -208,8 +218,8 @@ export function TaskPreview({
         {hasValidCover() && (
           <div
             className={`task-cover ${
-              (task.style?.background &&
-                task.style.background.includes('images.unsplash.com')) ||
+              (getBackgroundUrl() &&
+                getBackgroundUrl().includes('images.unsplash.com')) ||
               task.style?.backgroundImage
                 ? 'has-image'
                 : 'has-color'
@@ -217,27 +227,27 @@ export function TaskPreview({
             style={{
               backgroundColor:
                 task.style?.backgroundColor ||
-                (task.style?.background &&
-                (task.style.background.startsWith('#') ||
-                  task.style.background.startsWith('rgb'))
-                  ? task.style.background
-                  : !isImageUrl(task.style?.background)
-                  ? task.style.background
+                (getBackgroundUrl() &&
+                (getBackgroundUrl().startsWith('#') ||
+                  getBackgroundUrl().startsWith('rgb'))
+                  ? getBackgroundUrl()
+                  : !isImageUrl(getBackgroundUrl())
+                  ? getBackgroundUrl()
                   : '#FFFFFF'),
               backgroundImage: task.style?.backgroundImage
                 ? `url(${task.style.backgroundImage})`
-                : isImageUrl(task.style?.background)
-                ? `url(${task.style.background})`
+                : isImageUrl(getBackgroundUrl())
+                ? `url(${getBackgroundUrl()})`
                 : 'none',
               backgroundSize:
                 task.style?.coverSize === 'centered' ? 'contain' : 'cover',
             }}
           >
-            {((task.style?.background &&
-              task.style.background.includes('images.unsplash.com')) ||
+            {((getBackgroundUrl() &&
+              getBackgroundUrl().includes('images.unsplash.com')) ||
               task.style?.backgroundImage) && (
               <img
-                src={task.style?.backgroundImage || task.style.background}
+                src={task.style?.backgroundImage || getBackgroundUrl()}
                 alt=""
                 className="cover-image"
                 onError={(e) => {
