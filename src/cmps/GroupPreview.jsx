@@ -17,6 +17,7 @@ export function GroupPreview({
   onRemoveList,
   onUpdateTask,
   onRemoveTask,
+  onAddTask,
   onOpenQuickEdit,
   isLabelsExtended,
   setIsLabelsExtended
@@ -85,30 +86,42 @@ export function GroupPreview({
         _id: 'guest',
         username: 'guest',
         fullname: 'Guest User',
-        imgUrl:
-          'https://cdn2.iconfinder.com/data/icons/audio-16/96/user_avatar_profile_login_button_account_member-1024.png',
+        imgUrl: 'https://cdn2.iconfinder.com/data/icons/audio-16/96/user_avatar_profile_login_button_account_member-1024.png',
       },
       style: {},
       groupId: group.id,
       attachments: [],
       checklists: [],
     }
+    onAddTask(group.id, newTask)
 
-    const updatedGroup = {
-      ...group,
-      tasks: [...group.tasks, newTask],
+    if (containerRef.current) {
+      containerRef.current.scrollTo({
+        top: containerRef.current.scrollHeight,
+        behavior: 'smooth',
+      })
     }
-
-    onUpdateTask(updatedGroup).then(() => {
-      if (containerRef.current) {
-        containerRef.current.scrollTo({
-          top: containerRef.current.scrollHeight,
-          behavior: 'smooth',
-        })
-      }
-      setTaskTitle('')
-    })
+    setTaskTitle('')
+    setIsAddingTask(false)
   }
+
+  useClickAway(formRef, () => {
+    if (isAddingTask) {
+      if (taskTitle.trim()) {
+        const newTask = {
+          id: Date.now().toString(),
+          title: taskTitle,
+        }
+
+        onAddTask(group.id, newTask)
+        setTaskTitle('')
+        setIsAddingTask(false)
+      } else {
+        setIsAddingTask(false)
+        setTaskTitle('')
+      }
+    }
+  })
 
   function handleTitleClick(ev) {
     if (!isDragging) {

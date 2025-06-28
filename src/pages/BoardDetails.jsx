@@ -17,6 +17,18 @@ import {
 } from '../cmps/BoardHeader/BoardHeaderFilter'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { Outlet } from 'react-router-dom'
+import { store } from '../store/store'
+import {
+  socketService,
+  SOCKET_EVENT_GROUP_ADDED,
+  SOCKET_EVENT_GROUP_UPDATED,
+  SOCKET_EVENT_GROUP_DELETED,
+  SOCKET_EVENT_TASK_ADDED,
+  SOCKET_EVENT_TASK_UPDATED,
+  SOCKET_EVENT_TASK_DELETED,
+  SOCKET_EVENT_TASK_MOVED,
+  SOCKET_EVENT_BOARD_UPDATED
+} from '../services/socket.service'
 
 export function BoardDetails() {
   const { boardId } = useParams()
@@ -34,6 +46,135 @@ export function BoardDetails() {
         console.log('err', err)
         setIsLoading(false)
       })
+  }, [boardId])
+
+  useEffect(() => {
+    if (!boardId) return
+
+    console.log('🔌 Setting up socket listeners for board:', boardId)
+
+    socketService.watchBoard(boardId)
+
+    const handleGroupAdded = (data) => {
+      if (data.boardId === boardId) {
+        showSuccessMsg(`New group "${data.title}" was added!`)
+        store.dispatch({
+          type: 'ADD_GROUP_SOCKET',
+          group: {
+            id: data.id || `g${Date.now()}`,
+            title: data.title || 'New Group',
+            tasks: data.tasks || [],
+            ...data,
+          },
+        })
+      }
+    }
+
+    const handleGroupUpdated = (data) => {
+      if (data.boardId === boardId) {
+        showSuccessMsg(`Group "${data.title}" was updated!`)
+        store.dispatch({
+          type: 'UPDATE_GROUP_SOCKET',
+          group: data,
+        })
+      }
+    }
+
+    const handleGroupDeleted = (data) => {
+      if (data.boardId === boardId) {
+        showSuccessMsg('Group was deleted!')
+        store.dispatch({
+          type: 'REMOVE_GROUP_SOCKET',
+          groupId: data.groupId,
+        })
+      }
+    }
+
+    const handleTaskAdded = (data) => {
+      if (data.boardId === boardId) {
+        showSuccessMsg(`New task "${data.title}" was added!`)
+        store.dispatch({
+          type: 'ADD_TASK_SOCKET',
+          groupId: data.groupId,
+          task: {
+            id: data.id || `c${Date.now()}`,
+            title: data.title || 'New Task',
+            ...data,
+          },
+        })
+      }
+    }
+
+    const handleTaskUpdated = (data) => {
+      if (data.boardId === boardId) {
+        showSuccessMsg(`Task was updated!`)
+        store.dispatch({
+          type: 'UPDATE_TASK_SOCKET',
+          taskId: data.taskId,
+          updates: data,
+        })
+      }
+    }
+
+    const handleTaskDeleted = (data) => {
+      if (data.boardId === boardId) {
+        showSuccessMsg('Task was deleted!')
+        store.dispatch({
+          type: 'REMOVE_TASK_SOCKET',
+          groupId: data.groupId,
+          taskId: data.taskId,
+        })
+      }
+    }
+
+    const handleTaskMoved = (data) => {
+      if (data.boardId === boardId) {
+        showSuccessMsg('A task was moved!')
+        store.dispatch({
+          type: 'MOVE_TASK_SOCKET',
+          taskId: data.taskId,
+          sourceGroupId: data.sourceGroupId,
+          targetGroupId: data.targetGroupId,
+        })
+      }
+    }
+
+    const handleBoardUpdated = (data) => {
+      if (data.boardId === boardId) {
+        showSuccessMsg('Board was updated by another user!')
+        store.dispatch({
+          type: 'UPDATE_BOARD_SOCKET',
+          boardId: data.boardId,
+          updates: data.updates,
+        })
+      }
+    }
+
+    socketService.on(SOCKET_EVENT_GROUP_ADDED, handleGroupAdded)
+    socketService.on(SOCKET_EVENT_GROUP_UPDATED, handleGroupUpdated)
+    socketService.on(SOCKET_EVENT_GROUP_DELETED, handleGroupDeleted)
+
+    socketService.on(SOCKET_EVENT_TASK_ADDED, handleTaskAdded)
+    socketService.on(SOCKET_EVENT_TASK_UPDATED, handleTaskUpdated)
+    socketService.on(SOCKET_EVENT_TASK_DELETED, handleTaskDeleted)
+    socketService.on(SOCKET_EVENT_TASK_MOVED, handleTaskMoved)
+
+    socketService.on(SOCKET_EVENT_BOARD_UPDATED, handleBoardUpdated)
+
+    return () => {
+      console.log('🔌 Cleaning up socket listeners for board:', boardId)
+      socketService.unwatchBoard(boardId)
+      socketService.off(SOCKET_EVENT_GROUP_ADDED, handleGroupAdded)
+      socketService.off(SOCKET_EVENT_GROUP_UPDATED, handleGroupUpdated)
+      socketService.off(SOCKET_EVENT_GROUP_DELETED, handleGroupDeleted)
+
+      socketService.off(SOCKET_EVENT_TASK_ADDED, handleTaskAdded)
+      socketService.off(SOCKET_EVENT_TASK_UPDATED, handleTaskUpdated)
+      socketService.off(SOCKET_EVENT_TASK_DELETED, handleTaskDeleted)
+      socketService.off(SOCKET_EVENT_TASK_MOVED, handleTaskMoved)
+
+      socketService.off(SOCKET_EVENT_BOARD_UPDATED, handleBoardUpdated)
+    }
   }, [boardId])
 
   useEffect(() => {
@@ -93,6 +234,7 @@ export function BoardDetails() {
       const [task] = groupStart.tasks.splice(startIdx, 1)
       groupEnd.tasks.splice(endIdx, 0, task)
       updateBoardOptimistic({ ...board, groups })
+      socketService.moveTask(boardId, task.id, result.source.droppableId, result.destination.droppableId)
     }
   }
 
@@ -103,6 +245,8 @@ export function BoardDetails() {
       ...board,
       groups: [...board.groups, newGroup],
     }
+
+    socketService.addGroup(boardId, newGroup)
 
     return updateBoard(updatedBoard)
       .then(() => showSuccessMsg('List added successfully'))
@@ -123,6 +267,8 @@ export function BoardDetails() {
       groups: updatedGroups,
     }
 
+    socketService.updateGroup(boardId, updatedList.id, updatedList)
+
     updateBoard(updatedBoard)
       .then(() => showSuccessMsg('List updated'))
       .catch((err) => {
@@ -138,6 +284,8 @@ export function BoardDetails() {
       ...board,
       groups: updatedGroups,
     }
+
+    socketService.deleteGroup(boardId, listId)
 
     updateBoard(updatedBoard)
       .then(() => showSuccessMsg('List removed'))
@@ -156,6 +304,19 @@ export function BoardDetails() {
       ...board,
       groups: updatedGroups,
     }
+
+    const oldGroup = board.groups.find(g => g.id === updatedGroup.id)
+    const updatedTasks = updatedGroup.tasks.filter(task => {
+      const oldTask = oldGroup?.tasks.find(t => t.id === task.id)
+      return !oldTask || JSON.stringify(oldTask) !== JSON.stringify(task)
+    })
+
+    updatedTasks.forEach(task => {
+      socketService.updateTask(boardId, task.id, {
+        ...task,
+        groupId: updatedGroup.id,
+      })
+    })
 
     return updateBoard(updatedBoard)
       .then(() => showSuccessMsg('Task updated'))
@@ -180,6 +341,8 @@ export function BoardDetails() {
       ...board,
       groups: updatedGroups,
     }
+
+    socketService.deleteTask(boardId, taskId, groupId)
 
     return updateBoard(updatedBoard)
       .then(() => showSuccessMsg('Task removed successfully'))
@@ -206,6 +369,8 @@ export function BoardDetails() {
         console.log('Error updating board:', err)
         showErrorMsg('Cannot update board')
       })
+
+
   }
 
   async function extractColorsFromImage(imgUrl) {
@@ -281,6 +446,7 @@ export function BoardDetails() {
             onUpdateTask={handleUpdateTask}
             onRemoveTask={handleRemoveTask}
             onDragEnd={onDragEnd}
+            socketService={socketService}
           />
         </div>
       </div>
@@ -289,7 +455,39 @@ export function BoardDetails() {
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
       />
-
+      {/* ADD DEVELOPMENT TESTING SECTION: */}
+      {process.env.NODE_ENV === 'development' && (
+        <div style={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          background: 'rgba(0,0,0,0.8)',
+          color: 'white',
+          padding: '15px',
+          borderRadius: '8px',
+          zIndex: 1000
+        }}>
+          <h4>🧪 Socket Testing</h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+            <button onClick={() => socketService.testTaskAdded()}>
+              Test Task Added
+            </button>
+            <button onClick={() => socketService.addGroup(boardId, { title: `Test Group ${Date.now()}` })}>
+              Add Test Group
+            </button>
+            <button onClick={() => {
+              const groups = board.groups || []
+              if (groups.length > 0) {
+                socketService.addTask(boardId, groups[0].id, { title: `Test Task ${Date.now()}` })
+              } else {
+                alert('Add a group first!')
+              }
+            }}>
+              Add Test Task
+            </button>
+          </div>
+        </div>
+      )}
       <Outlet context={{ handleUpdateTask }} />
     </section>
   )

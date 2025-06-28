@@ -1,4 +1,5 @@
 import { boardService } from '../services/board'
+import { socketService } from '../services/socket.service'
 import { store } from '../store/store'
 import { ADD_BOARD, REMOVE_BOARD, SET_BOARDS, SET_BOARD, UPDATE_BOARD, ADD_BOARD_ACTIVITY, MOVE_CARD } from './board.reducer'
 
@@ -22,7 +23,12 @@ export async function updateBoardOptimistic(board, isUpdateMiniBoard = false) {
         //  if (isUpdateMiniBoard) store.dispatch({ type: UPDATE_MINI_BOARD, board: { _id: board._id, title: board.title, style: { backgroundImage: board.style?.backgroundImage }, isStarred: board.isStarred } })
         const savedBoard = await boardService.save(board)
         console.log('Updated Board:', savedBoard)
-        socketService.emit('board-changed', savedBoard)
+
+        socketService.emit('board-updated', {
+            boardId: savedBoard._id,
+            updates: savedBoard
+        })
+
         return savedBoard
     }
     catch (err) {
@@ -96,13 +102,11 @@ export async function addBoardActivity(boardId, activity) {
 
 export async function moveCard(boardId, sourceGroupId, taskId, targetGroupId) {
     try {
-        // Optimistically update the UI
         const board = store.getState().boardModule.board
         const sourceGroup = board.groups.find(g => g.id === sourceGroupId)
         const targetGroup = board.groups.find(g => g.id === targetGroupId)
         const task = sourceGroup.tasks.find(t => t.id === taskId)
 
-        // Create optimistic update
         const optimisticBoard = {
             ...board,
             groups: board.groups.map(group => {
@@ -122,25 +126,89 @@ export async function moveCard(boardId, sourceGroupId, taskId, targetGroupId) {
             })
         }
 
-        // Update UI immediately
         store.dispatch({
             type: MOVE_CARD,
             board: optimisticBoard
         })
 
-        // Then update server in background
+        socketService.moveTask(boardId, taskId, sourceGroupId, targetGroupId)
+
         const savedBoard = await boardService.moveCard(boardId, sourceGroupId, taskId, targetGroupId)
         store.dispatch(getCmdUpdateBoard(savedBoard))
         return savedBoard
     } catch (err) {
         console.log('Cannot move card', err)
-        // If server update fails, reload the board to sync with server state
         loadBoard(boardId)
         throw err
     }
 }
 
 
+// Socket action functions (they emit socket events):
+export function addGroupSocket(boardId, groupData) {
+    socketService.addGroup(boardId, groupData)
+}
+
+export function addTaskSocket(boardId, groupId, taskData) {
+    socketService.addTask(boardId, groupId, taskData)
+}
+
+export function updateTaskSocket(boardId, taskId, updates) {
+    socketService.updateTask(boardId, taskId, updates)
+}
+
+export function moveTaskSocket(boardId, taskId, sourceGroupId, targetGroupId) {
+    socketService.moveTask(boardId, taskId, sourceGroupId, targetGroupId)
+}
+
+// Socket event handlers (they respond to incoming socket events):
+export function handleSocketGroupAdded(data) {
+    const { boardId, group } = data
+    store.dispatch({
+        type: 'ADD_GROUP_SOCKET',
+        boardId,
+        group: {
+            id: group.id || `g${Date.now()}`,
+            title: group.title || 'New Group',
+            tasks: group.tasks || [],
+            ...group
+        }
+    })
+}
+
+export function handleSocketTaskAdded(data) {
+    const { boardId, groupId, task } = data
+    store.dispatch({
+        type: 'ADD_TASK_SOCKET',
+        boardId,
+        groupId,
+        task: {
+            id: task.id || `c${Date.now()}`,
+            title: task.title || 'New Task',
+            ...task
+        }
+    })
+}
+
+export function handleSocketTaskMoved(data) {
+    const { boardId, taskId, sourceGroupId, targetGroupId } = data
+    store.dispatch({
+        type: 'MOVE_TASK_SOCKET',
+        boardId,
+        taskId,
+        sourceGroupId,
+        targetGroupId
+    })
+}
+
+export function handleSocketBoardUpdated(data) {
+    const { boardId, updates } = data
+    store.dispatch({
+        type: 'UPDATE_BOARD_SOCKET',
+        boardId,
+        updates
+    })
+}
 
 
 // Command Creators:

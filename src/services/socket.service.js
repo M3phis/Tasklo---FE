@@ -14,12 +14,37 @@ export const SOCKET_EVENT_REVIEW_ABOUT_YOU = 'review-about-you'
 const SOCKET_EMIT_LOGIN = 'set-user-socket'
 const SOCKET_EMIT_LOGOUT = 'unset-user-socket'
 
+// Board events
+export const SOCKET_EVENT_BOARD_UPDATED = 'board-updated'
+export const SOCKET_EMIT_BOARD_WATCH = 'board-watch'
+export const SOCKET_EMIT_BOARD_UNWATCH = 'board-unwatch'
+
+// Group/List events 
+export const SOCKET_EVENT_GROUP_ADDED = 'group-added'
+export const SOCKET_EVENT_GROUP_UPDATED = 'group-updated'
+export const SOCKET_EVENT_GROUP_DELETED = 'group-deleted'
+export const SOCKET_EMIT_GROUP_ADD = 'group-add'
+export const SOCKET_EMIT_GROUP_UPDATE = 'group-update'
+export const SOCKET_EMIT_GROUP_DELETE = 'group-delete'
+
+// Task/Card events 
+export const SOCKET_EVENT_TASK_ADDED = 'task-added'
+export const SOCKET_EVENT_TASK_UPDATED = 'task-updated'
+export const SOCKET_EVENT_TASK_DELETED = 'task-deleted'
+export const SOCKET_EVENT_TASK_MOVED = 'task-moved'
+export const SOCKET_EMIT_TASK_ADD = 'task-add'
+export const SOCKET_EMIT_TASK_UPDATE = 'task-update'
+export const SOCKET_EMIT_TASK_DELETE = 'task-delete'
+export const SOCKET_EMIT_TASK_MOVE = 'task-move'
+
+// Activity events
+export const SOCKET_EVENT_ACTIVITY_ADDED = 'activity-added'
+
 
 const baseUrl = (process.env.NODE_ENV === 'production') ? '' : '//localhost:3030'
-export const socketService = createSocketService()
-// export const socketService = createDummySocketService()
+// export const socketService = createSocketService()
+export const socketService = createDummySocketService()
 
-// for debugging from console
 window.socketService = socketService
 
 socketService.setup()
@@ -27,6 +52,8 @@ socketService.setup()
 
 function createSocketService() {
     var socket = null
+    var watchedBoards = new Set()
+
     const socketService = {
         setup() {
             socket = io(baseUrl)
@@ -49,22 +76,112 @@ function createSocketService() {
         },
         logout() {
             socket.emit(SOCKET_EMIT_LOGOUT)
+            watchedBoards.clear()
         },
         terminate() {
             socket = null
+            watchedBoards.clear()
         },
 
+        // Board watching
+        watchBoard(boardId) {
+            if (!watchedBoards.has(boardId)) {
+                socket.emit(SOCKET_EMIT_BOARD_WATCH, boardId)
+                watchedBoards.add(boardId)
+            }
+        },
+
+        unwatchBoard(boardId) {
+            if (watchedBoards.has(boardId)) {
+                socket.emit(SOCKET_EMIT_BOARD_UNWATCH, boardId)
+                watchedBoards.delete(boardId)
+            }
+        },
+
+        // Group methods
+        addGroup(boardId, groupData) {
+            socket.emit(SOCKET_EMIT_GROUP_ADD, { boardId, ...groupData })
+        },
+
+        updateGroup(boardId, groupId, updates) {
+            socket.emit(SOCKET_EMIT_GROUP_UPDATE, { boardId, groupId, ...updates })
+        },
+
+        deleteGroup(boardId, groupId) {
+            socket.emit(SOCKET_EMIT_GROUP_DELETE, { boardId, groupId })
+        },
+
+        // Task methods
+        addTask(boardId, groupId, taskData) {
+            socket.emit(SOCKET_EMIT_TASK_ADD, { boardId, groupId, ...taskData })
+        },
+
+        updateTask(boardId, taskId, updates) {
+            socket.emit(SOCKET_EMIT_TASK_UPDATE, { boardId, taskId, ...updates })
+        },
+
+
+        moveTask(boardId, taskId, sourceGroupId, targetGroupId) {
+            socket.emit(SOCKET_EMIT_TASK_MOVE, {
+                boardId,
+                taskId,
+                sourceGroupId,
+                targetGroupId
+            })
+        },
+
+        deleteTask(boardId, taskId, groupId) {
+            socket.emit(SOCKET_EMIT_TASK_DELETE, { boardId, taskId, groupId })
+        },
+
+        getWatchedBoards() {
+            return Array.from(watchedBoards)
+        }
     }
     return socketService
 }
 
 function createDummySocketService() {
     var listenersMap = {}
+    var watchedBoards = new Set()
+
     const socketService = {
         listenersMap,
+
         setup() {
+            console.log('🔧 Dummy Socket Service: Setup complete')
             listenersMap = {}
+            watchedBoards.clear()
+
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'dummy-socket-event' && e.newValue) {
+                    try {
+                        const { eventName, data, tabId } = JSON.parse(e.newValue)
+
+                        if (tabId === socketService.tabId) return
+
+                        console.log(`🔄 Cross-tab event received: ${eventName}`, data)
+
+                        const listeners = listenersMap[eventName]
+                        if (listeners && listeners.length > 0) {
+                            listeners.forEach(listener => {
+                                try {
+                                    listener(data)
+                                } catch (err) {
+                                    console.error('🔧 Error in cross-tab listener:', err)
+                                }
+                            })
+                        }
+                    } catch (err) {
+                        console.error('🔧 Error parsing cross-tab event:', err)
+                    }
+                }
+            })
+
+            socketService.tabId = `tab_${Date.now()}_${Math.random()}`
+            console.log('🔧 Tab ID:', socketService.tabId)
         },
+
         terminate() {
             this.setup()
         },
@@ -73,6 +190,7 @@ function createDummySocketService() {
         },
         logout() {
             console.log('Dummy socket service here, logout - got it')
+            watchedBoards.clear()
         },
         on(eventName, cb) {
             listenersMap[eventName] = [...(listenersMap[eventName]) || [], cb]
@@ -82,30 +200,175 @@ function createDummySocketService() {
             if (!cb) delete listenersMap[eventName]
             else listenersMap[eventName] = listenersMap[eventName].filter(l => l !== cb)
         },
+
         emit(eventName, data) {
+            console.log(`🔧 Dummy Socket Service: Emit "${eventName}"`, data)
+
             var listeners = listenersMap[eventName]
+
             if (eventName === SOCKET_EMIT_SEND_MSG) {
                 listeners = listenersMap[SOCKET_EVENT_ADD_MSG]
             }
 
-            if (!listeners) return
+            if (eventName === SOCKET_EMIT_TASK_ADD) {
+                listeners = listenersMap[SOCKET_EVENT_TASK_ADDED]
+                data = {
+                    ...data,
+                    task: {
+                        ...data,
+                        id: `task_${Date.now()}`,
+                        createdAt: new Date()
+                    }
+                }
+            }
 
+            if (eventName === SOCKET_EMIT_GROUP_ADD) {
+                listeners = listenersMap[SOCKET_EVENT_GROUP_ADDED]
+                data = {
+                    ...data,
+                    group: {
+                        ...data,
+                        id: `group_${Date.now()}`,
+                        createdAt: new Date(),
+                        tasks: []
+                    }
+                }
+            }
+
+            if (eventName === SOCKET_EMIT_TASK_MOVE) {
+                listeners = listenersMap[SOCKET_EVENT_TASK_MOVED]
+            }
+            if (eventName === SOCKET_EMIT_TASK_UPDATE) {
+                listeners = listenersMap[SOCKET_EVENT_TASK_UPDATED]
+            }
+
+            if (eventName === SOCKET_EMIT_GROUP_UPDATE) {
+                listeners = listenersMap[SOCKET_EVENT_GROUP_UPDATED]
+            }
+
+            if (eventName === SOCKET_EMIT_TASK_DELETE) {
+                listeners = listenersMap[SOCKET_EVENT_TASK_DELETED]
+            }
+
+            if (eventName === SOCKET_EMIT_GROUP_DELETE) {
+                listeners = listenersMap[SOCKET_EVENT_GROUP_DELETED]
+            }
+
+            const crossTabEvents = [
+                SOCKET_EVENT_GROUP_ADDED,
+                SOCKET_EVENT_GROUP_UPDATED,
+                SOCKET_EVENT_GROUP_DELETED,
+                SOCKET_EVENT_TASK_ADDED,
+                SOCKET_EVENT_TASK_UPDATED,
+                SOCKET_EVENT_TASK_DELETED,
+                SOCKET_EVENT_TASK_MOVED,
+                SOCKET_EVENT_BOARD_UPDATED
+            ]
+
+            let actualEventName = eventName
+            if (eventName === SOCKET_EMIT_TASK_ADD) actualEventName = SOCKET_EVENT_TASK_ADDED
+            if (eventName === SOCKET_EMIT_GROUP_ADD) actualEventName = SOCKET_EVENT_GROUP_ADDED
+            if (eventName === SOCKET_EMIT_TASK_MOVE) actualEventName = SOCKET_EVENT_TASK_MOVED
+            if (eventName === SOCKET_EMIT_TASK_UPDATE) actualEventName = SOCKET_EVENT_TASK_UPDATED
+            if (eventName === SOCKET_EMIT_GROUP_UPDATE) actualEventName = SOCKET_EVENT_GROUP_UPDATED
+            if (eventName === SOCKET_EMIT_TASK_DELETE) actualEventName = SOCKET_EVENT_TASK_DELETED
+            if (eventName === SOCKET_EMIT_GROUP_DELETE) actualEventName = SOCKET_EVENT_GROUP_DELETED
+
+            if (crossTabEvents.includes(actualEventName)) {
+                localStorage.setItem('dummy-socket-event', JSON.stringify({
+                    eventName: actualEventName,
+                    data,
+                    tabId: socketService.tabId,
+                    timestamp: Date.now()
+                }))
+                console.log(`🔄 Broadcasting to other tabs: ${actualEventName}`)
+            }
+
+            // Trigger listeners in current tab
+            if (!listeners || listeners.length === 0) {
+                console.log(`🔧 Dummy Socket Service: No listeners for "${eventName}"`)
+                return
+            }
+
+            console.log(`🔧 Dummy Socket Service: Triggering ${listeners.length} listeners for "${eventName}"`)
             listeners.forEach(listener => {
-                listener(data)
+                try {
+                    listener(data)
+                } catch (err) {
+                    console.error(`🔧 Dummy Socket Service: Error in listener for "${eventName}"`, err)
+                }
             })
         },
-        // Functions for easy testing of pushed data
+
+        // KEEP all your existing methods unchanged:
+        watchBoard(boardId) {
+            console.log('Dummy: watching board', boardId)
+            watchedBoards.add(boardId)
+        },
+
+        unwatchBoard(boardId) {
+            console.log('Dummy: unwatching board', boardId)
+            watchedBoards.delete(boardId)
+        },
+
+        addGroup(boardId, groupData) {
+            console.log('Dummy: adding group', { boardId, groupData })
+            this.emit(SOCKET_EMIT_GROUP_ADD, { boardId, ...groupData })
+        },
+
+        updateGroup(boardId, groupId, updates) {
+            console.log('Dummy: updating group', { boardId, groupId, updates })
+            this.emit(SOCKET_EMIT_GROUP_UPDATE, { boardId, groupId, ...updates })
+        },
+
+        deleteGroup(boardId, groupId) {
+            console.log('Dummy: deleting group', { boardId, groupId })
+            this.emit(SOCKET_EMIT_GROUP_DELETE, { boardId, groupId })
+        },
+
+        addTask(boardId, groupId, taskData) {
+            console.log('Dummy: adding task', { boardId, groupId, taskData })
+            this.emit(SOCKET_EMIT_TASK_ADD, { boardId, groupId, ...taskData })
+        },
+
+        updateTask(boardId, taskId, updates) {
+            console.log('Dummy: updating task', { boardId, taskId, updates })
+            this.emit(SOCKET_EMIT_TASK_UPDATE, { boardId, taskId, ...updates })
+        },
+
+        deleteTask(boardId, taskId, groupId) {
+            console.log('Dummy: deleting task', { boardId, taskId, groupId })
+            this.emit(SOCKET_EMIT_TASK_DELETE, { boardId, taskId, groupId })
+        },
+
+        moveTask(boardId, taskId, sourceGroupId, targetGroupId) {
+            console.log('Dummy: moving task', { boardId, taskId, sourceGroupId, targetGroupId })
+            this.emit(SOCKET_EMIT_TASK_MOVE, { boardId, taskId, sourceGroupId, targetGroupId })
+        },
+
+        getWatchedBoards() {
+            return Array.from(watchedBoards)
+        },
+
+        // KEEP all your existing test methods:
         testChatMsg() {
             this.emit(SOCKET_EVENT_ADD_MSG, { from: 'Someone', txt: 'Aha it worked!' })
         },
         testUserUpdate() {
             this.emit(SOCKET_EVENT_USER_UPDATED, { ...userService.getLoggedinUser(), score: 555 })
+        },
+        testTaskAdded() {
+            this.emit(SOCKET_EVENT_TASK_ADDED, {
+                boardId: 'board123',
+                groupId: 'group456',
+                task: { id: 'task789', title: 'New Task' }
+            })
         }
     }
+
     window.listenersMap = listenersMap
     return socketService
 }
-
 
 // Basic Tests
 // function cb(x) {console.log('Socket Test - Expected Puk, Actual:', x)}

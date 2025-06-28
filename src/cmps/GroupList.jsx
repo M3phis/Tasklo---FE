@@ -15,6 +15,7 @@ export function GroupList({
   onUpdateTask,
   onRemoveTask,
   onDragEnd,
+  socketService
 }) {
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [groupTitle, setGroupTitle] = useState('')
@@ -44,6 +45,10 @@ export function GroupList({
       setGroupTitle('')
       setIsAddingGroup(false)
     })
+  }
+
+  function handleAddTask(groupId, taskData) {
+    socketService.addTask(boardId, groupId, taskData)
   }
 
   return (
@@ -88,6 +93,7 @@ export function GroupList({
                       onRemoveList={onRemoveList}
                       onUpdateTask={onUpdateTask}
                       onRemoveTask={onRemoveTask}
+                      onAddTask={handleAddTask}
                       isLabelsExtended={isLabelsExtended}
                       setIsLabelsExtended={setIsLabelsExtended}
                     />
