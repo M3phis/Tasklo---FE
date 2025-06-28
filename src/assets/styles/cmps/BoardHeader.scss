@@ -84,6 +84,15 @@
       }
     }
 
+    // Override star icon color specifically
+    .header-btn svg {
+      color: var(--dynamic-header-color);
+    }
+
+    .star-btn-active svg {
+      color: #f2d600 !important;
+    }
+
     .header-btn,
     .menu-btn,
     .star-btn {
