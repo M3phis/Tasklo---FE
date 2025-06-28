@@ -455,39 +455,7 @@ export function BoardDetails() {
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
       />
-      {/* ADD DEVELOPMENT TESTING SECTION: */}
-      {process.env.NODE_ENV === 'development' && (
-        <div style={{
-          position: 'fixed',
-          bottom: '20px',
-          right: '20px',
-          background: 'rgba(0,0,0,0.8)',
-          color: 'white',
-          padding: '15px',
-          borderRadius: '8px',
-          zIndex: 1000
-        }}>
-          <h4>🧪 Socket Testing</h4>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-            <button onClick={() => socketService.testTaskAdded()}>
-              Test Task Added
-            </button>
-            <button onClick={() => socketService.addGroup(boardId, { title: `Test Group ${Date.now()}` })}>
-              Add Test Group
-            </button>
-            <button onClick={() => {
-              const groups = board.groups || []
-              if (groups.length > 0) {
-                socketService.addTask(boardId, groups[0].id, { title: `Test Task ${Date.now()}` })
-              } else {
-                alert('Add a group first!')
-              }
-            }}>
-              Add Test Task
-            </button>
-          </div>
-        </div>
-      )}
+   
       <Outlet context={{ handleUpdateTask }} />
     </section>
   )

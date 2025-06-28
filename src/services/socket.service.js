@@ -284,7 +284,6 @@ function createDummySocketService() {
                 console.log(`🔄 Broadcasting to other tabs: ${actualEventName}`)
             }
 
-            // Trigger listeners in current tab
             if (!listeners || listeners.length === 0) {
                 console.log(`🔧 Dummy Socket Service: No listeners for "${eventName}"`)
                 return
@@ -300,7 +299,6 @@ function createDummySocketService() {
             })
         },
 
-        // KEEP all your existing methods unchanged:
         watchBoard(boardId) {
             console.log('Dummy: watching board', boardId)
             watchedBoards.add(boardId)
@@ -350,7 +348,6 @@ function createDummySocketService() {
             return Array.from(watchedBoards)
         },
 
-        // KEEP all your existing test methods:
         testChatMsg() {
             this.emit(SOCKET_EVENT_ADD_MSG, { from: 'Someone', txt: 'Aha it worked!' })
         },
