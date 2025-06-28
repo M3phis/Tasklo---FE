@@ -1,6 +1,6 @@
 import chroma from 'chroma-js'
 import ColorThief from 'colorthief'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useParams, useOutletContext } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -27,6 +27,9 @@ export function BoardDetails() {
   const [rsbIsOpen, setRsbIsOpen] = useState(false)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const filters = useSelector((state) => state.boardModule.filters)
+
+  // Cache for extracted colors to avoid re-processing same images
+  const colorCache = useRef(new Map())
 
   useEffect(() => {
     loadBoard(boardId)
@@ -73,7 +76,7 @@ export function BoardDetails() {
       root.style.setProperty('--dynamic-appheader-background', color2)
       root.style.setProperty('--dynamic-header-color', textColor)
     }
-  }, [board])
+  }, [board?.style?.background, board?.style?.color])
 
   function onDragEnd(result) {
     if (!result.destination) {
@@ -218,6 +221,22 @@ export function BoardDetails() {
 
   async function extractColorsFromImage(imgUrl) {
     try {
+      // Check cache first
+      if (colorCache.current.has(imgUrl)) {
+        const cachedColors = colorCache.current.get(imgUrl)
+        const root = document.documentElement
+        root.style.setProperty(
+          '--dynamic-boardheader-background',
+          cachedColors.color1
+        )
+        root.style.setProperty(
+          '--dynamic-appheader-background',
+          cachedColors.color2
+        )
+        root.style.setProperty('--dynamic-header-color', cachedColors.textColor)
+        return
+      }
+
       // Check if required libraries are available
       if (typeof ColorThief === 'undefined' || typeof chroma === 'undefined') {
         console.warn('ColorThief or chroma library not available')
@@ -242,6 +261,13 @@ export function BoardDetails() {
       const color2 = chroma(baseColor).darken(1).hex()
       const textColor =
         chroma.contrast(baseColor, 'white') > 4.5 ? 'white' : 'black'
+
+      // Cache the results (limit cache size to prevent memory leaks)
+      if (colorCache.current.size > 10) {
+        const firstKey = colorCache.current.keys().next().value
+        colorCache.current.delete(firstKey)
+      }
+      colorCache.current.set(imgUrl, { color1, color2, textColor })
 
       const root = document.documentElement
       root.style.setProperty('--dynamic-boardheader-background', color1)
