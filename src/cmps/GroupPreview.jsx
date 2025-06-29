@@ -31,32 +31,45 @@ export function GroupPreview({
   const menuTriggerRef = useRef(null)
   const formRef = useRef(null)
   const containerRef = useRef(null)
+  const titleInputRef = useRef(null)
 
-  useClickAway(formRef, () => {
+  useClickAway(containerRef, (event) => {
+    if (isEditing) {
+      if (title !== group.title) {
+        onUpdateList({ ...group, title })
+      }
+      setIsEditing(false)
+    }
+
     if (isAddingTask) {
       if (taskTitle.trim()) {
+        const loggedInUser = userService.getLoggedinUser()
+
         const newTask = {
-          id: Date.now().toString(),
+          id: utilService.makeId(),
           title: taskTitle,
+          status: 'in-progress',
+          description: '',
+          comments: [],
+          memberIds: [],
+          labelIds: [],
+          createdAt: Date.now(),
+          dueDate: null,
+          byMember: loggedInUser || {
+            _id: 'guest',
+            username: 'guest',
+            fullname: 'Guest User',
+            imgUrl: 'https://cdn2.iconfinder.com/data/icons/audio-16/96/user_avatar_profile_login_button_account_member-1024.png',
+          },
+          style: {},
+          groupId: group.id,
+          attachments: [],
+          checklists: [],
         }
-
-        const updatedGroup = {
-          ...group,
-          tasks: [...group.tasks, newTask],
-        }
-
-        onUpdateTask(updatedGroup)
-          .then(() => {
-            setTaskTitle('')
-            setIsAddingTask(false)
-          })
-          .catch((err) => {
-            console.error('Error adding task:', err)
-          })
-      } else {
-        setIsAddingTask(false)
+        onAddTask(group.id, newTask)
         setTaskTitle('')
       }
+      setIsAddingTask(false)
     }
   })
 
@@ -104,24 +117,6 @@ export function GroupPreview({
     setTaskTitle('')
     setIsAddingTask(false)
   }
-
-  useClickAway(formRef, () => {
-    if (isAddingTask) {
-      if (taskTitle.trim()) {
-        const newTask = {
-          id: Date.now().toString(),
-          title: taskTitle,
-        }
-
-        onAddTask(group.id, newTask)
-        setTaskTitle('')
-        setIsAddingTask(false)
-      } else {
-        setIsAddingTask(false)
-        setTaskTitle('')
-      }
-    }
-  })
 
   function handleTitleClick(ev) {
     if (!isDragging) {
@@ -174,10 +169,11 @@ export function GroupPreview({
   }
 
   return (
-    <div className="group-preview" style={group.style || {}}>
+    <div className="group-preview" style={group.style || {}} ref={containerRef}>
       <div className="group-header" style={group.style || {}}>
         {isEditing ? (
           <input
+            ref={titleInputRef}
             type="text"
             value={title}
             onChange={handleTitleChange}
@@ -227,7 +223,7 @@ export function GroupPreview({
         </button>
       </div>
 
-      <div className="tasks-container" ref={containerRef}>
+      <div className="tasks-container">
         <TaskList
           tasks={group.tasks}
           group={group}
