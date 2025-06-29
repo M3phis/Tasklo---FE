@@ -165,3 +165,19 @@
     }
   }
 }
+
+@media (max-width: 570px) {
+  .board-header .header-right {
+    .users-section {
+      display: none;
+    }
+
+    .share-btn {
+      display: none; 
+    }
+
+    .star-button {
+      display: none;
+    }
+  }
+}
