@@ -5,12 +5,14 @@
     border-radius: 50%;
     border: 2px solid var(--ds-background-inverse-subtle);
     overflow: hidden;
-    cursor: pointer;
     transition: all 0.2s;
 
+    img {
+        opacity: 1;
+    }
+
     &:hover {
-        transform: translateY(-1px);
-        box-shadow: var(--ds-box-shadow);
+        opacity: 0.8
     }
 
     img {
