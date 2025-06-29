@@ -3,11 +3,13 @@ import { createPortal } from 'react-dom'
 import { DatesModal } from '../DatesModal'
 import { LabelsModal } from '../LabelsModal'
 import { MembersModal } from '../MembersModal'
+import { CoverModal } from '../CoverModal'
 
 export const MODAL_TYPES = {
   LABELS: 'LABELS',
   MEMBERS: 'MEMBERS',
   DATES: 'DATES',
+  COVER: 'COVER'
 }
 
 export function TaskDetailsDynamic({
@@ -108,6 +110,51 @@ export function TaskDetailsDynamic({
     onUpdateTask(updatedGroup)
   }
 
+  function handleUpdateCover(coverData) {
+    const updatedTask = {
+      ...task,
+      style: {
+        ...task.style,
+        ...(coverData.type === 'color'
+          ? {
+            backgroundColor: coverData.value,
+            backgroundImage: undefined,
+            background: undefined,
+            coverSize: coverData.size,
+          }
+          : {
+            background: coverData.value,
+            backgroundColor: undefined,
+            backgroundImage: undefined,
+            coverSize: coverData.size,
+          }),
+      },
+    }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    onUpdateTask(updatedGroup)
+  }
+
+  function handleRemoveCover() {
+    const updatedTask = {
+      ...task,
+      style: {
+        ...task.style,
+        backgroundColor: undefined,
+        backgroundImage: undefined,
+        background: undefined,
+        coverSize: undefined,
+      },
+    }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    onUpdateTask(updatedGroup)
+  }
+
   function renderModalContent() {
     switch (type) {
       case MODAL_TYPES.LABELS:
@@ -139,6 +186,17 @@ export function TaskDetailsDynamic({
             position={calculatedPosition}
             onClose={handleClose}
             onUpdateDates={handleUpdateDates}
+          />
+        )
+
+      case MODAL_TYPES.COVER:
+        return (
+          <CoverModal
+            task={task}
+            position={calculatedPosition}
+            onClose={handleClose}
+            onUpdateCover={handleUpdateCover}
+            onRemoveCover={handleRemoveCover}
           />
         )
 

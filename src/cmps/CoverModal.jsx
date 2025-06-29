@@ -6,6 +6,7 @@ export function CoverModal({
   onClose,
   onUpdateCover,
   onRemoveCover,
+  // triggerButtonRef = null
 }) {
   const [selectedCoverType, setSelectedCoverType] = useState(
     task?.style?.coverSize || 'full'
@@ -18,18 +19,25 @@ export function CoverModal({
   )
   const modalRef = useRef(null)
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        onClose()
-      }
-    }
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     const isOutsideModal = modalRef.current && !modalRef.current.contains(event.target)
+  //     const isOnTriggerButton = triggerButtonRef?.current && triggerButtonRef.current.contains(event.target)
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [onClose])
+  //     if (isOutsideModal && !isOnTriggerButton) {
+  //       onClose()
+  //     }
+  //   }
+
+  //   const timer = setTimeout(() => {
+  //     document.addEventListener('click', handleClickOutside)
+  //   }, 50)
+
+  //   return () => {
+  //     clearTimeout(timer)
+  //     document.removeEventListener('click', handleClickOutside)
+  //   }
+  // }, [onClose, triggerButtonRef])
 
   const handleColorSelect = (color) => {
     setSelectedColor(color)
@@ -116,17 +124,15 @@ export function CoverModal({
           <h4 className="cover-modal-section-title">Size</h4>
           <div className="cover-size-options">
             <div
-              className={`cover-size-option ${
-                selectedCoverType === 'full' ? 'selected' : ''
-              }`}
+              className={`cover-size-option ${selectedCoverType === 'full' ? 'selected' : ''
+                }`}
               onClick={() => handleSizeChange('full')}
             >
               <div className="size-preview-full"></div>
             </div>
             <div
-              className={`cover-size-option ${
-                selectedCoverType === 'centered' ? 'selected' : ''
-              }`}
+              className={`cover-size-option ${selectedCoverType === 'centered' ? 'selected' : ''
+                }`}
               onClick={() => handleSizeChange('centered')}
             >
               <div className="size-preview-centered"></div>
@@ -157,9 +163,8 @@ export function CoverModal({
             ].map((color, index) => (
               <div
                 key={index}
-                className={`cover-color-option ${
-                  selectedColor === color ? 'selected' : ''
-                }`}
+                className={`cover-color-option ${selectedColor === color ? 'selected' : ''
+                  }`}
                 style={{ backgroundColor: color }}
                 onClick={() => handleColorSelect(color)}
               />
@@ -197,9 +202,8 @@ export function CoverModal({
                 key={index}
                 src={src}
                 alt={`Unsplash ${index + 1}`}
-                className={`cover-photo-option ${
-                  selectedPhoto === src ? 'selected' : ''
-                }`}
+                className={`cover-photo-option ${selectedPhoto === src ? 'selected' : ''
+                  }`}
                 onClick={() => handlePhotoSelect(src)}
               />
             ))}
