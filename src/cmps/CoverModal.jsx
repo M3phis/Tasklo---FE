@@ -101,6 +101,7 @@ export function CoverModal({
         left: position?.x,
         top: position?.y,
         zIndex: 1000,
+        transform: position.alignAbove ? 'translateY(-100%)' : 'none',
       }}
     >
       <div className="cover-modal-content">
