@@ -1,7 +1,12 @@
 import { useEffect, useRef } from 'react'
 import { FaRobot, FaTrello } from 'react-icons/fa'
 
-export function CreateMenu({ onCreateBoard, anchorRef, placement = 'bottom' }) {
+export function CreateMenu({
+  onCreateBoard,
+  onCreateAI,
+  anchorRef,
+  placement = 'bottom',
+}) {
   const menuRef = useRef()
 
   useEffect(() => {
@@ -43,7 +48,7 @@ export function CreateMenu({ onCreateBoard, anchorRef, placement = 'bottom' }) {
         </p>
       </div>
 
-      <div className="menu-item">
+      <div className="menu-item" onClick={onCreateAI}>
         <div className="menu-item-header">
           <FaRobot className="icon" />
           <h4>Create with AI</h4>

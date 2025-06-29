@@ -21,7 +21,7 @@
       margin: 0;
     }
 
-    .close-btn {
+    .board-modal-close-btn {
       background: none;
       border: none;
       font-size: 18px;
@@ -146,5 +146,26 @@
         background-color: #026aa7;
       }
     }
+  }
+}
+.ai-board-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #dfe1e6;
+  border-radius: 6px;
+  resize: vertical;
+  min-height: 70px;
+  transition: border 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+
+  &::placeholder {
+    color: #6b778c;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #388bff;
+    box-shadow: 0 0 0 3px rgba(56, 139, 255, 0.3);
   }
 }

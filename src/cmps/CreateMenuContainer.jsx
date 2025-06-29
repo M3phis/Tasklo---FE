@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { CreateMenu } from './CreateMenu.jsx'
 import { CreateBoardPanel } from './CreateBoardPanel.jsx'
+import { CreateBoardWithAI } from './CreateBoardWithAI.jsx'
 
 export function CreateMenuContainer({ trigger, placement = 'bottom' }) {
   const [isOpen, setIsOpen] = useState(false)
@@ -15,6 +16,10 @@ export function CreateMenuContainer({ trigger, placement = 'bottom' }) {
   function handleClose() {
     setIsOpen(false)
     setMode('menu')
+  }
+
+  function handleCreateAI() {
+    setMode('ai')
   }
 
   useEffect(() => {
@@ -36,6 +41,7 @@ export function CreateMenuContainer({ trigger, placement = 'bottom' }) {
         <div className="create-menu-wrapper">
           <CreateMenu
             onCreateBoard={handleCreateBoard}
+            onCreateAI={handleCreateAI}
             anchorRef={anchorRef}
             placement={placement}
           />
@@ -45,6 +51,15 @@ export function CreateMenuContainer({ trigger, placement = 'bottom' }) {
       {isOpen && mode === 'board' && (
         <div className="create-panel-wrapper">
           <CreateBoardPanel
+            onClose={handleClose}
+            anchorRef={anchorRef}
+            placement={placement}
+          />
+        </div>
+      )}
+      {isOpen && mode === 'ai' && (
+        <div className="create-panel-wrapper">
+          <CreateBoardWithAI
             onClose={handleClose}
             anchorRef={anchorRef}
             placement={placement}

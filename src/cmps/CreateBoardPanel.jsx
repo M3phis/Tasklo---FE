@@ -92,7 +92,7 @@ export function CreateBoardPanel({ onClose, anchorRef, placement = 'bottom' }) {
     <section className="create-board-panel" ref={panelRef}>
       <div className="panel-header">
         <h2>Create board</h2>
-        <button onClick={onClose} className="close-btn">
+        <button onClick={onClose} className="board-modal-close-btn">
           ✕
         </button>
       </div>
