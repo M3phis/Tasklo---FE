@@ -9,7 +9,6 @@ import {
 import ClockIcon from '@atlaskit/icon/core/clock'
 import DeleteIcon from '@atlaskit/icon/core/delete'
 // import ArchiveBoxIcon from '@atlaskit/icon/core/archive-box'
-// import CopyIcon from '@atlaskit/icon/core/copy'
 
 export function TaskQuickEdit({
   task,
@@ -33,6 +32,7 @@ export function TaskQuickEdit({
   const [menuSideClass, setMenuSideClass] = useState('')
   const [activeModal, setActiveModal] = useState(null)
   const [modalTriggerRef, setModalTriggerRef] = useState(null)
+  const [modalRef, setModalRef] = useState(null)
   const quickEditRef = useRef(null)
   const inputRef = useRef(null)
   const labelsButtonRef = useRef(null)
@@ -40,6 +40,12 @@ export function TaskQuickEdit({
   const datesButtonRef = useRef(null)
   const coverButtonRef = useRef(null)
 
+  const ESTIMATED_MODAL_HEIGHTS = {
+    [MODAL_TYPES.LABELS]: 700,
+    [MODAL_TYPES.MEMBERS]: 700,
+    [MODAL_TYPES.DATES]: 690,
+    [MODAL_TYPES.COVER]: 703,
+  }
   useEffect(() => {
     function updateSize() {
       setWindowSize({
@@ -81,6 +87,26 @@ export function TaskQuickEdit({
       }, 100)
     }
   }, [])
+
+  useEffect(() => {
+    if (activeModal && modalRef) {
+      const timer = setTimeout(() => {
+        recalculateModalPosition()
+      }, 50)
+
+      return () => clearTimeout(timer)
+    }
+  }, [activeModal, modalRef])
+
+  function handleSaveTitle() {
+    const updatedTask = { ...task, title: titleToEdit }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    onUpdateTask(updatedGroup)
+    onClose()
+  }
 
   function handleSaveTitle() {
     const updatedTask = { ...task, title: titleToEdit }
@@ -135,33 +161,114 @@ export function TaskQuickEdit({
     event.stopPropagation()
   }
 
+  function calculateModalPosition(rect, modalHeight, modalWidth, viewportHeight, viewportWidth, gap) {
+    const spaceAbove = rect.top - gap
+    const spaceBelow = viewportHeight - rect.bottom - gap
+
+    let finalX = rect.left
+    let finalY = rect.bottom + gap
+    let alignAbove = false
+
+    // Special handling for very tall modals (like dates modal)
+    if (modalHeight > 600) {
+      // Check if modal fits above
+      if (spaceAbove >= modalHeight) {
+        finalY = rect.top - gap
+        alignAbove = true
+      }
+      // Check if modal fits below
+      else if (spaceBelow >= modalHeight) {
+        finalY = rect.bottom + gap
+        alignAbove = false
+      }
+      // Modal doesn't fit in either direction - position for best visibility
+      else {
+        if (spaceAbove > spaceBelow) {
+          // More space above - position at top of viewport
+          finalY = gap
+          alignAbove = false
+        } else {
+          // More space below or equal - position to show as much as possible
+          finalY = Math.max(gap, viewportHeight - modalHeight - gap)
+          alignAbove = false
+        }
+      }
+    } else {
+      // Original logic for smaller modals
+      if (spaceBelow >= modalHeight) {
+        finalY = rect.bottom + gap
+        alignAbove = false
+      } else if (spaceAbove >= modalHeight) {
+        finalY = rect.top - gap
+        alignAbove = true
+      } else {
+        if (spaceBelow >= spaceAbove) {
+          finalY = Math.max(gap, viewportHeight - modalHeight - gap)
+          alignAbove = false
+        } else {
+          finalY = gap
+          alignAbove = true
+        }
+      }
+    }
+
+    // Horizontal positioning logic
+    if (rect.left + modalWidth > viewportWidth) {
+      finalX = Math.max(gap, rect.right - modalWidth)
+    } else if (rect.left < gap) {
+      finalX = gap
+    }
+
+    return {
+      x: finalX,
+      y: finalY,
+      alignAbove: alignAbove,
+    }
+  }
+
   function openModal(modalType, triggerRef) {
     if (activeModal === modalType) {
       closeModal()
       return
     }
+
     if (triggerRef && triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect()
       const viewportHeight = window.innerHeight
-      const buttonCenterY = rect.top + rect.height / 2
-      const isInBottomHalf = buttonCenterY > viewportHeight / 2
+      const viewportWidth = window.innerWidth
       const gap = 4
 
-      if (isInBottomHalf) {
-        setModalPosition({
-          x: rect.left,
-          y: rect.top - gap,
-          alignAbove: true,
-        })
-      } else {
-        setModalPosition({
-          x: rect.left,
-          y: rect.bottom + gap,
-        })
-      }
+      // Use estimated height for initial positioning
+      const estimatedHeight = ESTIMATED_MODAL_HEIGHTS[modalType] || 300
+      const modalWidth = 304
+
+      // Calculate initial position
+      const position = calculateModalPosition(rect, estimatedHeight, modalWidth, viewportHeight, viewportWidth, gap)
+
+      setModalPosition(position)
     }
+
     setActiveModal(modalType)
     setModalTriggerRef(triggerRef)
+  }
+
+  function recalculateModalPosition() {
+    if (modalRef && modalRef.current && modalTriggerRef && modalTriggerRef.current) {
+      const actualHeight = modalRef.current.offsetHeight
+      const rect = modalTriggerRef.current.getBoundingClientRect()
+      const gap = 4
+
+      const newPosition = calculateModalPosition(
+        rect,
+        actualHeight,
+        304,
+        window.innerHeight,
+        window.innerWidth,
+        gap
+      )
+
+      setModalPosition(newPosition)
+    }
   }
 
   function closeModal(event) {
@@ -170,6 +277,7 @@ export function TaskQuickEdit({
     }
     setActiveModal(null)
     setModalTriggerRef(null)
+    setModalRef(null)
   }
 
   useEffect(() => {
@@ -321,6 +429,7 @@ export function TaskQuickEdit({
 
       {activeModal && (
         <TaskDetailsDynamic
+          ref={setModalRef}
           type={activeModal}
           task={task}
           board={board}
@@ -329,6 +438,7 @@ export function TaskQuickEdit({
           onUpdateTask={onUpdateTask}
           position={modalPosition}
           triggerRef={modalTriggerRef}
+          onHeightChange={recalculateModalPosition}
         />
       )}
     </>

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useLayoutEffect } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect, forwardRef } from 'react'
 import { createPortal } from 'react-dom'
 import { DatesModal } from '../DatesModal'
 import { LabelsModal } from '../LabelsModal'
@@ -12,7 +12,7 @@ export const MODAL_TYPES = {
   COVER: 'COVER'
 }
 
-export function TaskDetailsDynamic({
+export const TaskDetailsDynamic = forwardRef(({
   type,
   task,
   board,
@@ -21,7 +21,8 @@ export function TaskDetailsDynamic({
   onUpdateTask,
   position,
   triggerRef,
-}) {
+  onHeightChange
+}, ref) => {
   const modalRef = useRef(null)
   const [calculatedPosition, setCalculatedPosition] = useState(position)
   const [windowSize, setWindowSize] = useState({
@@ -40,12 +41,42 @@ export function TaskDetailsDynamic({
     return () => window.removeEventListener('resize', updateSize)
   }, [])
 
+  useEffect(() => {
+    if (ref && modalRef.current) {
+      ref(modalRef.current)
+    }
+  }, [ref, type])
+
+  useEffect(() => {
+    if (onHeightChange && modalRef.current) {
+      const timer = setTimeout(() => {
+        onHeightChange()
+      }, 10)
+
+      return () => clearTimeout(timer)
+    }
+  }, [task, onHeightChange, type])
+
   useLayoutEffect(() => {
     if (position && position.x !== undefined && position.y !== undefined) {
-      setCalculatedPosition(position)
+      // Use the position calculated by the parent component
+      let finalY = position.y
+
+      // Handle alignAbove positioning
+      if (position.alignAbove && modalRef.current) {
+        const modalHeight = modalRef.current.offsetHeight
+        finalY = position.y - modalHeight
+      }
+
+      setCalculatedPosition({
+        x: position.x,
+        y: finalY,
+        alignAbove: position.alignAbove
+      })
       return
     }
 
+    // Fallback positioning logic (if no position provided)
     if (modalRef.current && triggerRef?.current) {
       const modalRect = modalRef.current.getBoundingClientRect()
       const triggerRect = triggerRef.current.getBoundingClientRect()
@@ -85,6 +116,10 @@ export function TaskDetailsDynamic({
       tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
     }
     onUpdateTask(updatedGroup)
+
+    if (onHeightChange) {
+      setTimeout(onHeightChange, 50)
+    }
   }
 
   function handleToggleMember(memberId) {
@@ -99,6 +134,10 @@ export function TaskDetailsDynamic({
       tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
     }
     onUpdateTask(updatedGroup)
+
+    if (onHeightChange) {
+      setTimeout(onHeightChange, 50)
+    }
   }
 
   function handleUpdateDates(dateUpdates) {
@@ -186,6 +225,7 @@ export function TaskDetailsDynamic({
             position={calculatedPosition}
             onClose={handleClose}
             onUpdateDates={handleUpdateDates}
+            //  onHeightChange={onHeightChange}
           />
         )
 
@@ -224,4 +264,4 @@ export function TaskDetailsDynamic({
   )
 
   return createPortal(modalContent, document.body)
-}
+})
