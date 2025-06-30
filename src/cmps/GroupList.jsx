@@ -48,6 +48,18 @@ export function GroupList({
   }
 
   function handleAddTask(groupId, taskData) {
+    const updatedGroups = board.groups.map((group) => {
+      if (group.id === groupId) {
+        return {
+          ...group,
+          tasks: [...group.tasks, taskData]
+        }
+      }
+      return group
+    })
+
+    onUpdateTask(updatedGroups.find(g => g.id === groupId))
+
     socketService.addTask(boardId, groupId, taskData)
   }
 
