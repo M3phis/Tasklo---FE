@@ -8,6 +8,7 @@ import { userService } from '../services/user'
 import AddIcon from '@atlaskit/icon/glyph/add'
 import MoreIcon from '@atlaskit/icon/glyph/more'
 import CrossIcon from '@atlaskit/icon/glyph/cross'
+import { use } from 'react'
 
 export function GroupPreview({
   group,
@@ -32,6 +33,7 @@ export function GroupPreview({
   const formRef = useRef(null)
   const containerRef = useRef(null)
   const titleInputRef = useRef(null)
+  const taskInputRef = useRef(null)
 
   useClickAway(containerRef, (event) => {
     if (isEditing) {
@@ -79,6 +81,12 @@ export function GroupPreview({
     }
   }, [isAddingTask])
 
+  useEffect(() => {
+    if (isAddingTask && taskInputRef.current) {
+      taskInputRef.current.focus()
+    }
+  }, [isAddingTask])
+
   function handleAddTask(ev) {
     ev.preventDefault()
     if (!taskTitle.trim()) return
@@ -114,8 +122,13 @@ export function GroupPreview({
         behavior: 'smooth',
       })
     }
-    setTaskTitle('')
-    setIsAddingTask(false)
+    setTimeout(() => {
+      if (taskInputRef.current) {
+        taskInputRef.current.focus()
+      }
+    }, 0)
+    // setTaskTitle('')
+    // setIsAddingTask(false)
   }
 
   function handleTitleClick(ev) {
@@ -244,6 +257,7 @@ export function GroupPreview({
               style={group.style || {}}
             >
               <input
+                ref={taskInputRef}
                 type="text"
                 value={taskTitle}
                 onChange={(ev) => setTaskTitle(ev.target.value)}
