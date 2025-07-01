@@ -10,6 +10,7 @@ import MegaphoneIcon from '@atlaskit/icon/core/megaphone'
 import QuestionCircleIcon from '@atlaskit/icon/core/question-circle'
 import NotificationIcon from '@atlaskit/icon/core/notification'
 import { LandingHeader } from './LandingHeader.jsx'
+import { boardService } from '../services/board'
 
 export function AppHeader() {
   let userLoggedIn = true
