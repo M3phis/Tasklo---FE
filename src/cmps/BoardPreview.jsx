@@ -16,7 +16,7 @@ export function BoardPreview({ board }) {
         ) : (
           <div
             className="board-preview-img"
-            style={{ backgroundColor: style.color || '#f4f5f7' }}
+            style={{ backgroundColor: '#f4f5f7' }}
           ></div>
         )}
         <span>{title}</span>

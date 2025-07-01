@@ -7,6 +7,7 @@ export const boardService = {
   remove,
   saveTask,
   addActivity,
+  createBoardWithAI,
   moveCard,
 }
 
@@ -40,6 +41,10 @@ async function saveTask(boardId, groupId, task, activity) {
 
 async function addActivity(boardId, activity) {
   return httpService.post(`board/${boardId}/activity`, activity)
+}
+
+async function createBoardWithAI({ description, timeline }) {
+  return httpService.post('ai/board', { description, timeline })
 }
 
 async function moveCard(boardId, groupId, taskId, newGroupId) {
