@@ -13,7 +13,6 @@ import { use } from 'react'
 export function GroupPreview({
   group,
   board,
-  boardId,
   onUpdateList,
   onRemoveList,
   onUpdateTask,
@@ -127,8 +126,6 @@ export function GroupPreview({
         taskInputRef.current.focus()
       }
     }, 0)
-    // setTaskTitle('')
-    // setIsAddingTask(false)
   }
 
   function handleTitleClick(ev) {
@@ -236,7 +233,7 @@ export function GroupPreview({
         </button>
       </div>
 
-      <div className="tasks-container">
+      <div className="tasks-container" ref={containerRef}>
         <TaskList
           tasks={group.tasks}
           group={group}
