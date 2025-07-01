@@ -31,6 +31,7 @@ export function GroupPreview({
   const menuTriggerRef = useRef(null)
   const formRef = useRef(null)
   const containerRef = useRef(null)
+  const tasksContainerRef = useRef(null)
   const titleInputRef = useRef(null)
   const taskInputRef = useRef(null)
 
@@ -75,8 +76,8 @@ export function GroupPreview({
   })
 
   useEffect(() => {
-    if (isAddingTask && containerRef.current) {
-      containerRef.current.scrollTop = containerRef.current.scrollHeight
+    if (isAddingTask && tasksContainerRef.current) {
+      tasksContainerRef.current.scrollTop = tasksContainerRef.current.scrollHeight
     }
   }, [isAddingTask])
 
@@ -117,8 +118,8 @@ export function GroupPreview({
     setTaskTitle('')
 
     setTimeout(() => {
-      if (containerRef.current) {
-        containerRef.current.scrollTop = containerRef.current.scrollHeight
+      if (tasksContainerRef.current) {
+        tasksContainerRef.current.scrollTop = tasksContainerRef.current.scrollHeight
       }
       if (taskInputRef.current) {
         taskInputRef.current.focus()
@@ -232,7 +233,7 @@ export function GroupPreview({
         </button>
       </div>
 
-      <div className="tasks-container" ref={containerRef}>
+      <div className={`tasks-container ${isAddingTask ? 'form-active' : ''}`} ref={tasksContainerRef}>
         <TaskList
           tasks={group.tasks}
           group={group}
