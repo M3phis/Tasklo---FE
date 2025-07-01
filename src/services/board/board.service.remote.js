@@ -7,10 +7,10 @@ export const boardService = {
   remove,
   saveTask,
   addActivity,
+  moveCard,
 }
 
 async function query(filterBy = {}) {
-    
   return httpService.get('board', filterBy)
 }
 
@@ -18,22 +18,19 @@ function getById(boardId) {
   return httpService.get(`board/${boardId}`)
 }
 
-async function remove(boardId) {
+function remove(boardId) {
   return httpService.delete(`board/${boardId}`)
 }
 
 async function save(board) {
-  var savedBoard
   if (board._id) {
-    savedBoard = await httpService.put(`board/${board._id}`, board)
+    return httpService.put(`board/${board._id}`, board)
   } else {
-    savedBoard = await httpService.post('board', board)
+    return httpService.post('board', board)
   }
-  return savedBoard
 }
 
 async function saveTask(boardId, groupId, task, activity) {
-  console.log('saving task remote')
   return httpService.put(`board/${boardId}/task/${task.id}`, {
     task,
     groupId,
@@ -43,4 +40,12 @@ async function saveTask(boardId, groupId, task, activity) {
 
 async function addActivity(boardId, activity) {
   return httpService.post(`board/${boardId}/activity`, activity)
+}
+
+async function moveCard(boardId, groupId, taskId, newGroupId) {
+  return httpService.put(`board/${boardId}/move-task`, {
+    fromGroupId: groupId,
+    toGroupId: newGroupId,
+    taskId,
+  })
 }

@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { signup } from '../store/user.actions.js'
 import logo from '../assets/img/logo.png'
 import rightImg from '../assets/img/rightloginimg.svg'
 import leftImg from '../assets/img/leftloginim.svg'
@@ -12,7 +13,7 @@ export function SignupDetails() {
   const [formData, setFormData] = useState({
     fullname: '',
     password: '',
-    subscribe: false,
+    marketingConsent: false,
   })
 
   function handleChange(ev) {
@@ -23,13 +24,20 @@ export function SignupDetails() {
     }))
   }
 
-  function handleSubmit(ev) {
+  async function handleSubmit(ev) {
     ev.preventDefault()
-    console.log('Signup data:', {
-      email,
-      ...formData,
-    })
-    navigate('/dashboard')
+
+    try {
+      const credentials = {
+        username: email,
+        email,
+        ...formData,
+      }
+      const user = await signup(credentials)
+      if (user) navigate('/board')
+    } catch (err) {
+      console.error('Signup failed:', err)
+    }
   }
 
   return (

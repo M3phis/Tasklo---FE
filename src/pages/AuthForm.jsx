@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
 import { FaApple, FaSlack, FaMicrosoft } from 'react-icons/fa'
+import { login } from '../store/user.actions.js'
 import logo from '../assets/img/logo.png'
 import rightImg from '../assets/img/rightloginimg.svg'
 import leftImg from '../assets/img/leftloginim.svg'
@@ -13,12 +14,20 @@ export function AuthForm({ mode = 'signup' }) {
 
   const isSignup = mode === 'signup'
 
-  function onContinue(ev) {
+  async function onContinue(ev) {
     ev.preventDefault()
+
     if (isSignup) {
       navigate('/signup/details', { state: { email } })
     } else {
-      navigate('/dashboard')
+      try {
+        const credentials = { username: email, password }
+        const user = await login(credentials)
+        if (user) navigate('/board')
+      } catch (err) {
+        console.error('Login failed:', err)
+        alert('Login failed. Please check your credentials.')
+      }
     }
   }
 
