@@ -114,18 +114,17 @@ export function GroupPreview({
       checklists: [],
     }
     onAddTask(group.id, newTask)
+    setTaskTitle('')
 
-    if (containerRef.current) {
-      containerRef.current.scrollTo({
-        top: containerRef.current.scrollHeight,
-        behavior: 'smooth',
-      })
-    }
     setTimeout(() => {
+      if (containerRef.current) {
+        containerRef.current.scrollTop = containerRef.current.scrollHeight
+      }
       if (taskInputRef.current) {
         taskInputRef.current.focus()
       }
-    }, 0)
+    }, 50)
+
   }
 
   function handleTitleClick(ev) {
