@@ -59,10 +59,8 @@ export const TaskDetailsDynamic = forwardRef(({
 
   useLayoutEffect(() => {
     if (position && position.x !== undefined && position.y !== undefined) {
-      // Use the position calculated by the parent component
       let finalY = position.y
 
-      // Handle alignAbove positioning
       if (position.alignAbove && modalRef.current) {
         const modalHeight = modalRef.current.offsetHeight
         finalY = position.y - modalHeight
@@ -76,7 +74,6 @@ export const TaskDetailsDynamic = forwardRef(({
       return
     }
 
-    // Fallback positioning logic (if no position provided)
     if (modalRef.current && triggerRef?.current) {
       const modalRect = modalRef.current.getBoundingClientRect()
       const triggerRect = triggerRef.current.getBoundingClientRect()
@@ -225,7 +222,6 @@ export const TaskDetailsDynamic = forwardRef(({
             position={calculatedPosition}
             onClose={handleClose}
             onUpdateDates={handleUpdateDates}
-            //  onHeightChange={onHeightChange}
           />
         )
 

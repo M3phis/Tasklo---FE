@@ -6,7 +6,6 @@ export function CoverModal({
   onClose,
   onUpdateCover,
   onRemoveCover,
-  // triggerButtonRef = null
 }) {
   const [selectedCoverType, setSelectedCoverType] = useState(
     task?.style?.coverSize || 'full'
@@ -18,26 +17,6 @@ export function CoverModal({
     task?.style?.background || task?.style?.backgroundImage || null
   )
   const modalRef = useRef(null)
-
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     const isOutsideModal = modalRef.current && !modalRef.current.contains(event.target)
-  //     const isOnTriggerButton = triggerButtonRef?.current && triggerButtonRef.current.contains(event.target)
-
-  //     if (isOutsideModal && !isOnTriggerButton) {
-  //       onClose()
-  //     }
-  //   }
-
-  //   const timer = setTimeout(() => {
-  //     document.addEventListener('click', handleClickOutside)
-  //   }, 50)
-
-  //   return () => {
-  //     clearTimeout(timer)
-  //     document.removeEventListener('click', handleClickOutside)
-  //   }
-  // }, [onClose, triggerButtonRef])
 
   const handleColorSelect = (color) => {
     setSelectedColor(color)
