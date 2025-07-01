@@ -8,8 +8,6 @@ import {
 
 import ClockIcon from '@atlaskit/icon/core/clock'
 import DeleteIcon from '@atlaskit/icon/core/delete'
-// import ArchiveBoxIcon from '@atlaskit/icon/core/archive-box'
-// import CopyIcon from '@atlaskit/icon/core/copy'
 
 export function TaskQuickEdit({
   task,
@@ -100,18 +98,6 @@ export function TaskQuickEdit({
   function handleTitleChange(event) {
     setTitleToEdit(event.target.value)
     autoResizeTextarea(event.target)
-  }
-
-  function handleKeyDown(ev) {
-    if (ev.key === 'Escape') {
-      if (activeModal) {
-        setActiveModal(null)
-        setModalTriggerRef(null)
-      } else {
-        setTitleToEdit(task.title)
-        onClose()
-      }
-    }
   }
 
   function handleCancelEdit() {

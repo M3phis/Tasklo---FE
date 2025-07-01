@@ -25,13 +25,13 @@ export function TaskPreview({
   inputRef = null,
   hasActiveModal = false,
 }) {
-  const navigate = useNavigate()
   const [isHovered, setIsHovered] = useState(false)
   const [isQuickEditOpen, setIsQuickEditOpen] = useState(false)
   const [quickEditPosition, setQuickEditPosition] = useState({ x: 0, y: 0 })
-
   const { boardId } = useParams()
   const isDone = task?.status === 'done'
+
+  const navigate = useNavigate()
 
   function handleTaskClick(ev) {
     if (
@@ -204,9 +204,8 @@ export function TaskPreview({
   return (
     <>
       <div
-        className={`task-preview ${isDone ? 'task-done' : ''} ${
-          isEditing ? 'editing' : ''
-        }`}
+        className={`task-preview ${isDone ? 'task-done' : ''} ${isEditing ? 'editing' : ''
+          }`}
         onClick={handleTaskClick}
         onMouseEnter={function () {
           setIsHovered(true)
@@ -217,28 +216,27 @@ export function TaskPreview({
       >
         {hasValidCover() && (
           <div
-            className={`task-cover ${
-              (getBackgroundUrl() &&
-                getBackgroundUrl().includes('images.unsplash.com')) ||
+            className={`task-cover ${(getBackgroundUrl() &&
+              getBackgroundUrl().includes('images.unsplash.com')) ||
               task.style?.backgroundImage
-                ? 'has-image'
-                : 'has-color'
-            }`}
+              ? 'has-image'
+              : 'has-color'
+              }`}
             style={{
               backgroundColor:
                 task.style?.backgroundColor ||
                 (getBackgroundUrl() &&
-                (getBackgroundUrl().startsWith('#') ||
-                  getBackgroundUrl().startsWith('rgb'))
+                  (getBackgroundUrl().startsWith('#') ||
+                    getBackgroundUrl().startsWith('rgb'))
                   ? getBackgroundUrl()
                   : !isImageUrl(getBackgroundUrl())
-                  ? getBackgroundUrl()
-                  : '#FFFFFF'),
+                    ? getBackgroundUrl()
+                    : '#FFFFFF'),
               backgroundImage: task.style?.backgroundImage
                 ? `url(${task.style.backgroundImage})`
                 : isImageUrl(getBackgroundUrl())
-                ? `url(${getBackgroundUrl()})`
-                : 'none',
+                  ? `url(${getBackgroundUrl()})`
+                  : 'none',
               backgroundSize:
                 task.style?.coverSize === 'centered' ? 'contain' : 'cover',
             }}
@@ -246,15 +244,15 @@ export function TaskPreview({
             {((getBackgroundUrl() &&
               getBackgroundUrl().includes('images.unsplash.com')) ||
               task.style?.backgroundImage) && (
-              <img
-                src={task.style?.backgroundImage || getBackgroundUrl()}
-                alt=""
-                className="cover-image"
-                onError={(e) => {
-                  e.target.style.display = 'none'
-                }}
-              />
-            )}
+                <img
+                  src={task.style?.backgroundImage || getBackgroundUrl()}
+                  alt=""
+                  className="cover-image"
+                  onError={(e) => {
+                    e.target.style.display = 'none'
+                  }}
+                />
+              )}
           </div>
         )}
 
@@ -283,9 +281,8 @@ export function TaskPreview({
 
             {isDone && (
               <button
-                className={`task-delete-btn ${
-                  hasCover ? 'task-cover-btn' : ''
-                }`}
+                className={`task-delete-btn ${hasCover ? 'task-cover-btn' : ''
+                  }`}
                 onClick={handleRemoveClick}
                 title="Delete card"
               >
@@ -328,9 +325,8 @@ export function TaskPreview({
                 .map((label) => (
                   <div
                     key={label.id}
-                    className={`task-label ${
-                      !isLabelsExtended ? 'collapsed' : ''
-                    }`}
+                    className={`task-label ${!isLabelsExtended ? 'collapsed' : ''
+                      }`}
                     style={{
                       backgroundColor: label.color || '#b3bac5',
                     }}
@@ -391,78 +387,75 @@ export function TaskPreview({
               task.description ||
               getAttachmentCount() > 0 ||
               hasChecklist()) && (
-              <div className="task-badges">
-                {task.dueDate && (
-                  <div className={`task-badge date-badge ${getDateStatus()}`}>
-                    <ClockIcon label="Due date" primaryColor=" #44546F" />
-                    <span>{formatDate()}</span>
-                  </div>
-                )}
+                <div className="task-badges">
+                  {task.dueDate && (
+                    <div className={`task-badge date-badge ${getDateStatus()}`}>
+                      <ClockIcon label="Due date" primaryColor=" #44546F" />
+                      <span>{formatDate()}</span>
+                    </div>
+                  )}
 
-                {task.description && (
-                  <div className="task-badge description-badge">
-                    {/* <TextLengthenIcon label="TextLengthenIcon" primaryColor=" #44546F" /> */}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 -960 960 960"
-                      fill=" #44546F"
-                    >
-                      <path d="M160-200v-80h400v80H160Zm0-160v-80h640v80H160Zm0-160v-80h640v80H160Zm0-160v-80h640v80H160Z" />
-                    </svg>
-                  </div>
-                )}
-
-                {hasComments() && (
-                  <div className="task-badge comments-badge">
-                    {/* <CommentIcon label="Comments" primaryColor=" #44546F" /> */}
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M16 17H12.5L8.28037 20.4014C6.97772 21.4869 5 20.5606 5 18.865V16.1973C3.2066 15.1599 2 13.2208 2 11C2 7.68629 4.68629 5 8 5H16C19.3137 5 22 7.68629 22 11C22 14.3137 19.3137 17 16 17ZM16 7H8C5.79086 7 4 8.79086 4 11C4 12.8638 5.27477 14.4299 7 14.874V19L12 15H16C18.2091 15 20 13.2091 20 11C20 8.79086 18.2091 7 16 7Z"
+                  {task.description && (
+                    <div className="task-badge description-badge">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 -960 960 960"
                         fill=" #44546F"
-                      ></path>
-                    </svg>
-                    <span>{getCommentsCount()}</span>
-                  </div>
-                )}
+                      >
+                        <path d="M160-200v-80h400v80H160Zm0-160v-80h640v80H160Zm0-160v-80h640v80H160Zm0-160v-80h640v80H160Z" />
+                      </svg>
+                    </div>
+                  )}
 
-                {getAttachmentCount() > 0 && (
-                  <div className="task-badge attachment-badge">
-                    <AttachmentIcon
-                      label="Attachments"
-                      size="small"
-                      primaryColor=" #44546F"
-                    />
-                    <span>{getAttachmentCount()}</span>
-                  </div>
-                )}
+                  {hasComments() && (
+                    <div className="task-badge comments-badge">
+                      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M16 17H12.5L8.28037 20.4014C6.97772 21.4869 5 20.5606 5 18.865V16.1973C3.2066 15.1599 2 13.2208 2 11C2 7.68629 4.68629 5 8 5H16C19.3137 5 22 7.68629 22 11C22 14.3137 19.3137 17 16 17ZM16 7H8C5.79086 7 4 8.79086 4 11C4 12.8638 5.27477 14.4299 7 14.874V19L12 15H16C18.2091 15 20 13.2091 20 11C20 8.79086 18.2091 7 16 7Z"
+                          fill=" #44546F"
+                        ></path>
+                      </svg>
+                      <span>{getCommentsCount()}</span>
+                    </div>
+                  )}
 
-                {hasChecklist() && (
-                  <div
-                    className={`task-badge checklist-badge ${
-                      getChecklistCount().completed ===
+                  {getAttachmentCount() > 0 && (
+                    <div className="task-badge attachment-badge">
+                      <AttachmentIcon
+                        label="Attachments"
+                        size="small"
+                        primaryColor=" #44546F"
+                      />
+                      <span>{getAttachmentCount()}</span>
+                    </div>
+                  )}
+
+                  {hasChecklist() && (
+                    <div
+                      className={`task-badge checklist-badge ${getChecklistCount().completed ===
                         getChecklistCount().total &&
-                      getChecklistCount().total > 0
+                        getChecklistCount().total > 0
                         ? 'completed'
                         : ''
-                    }`}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 -960 960 960"
-                      fill=" #44546F"
+                        }`}
                     >
-                      <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q8 0 15 1.5t14 4.5l-74 74H200v560h560v-266l80-80v346q0 33-23.5 56.5T760-120H200Zm261-160L235-506l56-56 170 170 367-367 57 55-424 424Z" />
-                    </svg>
-                    <span>
-                      {getChecklistCount().completed}/
-                      {getChecklistCount().total}
-                    </span>
-                  </div>
-                )}
-              </div>
-            )}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 -960 960 960"
+                        fill=" #44546F"
+                      >
+                        <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q8 0 15 1.5t14 4.5l-74 74H200v560h560v-266l80-80v346q0 33-23.5 56.5T760-120H200Zm261-160L235-506l56-56 170 170 367-367 57 55-424 424Z" />
+                      </svg>
+                      <span>
+                        {getChecklistCount().completed}/
+                        {getChecklistCount().total}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
           </div>
 
           <div className="task-members-section">

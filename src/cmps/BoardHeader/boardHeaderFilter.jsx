@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import CrossIcon from '@atlaskit/icon/glyph/cross'
 import { AvatarPreview } from "../BoardHeader/AvatarPreview"
+
+import CrossIcon from '@atlaskit/icon/glyph/cross'
 
 const filterInitialState = {
     keyword: '',

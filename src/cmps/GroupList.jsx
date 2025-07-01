@@ -1,10 +1,10 @@
 import { useState } from 'react'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { GroupPreview } from './GroupPreview'
 
 import AddIcon from '@atlaskit/icon/glyph/add'
 import CrossIcon from '@atlaskit/icon/glyph/cross'
 
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 export function GroupList({
   board,
