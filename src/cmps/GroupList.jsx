@@ -1,10 +1,10 @@
 import { useState } from 'react'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { GroupPreview } from './GroupPreview'
 
 import AddIcon from '@atlaskit/icon/glyph/add'
 import CrossIcon from '@atlaskit/icon/glyph/cross'
 
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 export function GroupList({
   board,
@@ -15,6 +15,7 @@ export function GroupList({
   onUpdateTask,
   onRemoveTask,
   onDragEnd,
+  socketService
 }) {
   const [isAddingGroup, setIsAddingGroup] = useState(false)
   const [groupTitle, setGroupTitle] = useState('')
@@ -44,6 +45,22 @@ export function GroupList({
       setGroupTitle('')
       setIsAddingGroup(false)
     })
+  }
+
+  function handleAddTask(groupId, taskData) {
+    const updatedGroups = board.groups.map((group) => {
+      if (group.id === groupId) {
+        return {
+          ...group,
+          tasks: [...group.tasks, taskData]
+        }
+      }
+      return group
+    })
+
+    onUpdateTask(updatedGroups.find(g => g.id === groupId))
+
+    socketService.addTask(boardId, groupId, taskData)
   }
 
   return (
@@ -88,6 +105,7 @@ export function GroupList({
                       onRemoveList={onRemoveList}
                       onUpdateTask={onUpdateTask}
                       onRemoveTask={onRemoveTask}
+                      onAddTask={handleAddTask}
                       isLabelsExtended={isLabelsExtended}
                       setIsLabelsExtended={setIsLabelsExtended}
                     />

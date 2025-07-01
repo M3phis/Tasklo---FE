@@ -5,12 +5,14 @@
     border-radius: 50%;
     border: 2px solid var(--ds-background-inverse-subtle);
     overflow: hidden;
-    cursor: pointer;
     transition: all 0.2s;
 
+    img {
+        opacity: 1;
+    }
+
     &:hover {
-        transform: translateY(-1px);
-        box-shadow: var(--ds-box-shadow);
+        opacity: 0.8
     }
 
     img {
@@ -31,29 +33,29 @@
     }
 
     &.avatar-small {
-        width: 24px;
-        height: 24px;
+        width: rem(24px);
+        height: rem(24px);
 
         .initials {
-            font-size: 10px;
+            font-size: rem(10px);
         }
     }
 
     &.avatar-medium {
-        width: 28px;
-        height: 28px;
+        width: rem(28px);
+        height: rem(28px);
 
         .initials {
-            font-size: 12px;
+            font-size: rem(12px);
         }
     }
 
     &.avatar-large {
-        width: 32px;
-        height: 32px;
+        width: rem(32px);
+        height: rem(32px);
 
         .initials {
-            font-size: 14px;
+            font-size: rem(14px);
         }
     }
 }

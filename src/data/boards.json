@@ -47,8 +47,7 @@
       "imgUrl": "http://res.cloudinary.com/donatello-cloud/image/upload/v1658990562/WhatsApp_Image_2022-04-29_at_13.56.57_pqykmx.jpg"
     },
     "style": {
-      "background": "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzNDk0MTd8MHwxfHNlYXJjaHw4fHxjb2RlfGVufDB8fHx8MTY2Njc4NTMwMA&ixlib=rb-4.0.3&q=80",
-      "color": null
+      "background": "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzNDk0MTd8MHwxfHNlYXJjaHw4fHxjb2RlfGVufDB8fHx8MTY2Njc4NTMwMA&ixlib=rb-4.0.3&q=80"
     },
     "members": [
       {
@@ -1214,8 +1213,7 @@
       "imgUrl": "http://res.cloudinary.com/donatello-cloud/image/upload/v1658990562/WhatsApp_Image_2022-04-29_at_13.56.57_pqykmx.jpg"
     },
     "style": {
-      "background": "https://images.unsplash.com/photo-1497366858526-0766cadbe8fa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80",
-      "color": null
+      "background": "https://images.unsplash.com/photo-1497366858526-0766cadbe8fa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80"
     },
     "members": [
       {
@@ -2202,10 +2200,2184 @@
       "imgUrl": "http://res.cloudinary.com/donatello-cloud/image/upload/v1658990562/WhatsApp_Image_2022-04-29_at_13.56.57_pqykmx.jpg"
     },
     "style": {
-      "background": "https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzNDk0MTd8MHwxfHNlYXJjaHw0fHx3b3JrfGVufDB8fHx8MTY1OTAwOTIzOA&ixlib=rb-1.2.1&q=80"
+      "background": "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2020&q=80"
     },
-    "members": [],
-    "groups": [],
+    "members": [
+      {
+        "_id": "62e2a748e1984a87f455ea21",
+        "username": "alex_dev",
+        "fullname": "Alex Chen",
+        "imgUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face",
+        "createdAt": "2022-07-28T15:12:08.000Z"
+      },
+      {
+        "_id": "62e559824958611981969eee",
+        "username": "sarah_design",
+        "fullname": "Sarah Johnson",
+        "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face",
+        "createdAt": "2022-07-30T16:17:06.000Z"
+      },
+      {
+        "_id": "62e559cf4958611981969eef",
+        "username": "mike_backend",
+        "fullname": "Mike Rodriguez",
+        "imgUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face",
+        "createdAt": "2022-07-30T16:18:23.000Z"
+      },
+      {
+        "_id": "62e456e257b33f0b273e0b48",
+        "username": "emma_qa",
+        "fullname": "Emma Davis",
+        "imgUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face",
+        "createdAt": "2022-07-29T21:53:38.000Z"
+      },
+      {
+        "_id": "62e25a33b387d3221f480ebc",
+        "username": "david_devops",
+        "fullname": "David Park",
+        "imgUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face",
+        "createdAt": "2022-07-28T09:43:15.000Z"
+      }
+    ],
+    "groups": [
+      {
+        "title": "Backlog",
+        "tasks": [
+          {
+            "id": "task001",
+            "title": "Implement Dark Mode Theme",
+            "status": "in-progress",
+            "description": "Add system-wide dark mode support with theme switcher component. Should respect system preferences and allow manual override.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Sarah Johnson",
+                  "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701234567890,
+                "txt": "I've prepared the design mockups for both light and dark themes. The color palette is ready for implementation.",
+                "id": "comment001"
+              },
+              {
+                "byMember": {
+                  "fullname": "Alex Chen",
+                  "imgUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701234687890,
+                "txt": "Should we use CSS variables or styled-components for theming? I'm leaning towards CSS vars for performance.",
+                "id": "comment002"
+              }
+            ],
+            "memberIds": [
+              "62e559824958611981969eee",
+              "62e2a748e1984a87f455ea21"
+            ],
+            "labelIds": ["l100", "l103", "l106"],
+            "createdAt": 1701200000000,
+            "dueDate": 1701900000000,
+            "byMember": {
+              "_id": "62e559824958611981969eee",
+              "username": "sarah_design",
+              "fullname": "Sarah Johnson",
+              "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "background": "https://images.unsplash.com/photo-1558655146-d09347e92766?ixlib=rb-4.0.3&w=400&h=200&fit=crop"
+            },
+            "groupId": "backlog001",
+            "attachments": [
+              {
+                "url": "https://images.unsplash.com/photo-1618477388954-7852f32655ec?ixlib=rb-4.0.3&w=400",
+                "title": "Dark Mode Design Mockups",
+                "createdAt": 1701234567890,
+                "id": "attach001"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist001",
+                "title": "Implementation Steps",
+                "todos": [
+                  {
+                    "title": "Set up CSS custom properties for colors",
+                    "isDone": false,
+                    "id": "todo001"
+                  },
+                  {
+                    "title": "Create theme toggle component",
+                    "isDone": false,
+                    "id": "todo002"
+                  },
+                  {
+                    "title": "Implement theme persistence in localStorage",
+                    "isDone": false,
+                    "id": "todo003"
+                  },
+                  {
+                    "title": "Update all components to use theme variables",
+                    "isDone": false,
+                    "id": "todo004"
+                  },
+                  {
+                    "title": "Test accessibility compliance",
+                    "isDone": false,
+                    "id": "todo005"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task002",
+            "title": "User Authentication Refactor",
+            "status": "in-progress",
+            "description": "Migrate from JWT to OAuth 2.0 with support for Google and GitHub login. Implement proper session management.",
+            "comments": [],
+            "memberIds": [
+              "62e559cf4958611981969eef",
+              "62e25a33b387d3221f480ebc"
+            ],
+            "labelIds": ["l101", "l103", "l104"],
+            "createdAt": 1701150000000,
+            "dueDate": 1702000000000,
+            "byMember": {
+              "_id": "62e559cf4958611981969eef",
+              "username": "mike_backend",
+              "fullname": "Mike Rodriguez",
+              "imgUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#0079bf"
+            },
+            "groupId": "backlog001",
+            "attachments": [
+              {
+                "url": "https://auth0.com/docs/get-started/authentication-and-authorization-flow",
+                "title": "OAuth 2.0 Flow Documentation",
+                "createdAt": 1701200000000,
+                "id": "attach002"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist002",
+                "title": "Backend Tasks",
+                "todos": [
+                  {
+                    "title": "Set up OAuth providers",
+                    "isDone": true,
+                    "id": "todo006"
+                  },
+                  {
+                    "title": "Implement token refresh mechanism",
+                    "isDone": false,
+                    "id": "todo007"
+                  },
+                  {
+                    "title": "Update user model schema",
+                    "isDone": false,
+                    "id": "todo008"
+                  },
+                  {
+                    "title": "Write integration tests",
+                    "isDone": false,
+                    "id": "todo009"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task011",
+            "title": "Multi-language Support (i18n)",
+            "status": "waiting",
+            "description": "Implement internationalization for English, Spanish, French, and German. Setup translation management system.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Sarah Johnson",
+                  "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701500000000,
+                "txt": "I've researched several i18n libraries. React-i18next looks like the best option for our needs.",
+                "id": "comment012"
+              }
+            ],
+            "memberIds": [
+              "62e559824958611981969eee",
+              "62e2a748e1984a87f455ea21"
+            ],
+            "labelIds": ["l100", "l103"],
+            "createdAt": 1701200000000,
+            "dueDate": 1702500000000,
+            "byMember": {
+              "_id": "62e559824958611981969eee",
+              "username": "sarah_design",
+              "fullname": "Sarah Johnson",
+              "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#c377e0"
+            },
+            "groupId": "backlog001",
+            "attachments": [
+              {
+                "url": "https://react.i18next.com/",
+                "title": "React-i18next Documentation",
+                "createdAt": 1701450000000,
+                "id": "attach009"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist011",
+                "title": "i18n Implementation",
+                "todos": [
+                  {
+                    "title": "Research i18n libraries",
+                    "isDone": true,
+                    "id": "todo048"
+                  },
+                  {
+                    "title": "Set up translation keys structure",
+                    "isDone": false,
+                    "id": "todo049"
+                  },
+                  {
+                    "title": "Create language switcher component",
+                    "isDone": false,
+                    "id": "todo050"
+                  },
+                  {
+                    "title": "Translate all UI strings",
+                    "isDone": false,
+                    "id": "todo051"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task012",
+            "title": "Team Performance Analytics Dashboard",
+            "status": "waiting",
+            "description": "Build analytics dashboard showing team productivity metrics, task completion rates, and velocity tracking.",
+            "comments": [],
+            "memberIds": [
+              "62e25a33b387d3221f480ebc",
+              "62e559cf4958611981969eef"
+            ],
+            "labelIds": ["l101", "l103", "l105"],
+            "createdAt": 1701180000000,
+            "dueDate": 1702800000000,
+            "byMember": {
+              "_id": "62e25a33b387d3221f480ebc",
+              "username": "david_devops",
+              "fullname": "David Park",
+              "imgUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "background": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400&h=200&fit=crop"
+            },
+            "groupId": "backlog001",
+            "attachments": [
+              {
+                "url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&w=400",
+                "title": "Analytics Dashboard Mockup",
+                "createdAt": 1701200000000,
+                "id": "attach010"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist012",
+                "title": "Analytics Features",
+                "todos": [
+                  {
+                    "title": "Define KPI metrics",
+                    "isDone": false,
+                    "id": "todo052"
+                  },
+                  {
+                    "title": "Design dashboard layout",
+                    "isDone": false,
+                    "id": "todo053"
+                  },
+                  {
+                    "title": "Implement data collection",
+                    "isDone": false,
+                    "id": "todo054"
+                  },
+                  {
+                    "title": "Create visualization charts",
+                    "isDone": false,
+                    "id": "todo055"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task013",
+            "title": "Advanced Commenting System",
+            "status": "waiting",
+            "description": "Enhanced comments with @mentions, reactions, threaded replies, and rich text formatting including code blocks.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Alex Chen",
+                  "imgUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701480000000,
+                "txt": "We should use a rich text editor like Draft.js or similar for the formatting features.",
+                "id": "comment013"
+              }
+            ],
+            "memberIds": [
+              "62e2a748e1984a87f455ea21",
+              "62e559824958611981969eee"
+            ],
+            "labelIds": ["l100", "l106"],
+            "createdAt": 1701160000000,
+            "dueDate": 1702200000000,
+            "byMember": {
+              "_id": "62e2a748e1984a87f455ea21",
+              "username": "alex_dev",
+              "fullname": "Alex Chen",
+              "imgUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#ff78cb"
+            },
+            "groupId": "backlog001",
+            "attachments": [],
+            "checklists": [
+              {
+                "id": "checklist013",
+                "title": "Comment Features",
+                "todos": [
+                  {
+                    "title": "Rich text editor integration",
+                    "isDone": false,
+                    "id": "todo056"
+                  },
+                  {
+                    "title": "@mention functionality",
+                    "isDone": false,
+                    "id": "todo057"
+                  },
+                  {
+                    "title": "Emoji reactions",
+                    "isDone": false,
+                    "id": "todo058"
+                  },
+                  {
+                    "title": "Threaded replies",
+                    "isDone": false,
+                    "id": "todo059"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "style": {},
+        "id": "backlog001"
+      },
+      {
+        "title": "Sprint - In Development",
+        "tasks": [
+          {
+            "id": "task003",
+            "title": "Real-time Notifications System",
+            "status": "in-progress",
+            "description": "Implement WebSocket-based real-time notifications for task updates, comments, and board changes. Include push notifications for mobile.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Mike Rodriguez",
+                  "imgUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701300000000,
+                "txt": "WebSocket server is up and running. Working on the client-side implementation now.",
+                "id": "comment003"
+              },
+              {
+                "byMember": {
+                  "fullname": "Alex Chen",
+                  "imgUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701310000000,
+                "txt": "The notification component is ready for integration. Should we batch notifications to avoid spam?",
+                "id": "comment004"
+              }
+            ],
+            "memberIds": [
+              "62e559cf4958611981969eef",
+              "62e2a748e1984a87f455ea21"
+            ],
+            "labelIds": ["l100", "l101", "l103"],
+            "createdAt": 1701100000000,
+            "dueDate": 1701800000000,
+            "byMember": {
+              "_id": "62e559cf4958611981969eef",
+              "username": "mike_backend",
+              "fullname": "Mike Rodriguez",
+              "imgUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "background": "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&w=400&h=200&fit=crop"
+            },
+            "groupId": "development001",
+            "attachments": [
+              {
+                "url": "https://images.unsplash.com/photo-1587560699334-bea93391dcef?ixlib=rb-4.0.3&w=400",
+                "title": "WebSocket Architecture Diagram",
+                "createdAt": 1701250000000,
+                "id": "attach003"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist003",
+                "title": "WebSocket Implementation",
+                "todos": [
+                  {
+                    "title": "Set up WebSocket server",
+                    "isDone": true,
+                    "id": "todo010"
+                  },
+                  {
+                    "title": "Create notification event types",
+                    "isDone": true,
+                    "id": "todo011"
+                  },
+                  {
+                    "title": "Implement client connection handling",
+                    "isDone": false,
+                    "id": "todo012"
+                  },
+                  {
+                    "title": "Add notification UI component",
+                    "isDone": false,
+                    "id": "todo013"
+                  },
+                  {
+                    "title": "Test real-time updates",
+                    "isDone": false,
+                    "id": "todo014"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task004",
+            "title": "Advanced Board Filters",
+            "status": "in-progress",
+            "description": "Add comprehensive filtering options: by member, label, due date, creation date, and custom queries. Include saved filter presets.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Alex Chen",
+                  "imgUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701320000000,
+                "txt": "Filter UI is 80% complete. Working on the advanced query builder component.",
+                "id": "comment005"
+              }
+            ],
+            "memberIds": [
+              "62e2a748e1984a87f455ea21",
+              "62e559824958611981969eee"
+            ],
+            "labelIds": ["l100", "l103"],
+            "createdAt": 1701050000000,
+            "dueDate": 1701750000000,
+            "byMember": {
+              "_id": "62e2a748e1984a87f455ea21",
+              "username": "alex_dev",
+              "fullname": "Alex Chen",
+              "imgUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#61bd4f"
+            },
+            "groupId": "development001",
+            "attachments": [
+              {
+                "url": "https://www.figma.com/file/example",
+                "title": "Filter UI Mockups",
+                "createdAt": 1701280000000,
+                "id": "attach004"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist004",
+                "title": "Filter Features",
+                "todos": [
+                  {
+                    "title": "Basic filter dropdown",
+                    "isDone": true,
+                    "id": "todo015"
+                  },
+                  {
+                    "title": "Multi-select member filter",
+                    "isDone": true,
+                    "id": "todo016"
+                  },
+                  {
+                    "title": "Date range picker",
+                    "isDone": false,
+                    "id": "todo017"
+                  },
+                  {
+                    "title": "Advanced query builder",
+                    "isDone": false,
+                    "id": "todo018"
+                  },
+                  {
+                    "title": "Save filter presets",
+                    "isDone": false,
+                    "id": "todo019"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task014",
+            "title": "Bulk Task Operations",
+            "status": "in-progress",
+            "description": "Allow users to select multiple tasks and perform bulk operations: move, delete, assign members, add labels.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Alex Chen",
+                  "imgUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701520000000,
+                "txt": "Multi-select functionality is working. Now implementing the bulk action modal.",
+                "id": "comment014"
+              }
+            ],
+            "memberIds": [
+              "62e2a748e1984a87f455ea21",
+              "62e559824958611981969eee"
+            ],
+            "labelIds": ["l100", "l103"],
+            "createdAt": 1701400000000,
+            "dueDate": 1701900000000,
+            "byMember": {
+              "_id": "62e2a748e1984a87f455ea21",
+              "username": "alex_dev",
+              "fullname": "Alex Chen",
+              "imgUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#0079bf"
+            },
+            "groupId": "development001",
+            "attachments": [
+              {
+                "url": "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&w=400",
+                "title": "Bulk Operations UI Mockup",
+                "createdAt": 1701480000000,
+                "id": "attach011"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist014",
+                "title": "Bulk Operations",
+                "todos": [
+                  {
+                    "title": "Multi-select checkbox component",
+                    "isDone": true,
+                    "id": "todo060"
+                  },
+                  {
+                    "title": "Bulk action toolbar",
+                    "isDone": false,
+                    "id": "todo061"
+                  },
+                  {
+                    "title": "Move to list functionality",
+                    "isDone": false,
+                    "id": "todo062"
+                  },
+                  {
+                    "title": "Bulk member assignment",
+                    "isDone": false,
+                    "id": "todo063"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task015",
+            "title": "Interactive Gantt Chart View",
+            "status": "in-progress",
+            "description": "Timeline view for project planning with drag-and-drop task scheduling and dependency management.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "David Park",
+                  "imgUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701530000000,
+                "txt": "The Gantt chart library integration is complete. Working on custom styling to match our design system.",
+                "id": "comment015"
+              }
+            ],
+            "memberIds": [
+              "62e25a33b387d3221f480ebc",
+              "62e2a748e1984a87f455ea21"
+            ],
+            "labelIds": ["l100", "l103", "l105"],
+            "createdAt": 1701350000000,
+            "dueDate": 1702100000000,
+            "byMember": {
+              "_id": "62e25a33b387d3221f480ebc",
+              "username": "david_devops",
+              "fullname": "David Park",
+              "imgUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "background": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400&h=200&fit=crop"
+            },
+            "groupId": "development001",
+            "attachments": [
+              {
+                "url": "https://dhtmlx.com/docs/products/dhtmlxGantt/",
+                "title": "Gantt Chart Library Documentation",
+                "createdAt": 1701500000000,
+                "id": "attach012"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist015",
+                "title": "Gantt Features",
+                "todos": [
+                  {
+                    "title": "Integrate Gantt library",
+                    "isDone": true,
+                    "id": "todo064"
+                  },
+                  {
+                    "title": "Custom styling",
+                    "isDone": false,
+                    "id": "todo065"
+                  },
+                  {
+                    "title": "Task dependency lines",
+                    "isDone": false,
+                    "id": "todo066"
+                  },
+                  {
+                    "title": "Drag and drop scheduling",
+                    "isDone": false,
+                    "id": "todo067"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task016",
+            "title": "Email Notification Templates",
+            "status": "in-progress",
+            "description": "Beautiful HTML email templates for task assignments, due date reminders, and board activity summaries.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Sarah Johnson",
+                  "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701540000000,
+                "txt": "Email templates are looking great! Just need to test across different email clients.",
+                "id": "comment016"
+              }
+            ],
+            "memberIds": [
+              "62e559824958611981969eee",
+              "62e559cf4958611981969eef"
+            ],
+            "labelIds": ["l106", "l101"],
+            "createdAt": 1701380000000,
+            "dueDate": 1701950000000,
+            "byMember": {
+              "_id": "62e559824958611981969eee",
+              "username": "sarah_design",
+              "fullname": "Sarah Johnson",
+              "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#c377e0"
+            },
+            "groupId": "development001",
+            "attachments": [
+              {
+                "url": "https://images.unsplash.com/photo-1596526131083-e8c633c948d2?ixlib=rb-4.0.3&w=400",
+                "title": "Email Template Designs",
+                "createdAt": 1701520000000,
+                "id": "attach013"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist016",
+                "title": "Email Templates",
+                "todos": [
+                  {
+                    "title": "Task assignment template",
+                    "isDone": true,
+                    "id": "todo068"
+                  },
+                  {
+                    "title": "Due date reminder template",
+                    "isDone": true,
+                    "id": "todo069"
+                  },
+                  {
+                    "title": "Weekly digest template",
+                    "isDone": false,
+                    "id": "todo070"
+                  },
+                  {
+                    "title": "Cross-client testing",
+                    "isDone": false,
+                    "id": "todo071"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "style": {},
+        "id": "development001"
+      },
+      {
+        "title": "Code Review",
+        "tasks": [
+          {
+            "id": "task005",
+            "title": "PR #247: Board Export Feature",
+            "status": "in-progress",
+            "description": "Review pull request for board export functionality. Supports JSON, CSV, and PDF export formats.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Emma Davis",
+                  "imgUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701350000000,
+                "txt": "Code looks good overall. Just need to add error handling for large board exports.",
+                "id": "comment006"
+              },
+              {
+                "byMember": {
+                  "fullname": "Mike Rodriguez",
+                  "imgUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701360000000,
+                "txt": "Added pagination for large exports and better error messages. Ready for final review.",
+                "id": "comment007"
+              }
+            ],
+            "memberIds": [
+              "62e456e257b33f0b273e0b48",
+              "62e559cf4958611981969eef"
+            ],
+            "labelIds": ["l100", "l101", "l103"],
+            "createdAt": 1701000000000,
+            "dueDate": 1701500000000,
+            "byMember": {
+              "_id": "62e456e257b33f0b273e0b48",
+              "username": "emma_qa",
+              "fullname": "Emma Davis",
+              "imgUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#f2d600"
+            },
+            "groupId": "review001",
+            "attachments": [
+              {
+                "url": "https://github.com/taskhub/pull/247",
+                "title": "GitHub Pull Request #247",
+                "createdAt": 1701300000000,
+                "id": "attach005"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist005",
+                "title": "Review Checklist",
+                "todos": [
+                  {
+                    "title": "Code style and formatting",
+                    "isDone": true,
+                    "id": "todo020"
+                  },
+                  {
+                    "title": "Error handling",
+                    "isDone": true,
+                    "id": "todo021"
+                  },
+                  {
+                    "title": "Unit tests coverage",
+                    "isDone": true,
+                    "id": "todo022"
+                  },
+                  {
+                    "title": "Performance testing",
+                    "isDone": false,
+                    "id": "todo023"
+                  },
+                  {
+                    "title": "Security review",
+                    "isDone": false,
+                    "id": "todo024"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task017",
+            "title": "PR #251: Mobile App Integration",
+            "status": "in-progress",
+            "description": "Review React Native mobile app integration with main backend API. Focus on authentication flow and offline sync.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Mike Rodriguez",
+                  "imgUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701560000000,
+                "txt": "API endpoints are well structured. Just need to add rate limiting for mobile clients.",
+                "id": "comment017"
+              }
+            ],
+            "memberIds": [
+              "62e559cf4958611981969eef",
+              "62e2a748e1984a87f455ea21"
+            ],
+            "labelIds": ["l101", "l103", "l104"],
+            "createdAt": 1701500000000,
+            "dueDate": 1701850000000,
+            "byMember": {
+              "_id": "62e559cf4958611981969eef",
+              "username": "mike_backend",
+              "fullname": "Mike Rodriguez",
+              "imgUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#61bd4f"
+            },
+            "groupId": "review001",
+            "attachments": [
+              {
+                "url": "https://github.com/taskhub/pull/251",
+                "title": "GitHub Pull Request #251",
+                "createdAt": 1701520000000,
+                "id": "attach014"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist017",
+                "title": "Mobile Review",
+                "todos": [
+                  {
+                    "title": "Authentication flow testing",
+                    "isDone": true,
+                    "id": "todo072"
+                  },
+                  {
+                    "title": "Offline sync validation",
+                    "isDone": false,
+                    "id": "todo073"
+                  },
+                  {
+                    "title": "API rate limiting",
+                    "isDone": false,
+                    "id": "todo074"
+                  },
+                  {
+                    "title": "Performance testing",
+                    "isDone": false,
+                    "id": "todo075"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task018",
+            "title": "PR #249: Database Optimization",
+            "status": "in-progress",
+            "description": "Review database query optimizations and new indexes for improved performance on large boards.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "David Park",
+                  "imgUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701570000000,
+                "txt": "The compound indexes are working great! Query times improved by 60%.",
+                "id": "comment018"
+              }
+            ],
+            "memberIds": [
+              "62e25a33b387d3221f480ebc",
+              "62e559cf4958611981969eef"
+            ],
+            "labelIds": ["l101", "l105", "l104"],
+            "createdAt": 1701480000000,
+            "dueDate": 1701800000000,
+            "byMember": {
+              "_id": "62e25a33b387d3221f480ebc",
+              "username": "david_devops",
+              "fullname": "David Park",
+              "imgUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#0079bf"
+            },
+            "groupId": "review001",
+            "attachments": [
+              {
+                "url": "https://github.com/taskhub/pull/249",
+                "title": "GitHub Pull Request #249",
+                "createdAt": 1701510000000,
+                "id": "attach015"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist018",
+                "title": "DB Review Checklist",
+                "todos": [
+                  {
+                    "title": "Query performance analysis",
+                    "isDone": true,
+                    "id": "todo076"
+                  },
+                  {
+                    "title": "Index usage validation",
+                    "isDone": true,
+                    "id": "todo077"
+                  },
+                  {
+                    "title": "Migration script review",
+                    "isDone": false,
+                    "id": "todo078"
+                  },
+                  {
+                    "title": "Load testing validation",
+                    "isDone": false,
+                    "id": "todo079"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task019",
+            "title": "PR #252: Security Audit Fixes",
+            "status": "waiting",
+            "description": "Review security vulnerability fixes including SQL injection prevention and XSS protection improvements.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Emma Davis",
+                  "imgUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701580000000,
+                "txt": "Security fixes look comprehensive. Will run penetration tests tomorrow.",
+                "id": "comment019"
+              }
+            ],
+            "memberIds": [
+              "62e456e257b33f0b273e0b48",
+              "62e559cf4958611981969eef"
+            ],
+            "labelIds": ["l102", "l104", "l101"],
+            "createdAt": 1701550000000,
+            "dueDate": 1701920000000,
+            "byMember": {
+              "_id": "62e456e257b33f0b273e0b48",
+              "username": "emma_qa",
+              "fullname": "Emma Davis",
+              "imgUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#eb5a46"
+            },
+            "groupId": "review001",
+            "attachments": [
+              {
+                "url": "https://github.com/taskhub/pull/252",
+                "title": "GitHub Pull Request #252",
+                "createdAt": 1701570000000,
+                "id": "attach016"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist019",
+                "title": "Security Review",
+                "todos": [
+                  {
+                    "title": "SQL injection testing",
+                    "isDone": false,
+                    "id": "todo080"
+                  },
+                  {
+                    "title": "XSS vulnerability scan",
+                    "isDone": false,
+                    "id": "todo081"
+                  },
+                  {
+                    "title": "Input validation review",
+                    "isDone": false,
+                    "id": "todo082"
+                  },
+                  {
+                    "title": "Penetration testing",
+                    "isDone": false,
+                    "id": "todo083"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "style": {},
+        "id": "review001"
+      },
+      {
+        "title": "Testing & QA",
+        "tasks": [
+          {
+            "id": "task006",
+            "title": "Mobile Responsiveness Testing",
+            "status": "in-progress",
+            "description": "Comprehensive testing of responsive design across different devices and screen sizes. Focus on touch interactions and mobile UX.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Emma Davis",
+                  "imgUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701400000000,
+                "txt": "Found issues with drag and drop on iOS Safari. Creating separate tickets for each device-specific bug.",
+                "id": "comment008"
+              }
+            ],
+            "memberIds": [
+              "62e456e257b33f0b273e0b48",
+              "62e559824958611981969eee"
+            ],
+            "labelIds": ["l100", "l102", "l104"],
+            "createdAt": 1700950000000,
+            "dueDate": 1701600000000,
+            "byMember": {
+              "_id": "62e456e257b33f0b273e0b48",
+              "username": "emma_qa",
+              "fullname": "Emma Davis",
+              "imgUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "background": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&w=400&h=200&fit=crop"
+            },
+            "groupId": "testing001",
+            "attachments": [
+              {
+                "url": "https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?ixlib=rb-4.0.3&w=400",
+                "title": "Mobile Testing Screenshots",
+                "createdAt": 1701380000000,
+                "id": "attach006"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist006",
+                "title": "Device Testing",
+                "todos": [
+                  {
+                    "title": "iPhone 12/13/14 Safari",
+                    "isDone": true,
+                    "id": "todo025"
+                  },
+                  {
+                    "title": "Android Chrome",
+                    "isDone": true,
+                    "id": "todo026"
+                  },
+                  {
+                    "title": "iPad landscape/portrait",
+                    "isDone": false,
+                    "id": "todo027"
+                  },
+                  {
+                    "title": "Samsung Galaxy S21/S22",
+                    "isDone": false,
+                    "id": "todo028"
+                  },
+                  {
+                    "title": "Touch gesture testing",
+                    "isDone": false,
+                    "id": "todo029"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task007",
+            "title": "API Performance Testing",
+            "status": "in-progress",
+            "description": "Load testing for all API endpoints. Target: <200ms response time for 95% of requests under normal load.",
+            "comments": [],
+            "memberIds": [
+              "62e456e257b33f0b273e0b48",
+              "62e25a33b387d3221f480ebc"
+            ],
+            "labelIds": ["l101", "l105", "l104"],
+            "createdAt": 1700900000000,
+            "dueDate": 1701700000000,
+            "byMember": {
+              "_id": "62e25a33b387d3221f480ebc",
+              "username": "david_devops",
+              "fullname": "David Park",
+              "imgUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#00c2e0"
+            },
+            "groupId": "testing001",
+            "attachments": [],
+            "checklists": [
+              {
+                "id": "checklist007",
+                "title": "Performance Benchmarks",
+                "todos": [
+                  {
+                    "title": "Board loading endpoints",
+                    "isDone": true,
+                    "id": "todo030"
+                  },
+                  {
+                    "title": "Task CRUD operations",
+                    "isDone": false,
+                    "id": "todo031"
+                  },
+                  {
+                    "title": "User authentication",
+                    "isDone": false,
+                    "id": "todo032"
+                  },
+                  {
+                    "title": "File upload/download",
+                    "isDone": false,
+                    "id": "todo033"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task020",
+            "title": "Automated E2E Testing Suite",
+            "status": "in-progress",
+            "description": "Set up comprehensive end-to-end testing with Cypress covering critical user workflows and regression scenarios.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Emma Davis",
+                  "imgUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701590000000,
+                "txt": "Main user flows are covered. Working on the drag & drop test scenarios now.",
+                "id": "comment020"
+              }
+            ],
+            "memberIds": [
+              "62e456e257b33f0b273e0b48",
+              "62e2a748e1984a87f455ea21"
+            ],
+            "labelIds": ["l103", "l101"],
+            "createdAt": 1701450000000,
+            "dueDate": 1702050000000,
+            "byMember": {
+              "_id": "62e456e257b33f0b273e0b48",
+              "username": "emma_qa",
+              "fullname": "Emma Davis",
+              "imgUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#f2d600"
+            },
+            "groupId": "testing001",
+            "attachments": [
+              {
+                "url": "https://docs.cypress.io/",
+                "title": "Cypress Documentation",
+                "createdAt": 1701500000000,
+                "id": "attach017"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist020",
+                "title": "E2E Test Coverage",
+                "todos": [
+                  {
+                    "title": "User authentication flows",
+                    "isDone": true,
+                    "id": "todo084"
+                  },
+                  {
+                    "title": "Board creation and management",
+                    "isDone": true,
+                    "id": "todo085"
+                  },
+                  {
+                    "title": "Task CRUD operations",
+                    "isDone": false,
+                    "id": "todo086"
+                  },
+                  {
+                    "title": "Drag and drop interactions",
+                    "isDone": false,
+                    "id": "todo087"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task021",
+            "title": "Cross-browser Compatibility Testing",
+            "status": "in-progress",
+            "description": "Ensure consistent functionality across Chrome, Firefox, Safari, and Edge. Focus on CSS Grid and Flexbox layouts.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Sarah Johnson",
+                  "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701600000000,
+                "txt": "Safari has some minor CSS issues with the board layout. Working on polyfills.",
+                "id": "comment021"
+              }
+            ],
+            "memberIds": [
+              "62e559824958611981969eee",
+              "62e456e257b33f0b273e0b48"
+            ],
+            "labelIds": ["l106", "l103"],
+            "createdAt": 1701420000000,
+            "dueDate": 1701980000000,
+            "byMember": {
+              "_id": "62e559824958611981969eee",
+              "username": "sarah_design",
+              "fullname": "Sarah Johnson",
+              "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "background": "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?ixlib=rb-4.0.3&w=400&h=200&fit=crop"
+            },
+            "groupId": "testing001",
+            "attachments": [
+              {
+                "url": "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&w=400",
+                "title": "Browser Compatibility Matrix",
+                "createdAt": 1701580000000,
+                "id": "attach018"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist021",
+                "title": "Browser Testing",
+                "todos": [
+                  {
+                    "title": "Chrome latest (98%)",
+                    "isDone": true,
+                    "id": "todo088"
+                  },
+                  {
+                    "title": "Firefox latest (95%)",
+                    "isDone": true,
+                    "id": "todo089"
+                  },
+                  {
+                    "title": "Safari 15+ (85%)",
+                    "isDone": false,
+                    "id": "todo090"
+                  },
+                  {
+                    "title": "Edge latest (92%)",
+                    "isDone": false,
+                    "id": "todo091"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task022",
+            "title": "Accessibility (A11y) Compliance Testing",
+            "status": "waiting",
+            "description": "WCAG 2.1 AA compliance testing with screen readers, keyboard navigation, and color contrast validation.",
+            "comments": [],
+            "memberIds": [
+              "62e559824958611981969eee",
+              "62e456e257b33f0b273e0b48"
+            ],
+            "labelIds": ["l106", "l104"],
+            "createdAt": 1701400000000,
+            "dueDate": 1702300000000,
+            "byMember": {
+              "_id": "62e559824958611981969eee",
+              "username": "sarah_design",
+              "fullname": "Sarah Johnson",
+              "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#c377e0"
+            },
+            "groupId": "testing001",
+            "attachments": [
+              {
+                "url": "https://www.w3.org/WAI/WCAG21/quickref/",
+                "title": "WCAG 2.1 Quick Reference",
+                "createdAt": 1701450000000,
+                "id": "attach019"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist022",
+                "title": "A11y Checklist",
+                "todos": [
+                  {
+                    "title": "Keyboard navigation audit",
+                    "isDone": false,
+                    "id": "todo092"
+                  },
+                  {
+                    "title": "Screen reader compatibility",
+                    "isDone": false,
+                    "id": "todo093"
+                  },
+                  {
+                    "title": "Color contrast validation",
+                    "isDone": false,
+                    "id": "todo094"
+                  },
+                  {
+                    "title": "ARIA labels and roles",
+                    "isDone": false,
+                    "id": "todo095"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "style": {},
+        "id": "testing001"
+      },
+      {
+        "title": "Ready for Production",
+        "tasks": [
+          {
+            "id": "task008",
+            "title": "Enhanced Search Functionality",
+            "status": "done",
+            "description": "Full-text search across all boards, tasks, and comments with advanced filters and search suggestions.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Alex Chen",
+                  "imgUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1700800000000,
+                "txt": "Search indexing is working perfectly. Average search time is under 50ms.",
+                "id": "comment009"
+              }
+            ],
+            "memberIds": [
+              "62e2a748e1984a87f455ea21",
+              "62e559cf4958611981969eef"
+            ],
+            "labelIds": ["l100", "l101", "l103"],
+            "createdAt": 1700500000000,
+            "dueDate": 1700900000000,
+            "completedAt": "2024-01-15T10:30:00.000Z",
+            "byMember": {
+              "_id": "62e2a748e1984a87f455ea21",
+              "username": "alex_dev",
+              "fullname": "Alex Chen",
+              "imgUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "background": "https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-4.0.3&w=400&h=200&fit=crop"
+            },
+            "groupId": "production001",
+            "attachments": [
+              {
+                "url": "https://images.unsplash.com/photo-1623479322729-28b25c16b011?ixlib=rb-4.0.3&w=400",
+                "title": "Search Performance Metrics",
+                "createdAt": 1700850000000,
+                "id": "attach007"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist008",
+                "title": "Search Features",
+                "todos": [
+                  {
+                    "title": "Elasticsearch integration",
+                    "isDone": true,
+                    "id": "todo034"
+                  },
+                  {
+                    "title": "Auto-complete suggestions",
+                    "isDone": true,
+                    "id": "todo035"
+                  },
+                  {
+                    "title": "Search result ranking",
+                    "isDone": true,
+                    "id": "todo036"
+                  },
+                  {
+                    "title": "Search history",
+                    "isDone": true,
+                    "id": "todo037"
+                  },
+                  {
+                    "title": "Performance optimization",
+                    "isDone": true,
+                    "id": "todo038"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task023",
+            "title": "Advanced Task Templates",
+            "status": "done",
+            "description": "Pre-built task templates for common workflows: Bug Report, Feature Request, User Story, and Meeting Notes.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Sarah Johnson",
+                  "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1700750000000,
+                "txt": "Templates are ready and tested. Users love the automation features!",
+                "id": "comment022"
+              }
+            ],
+            "memberIds": [
+              "62e559824958611981969eee",
+              "62e2a748e1984a87f455ea21"
+            ],
+            "labelIds": ["l100", "l106"],
+            "createdAt": 1700400000000,
+            "dueDate": 1700800000000,
+            "completedAt": "2024-01-12T14:20:00.000Z",
+            "byMember": {
+              "_id": "62e559824958611981969eee",
+              "username": "sarah_design",
+              "fullname": "Sarah Johnson",
+              "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#61bd4f"
+            },
+            "groupId": "production001",
+            "attachments": [
+              {
+                "url": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?ixlib=rb-4.0.3&w=400",
+                "title": "Template Design Gallery",
+                "createdAt": 1700720000000,
+                "id": "attach020"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist023",
+                "title": "Template Types",
+                "todos": [
+                  {
+                    "title": "Bug Report template",
+                    "isDone": true,
+                    "id": "todo096"
+                  },
+                  {
+                    "title": "Feature Request template",
+                    "isDone": true,
+                    "id": "todo097"
+                  },
+                  {
+                    "title": "User Story template",
+                    "isDone": true,
+                    "id": "todo098"
+                  },
+                  {
+                    "title": "Meeting Notes template",
+                    "isDone": true,
+                    "id": "todo099"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task024",
+            "title": "Board Collaboration Permissions",
+            "status": "done",
+            "description": "Granular permission system for boards: Admin, Editor, Viewer, and Commenter roles with customizable access levels.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Mike Rodriguez",
+                  "imgUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1700650000000,
+                "txt": "Permission matrix is working perfectly. Added audit logging for all permission changes.",
+                "id": "comment023"
+              }
+            ],
+            "memberIds": [
+              "62e559cf4958611981969eef",
+              "62e25a33b387d3221f480ebc"
+            ],
+            "labelIds": ["l101", "l104"],
+            "createdAt": 1700300000000,
+            "dueDate": 1700700000000,
+            "completedAt": "2024-01-10T11:45:00.000Z",
+            "byMember": {
+              "_id": "62e559cf4958611981969eef",
+              "username": "mike_backend",
+              "fullname": "Mike Rodriguez",
+              "imgUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "background": "https://images.unsplash.com/photo-1528747008803-f9f5cc8f1a64?ixlib=rb-4.0.3&w=400&h=200&fit=crop"
+            },
+            "groupId": "production001",
+            "attachments": [
+              {
+                "url": "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&w=400",
+                "title": "Permission Matrix Documentation",
+                "createdAt": 1700600000000,
+                "id": "attach021"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist024",
+                "title": "Permission Levels",
+                "todos": [
+                  {
+                    "title": "Admin permissions",
+                    "isDone": true,
+                    "id": "todo100"
+                  },
+                  {
+                    "title": "Editor permissions",
+                    "isDone": true,
+                    "id": "todo101"
+                  },
+                  {
+                    "title": "Viewer permissions",
+                    "isDone": true,
+                    "id": "todo102"
+                  },
+                  {
+                    "title": "Audit logging",
+                    "isDone": true,
+                    "id": "todo103"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task025",
+            "title": "Workspace Activity Feed",
+            "status": "done",
+            "description": "Real-time activity feed showing all workspace changes, comments, and task updates with filtering and search.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Alex Chen",
+                  "imgUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1700550000000,
+                "txt": "Activity feed is blazing fast! The filtering system works great.",
+                "id": "comment024"
+              }
+            ],
+            "memberIds": [
+              "62e2a748e1984a87f455ea21",
+              "62e559cf4958611981969eef"
+            ],
+            "labelIds": ["l100", "l101"],
+            "createdAt": 1700200000000,
+            "dueDate": 1700600000000,
+            "completedAt": "2024-01-08T16:30:00.000Z",
+            "byMember": {
+              "_id": "62e2a748e1984a87f455ea21",
+              "username": "alex_dev",
+              "fullname": "Alex Chen",
+              "imgUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#0079bf"
+            },
+            "groupId": "production001",
+            "attachments": [
+              {
+                "url": "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&w=400",
+                "title": "Activity Feed Screenshots",
+                "createdAt": 1700520000000,
+                "id": "attach022"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist025",
+                "title": "Activity Features",
+                "todos": [
+                  {
+                    "title": "Real-time updates",
+                    "isDone": true,
+                    "id": "todo104"
+                  },
+                  {
+                    "title": "Activity filtering",
+                    "isDone": true,
+                    "id": "todo105"
+                  },
+                  {
+                    "title": "Search functionality",
+                    "isDone": true,
+                    "id": "todo106"
+                  },
+                  {
+                    "title": "Pagination",
+                    "isDone": true,
+                    "id": "todo107"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "style": {},
+        "id": "production001"
+      },
+      {
+        "title": "Bug Reports",
+        "tasks": [
+          {
+            "id": "task009",
+            "title": "Memory Leak in Board Subscription",
+            "status": "in-progress",
+            "description": "WebSocket connections not being properly cleaned up when users navigate away from boards, causing memory leaks over time.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Mike Rodriguez",
+                  "imgUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701450000000,
+                "txt": "Identified the issue in the useEffect cleanup. Working on a fix now.",
+                "id": "comment010"
+              }
+            ],
+            "memberIds": ["62e559cf4958611981969eef"],
+            "labelIds": ["l102", "l104", "l101"],
+            "createdAt": 1701400000000,
+            "dueDate": 1701550000000,
+            "byMember": {
+              "_id": "62e456e257b33f0b273e0b48",
+              "username": "emma_qa",
+              "fullname": "Emma Davis",
+              "imgUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#eb5a46"
+            },
+            "groupId": "bugs001",
+            "attachments": [
+              {
+                "url": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400",
+                "title": "Memory Usage Graph",
+                "createdAt": 1701440000000,
+                "id": "attach008"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist009",
+                "title": "Bug Fix Steps",
+                "todos": [
+                  {
+                    "title": "Reproduce the issue",
+                    "isDone": true,
+                    "id": "todo039"
+                  },
+                  {
+                    "title": "Identify root cause",
+                    "isDone": true,
+                    "id": "todo040"
+                  },
+                  {
+                    "title": "Implement fix",
+                    "isDone": false,
+                    "id": "todo041"
+                  },
+                  {
+                    "title": "Write regression test",
+                    "isDone": false,
+                    "id": "todo042"
+                  },
+                  {
+                    "title": "Verify fix in staging",
+                    "isDone": false,
+                    "id": "todo043"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task010",
+            "title": "Drag & Drop Conflicts on Mobile",
+            "status": "in-progress",
+            "description": "Task drag and drop interfering with scroll gestures on mobile devices. Users report difficulty scrolling when trying to reorder tasks.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Sarah Johnson",
+                  "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701470000000,
+                "txt": "We might need to implement a long-press gesture for drag initiation on mobile.",
+                "id": "comment011"
+              }
+            ],
+            "memberIds": [
+              "62e559824958611981969eee",
+              "62e2a748e1984a87f455ea21"
+            ],
+            "labelIds": ["l102", "l100", "l106"],
+            "createdAt": 1701350000000,
+            "dueDate": 1701650000000,
+            "byMember": {
+              "_id": "62e456e257b33f0b273e0b48",
+              "username": "emma_qa",
+              "fullname": "Emma Davis",
+              "imgUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#ff9f1a"
+            },
+            "groupId": "bugs001",
+            "attachments": [],
+            "checklists": [
+              {
+                "id": "checklist010",
+                "title": "Mobile UX Improvements",
+                "todos": [
+                  {
+                    "title": "Test on various mobile devices",
+                    "isDone": true,
+                    "id": "todo044"
+                  },
+                  {
+                    "title": "Implement long-press for drag",
+                    "isDone": false,
+                    "id": "todo045"
+                  },
+                  {
+                    "title": "Add visual feedback for drag state",
+                    "isDone": false,
+                    "id": "todo046"
+                  },
+                  {
+                    "title": "User testing on mobile",
+                    "isDone": false,
+                    "id": "todo047"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task026",
+            "title": "Search Performance Degradation",
+            "status": "in-progress",
+            "description": "Search queries taking 3-5 seconds on large boards. Users reporting timeouts and frustrated experiences.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Alex Chen",
+                  "imgUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701610000000,
+                "txt": "Found the bottleneck! The search index wasn't being updated efficiently. Working on optimization.",
+                "id": "comment025"
+              }
+            ],
+            "memberIds": [
+              "62e2a748e1984a87f455ea21",
+              "62e559cf4958611981969eef"
+            ],
+            "labelIds": ["l102", "l104", "l101"],
+            "createdAt": 1701580000000,
+            "dueDate": 1701750000000,
+            "byMember": {
+              "_id": "62e456e257b33f0b273e0b48",
+              "username": "emma_qa",
+              "fullname": "Emma Davis",
+              "imgUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#eb5a46"
+            },
+            "groupId": "bugs001",
+            "attachments": [
+              {
+                "url": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400",
+                "title": "Performance Analysis Report",
+                "createdAt": 1701590000000,
+                "id": "attach023"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist026",
+                "title": "Performance Fix",
+                "todos": [
+                  {
+                    "title": "Identify bottleneck",
+                    "isDone": true,
+                    "id": "todo108"
+                  },
+                  {
+                    "title": "Optimize search index",
+                    "isDone": false,
+                    "id": "todo109"
+                  },
+                  {
+                    "title": "Implement caching",
+                    "isDone": false,
+                    "id": "todo110"
+                  },
+                  {
+                    "title": "Load testing validation",
+                    "isDone": false,
+                    "id": "todo111"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task027",
+            "title": "Accessibility: Missing Alt Text",
+            "status": "waiting",
+            "description": "Screen readers can't interpret board background images and user avatars. Need comprehensive alt text implementation.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Sarah Johnson",
+                  "imgUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701620000000,
+                "txt": "I'll create a comprehensive alt-text strategy document. This affects SEO too!",
+                "id": "comment026"
+              }
+            ],
+            "memberIds": [
+              "62e559824958611981969eee",
+              "62e456e257b33f0b273e0b48"
+            ],
+            "labelIds": ["l102", "l106", "l104"],
+            "createdAt": 1701550000000,
+            "dueDate": 1702000000000,
+            "byMember": {
+              "_id": "62e456e257b33f0b273e0b48",
+              "username": "emma_qa",
+              "fullname": "Emma Davis",
+              "imgUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#ff9f1a"
+            },
+            "groupId": "bugs001",
+            "attachments": [
+              {
+                "url": "https://www.w3.org/WAI/tutorials/images/",
+                "title": "W3C Alt Text Guidelines",
+                "createdAt": 1701600000000,
+                "id": "attach024"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist027",
+                "title": "Alt Text Implementation",
+                "todos": [
+                  {
+                    "title": "Audit all images",
+                    "isDone": false,
+                    "id": "todo112"
+                  },
+                  {
+                    "title": "User avatar alt text",
+                    "isDone": false,
+                    "id": "todo113"
+                  },
+                  {
+                    "title": "Board background descriptions",
+                    "isDone": false,
+                    "id": "todo114"
+                  },
+                  {
+                    "title": "Screen reader testing",
+                    "isDone": false,
+                    "id": "todo115"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task028",
+            "title": "File Upload Size Limit Issues",
+            "status": "in-progress",
+            "description": "Users can't upload files larger than 5MB. Error messages are unclear, and there's no progress indicator for large uploads.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Mike Rodriguez",
+                  "imgUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701630000000,
+                "txt": "Increased the limit to 25MB and added chunked upload for better reliability.",
+                "id": "comment027"
+              }
+            ],
+            "memberIds": [
+              "62e559cf4958611981969eef",
+              "62e25a33b387d3221f480ebc"
+            ],
+            "labelIds": ["l102", "l101", "l104"],
+            "createdAt": 1701520000000,
+            "dueDate": 1701800000000,
+            "byMember": {
+              "_id": "62e456e257b33f0b273e0b48",
+              "username": "emma_qa",
+              "fullname": "Emma Davis",
+              "imgUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#c377e0"
+            },
+            "groupId": "bugs001",
+            "attachments": [
+              {
+                "url": "https://images.unsplash.com/photo-1618477388954-7852f32655ec?ixlib=rb-4.0.3&w=400",
+                "title": "Upload Progress UI Mockup",
+                "createdAt": 1701610000000,
+                "id": "attach025"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist028",
+                "title": "Upload Improvements",
+                "todos": [
+                  {
+                    "title": "Increase size limit to 25MB",
+                    "isDone": true,
+                    "id": "todo116"
+                  },
+                  {
+                    "title": "Implement chunked upload",
+                    "isDone": false,
+                    "id": "todo117"
+                  },
+                  {
+                    "title": "Add progress indicator",
+                    "isDone": false,
+                    "id": "todo118"
+                  },
+                  {
+                    "title": "Better error messages",
+                    "isDone": false,
+                    "id": "todo119"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task029",
+            "title": "Notification Settings Not Persisting",
+            "status": "waiting",
+            "description": "User notification preferences reset after browser refresh. Email notifications still being sent despite being disabled.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "David Park",
+                  "imgUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701640000000,
+                "txt": "This is a caching issue. The settings aren't being properly stored in the database.",
+                "id": "comment028"
+              }
+            ],
+            "memberIds": [
+              "62e25a33b387d3221f480ebc",
+              "62e559cf4958611981969eef"
+            ],
+            "labelIds": ["l102", "l101", "l105"],
+            "createdAt": 1701500000000,
+            "dueDate": 1701850000000,
+            "byMember": {
+              "_id": "62e456e257b33f0b273e0b48",
+              "username": "emma_qa",
+              "fullname": "Emma Davis",
+              "imgUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#00c2e0"
+            },
+            "groupId": "bugs001",
+            "attachments": [],
+            "checklists": [
+              {
+                "id": "checklist029",
+                "title": "Settings Fix",
+                "todos": [
+                  {
+                    "title": "Debug caching issue",
+                    "isDone": false,
+                    "id": "todo120"
+                  },
+                  {
+                    "title": "Fix database persistence",
+                    "isDone": false,
+                    "id": "todo121"
+                  },
+                  {
+                    "title": "Email service integration",
+                    "isDone": false,
+                    "id": "todo122"
+                  },
+                  {
+                    "title": "User acceptance testing",
+                    "isDone": false,
+                    "id": "todo123"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "task030",
+            "title": "Board Export Memory Crashes",
+            "status": "in-progress",
+            "description": "Large boards (500+ tasks) crash the browser when exporting to PDF. Need memory optimization and background processing.",
+            "comments": [
+              {
+                "byMember": {
+                  "fullname": "Alex Chen",
+                  "imgUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+                },
+                "createdAt": 1701650000000,
+                "txt": "Implementing server-side PDF generation to avoid browser memory limits.",
+                "id": "comment029"
+              }
+            ],
+            "memberIds": [
+              "62e2a748e1984a87f455ea21",
+              "62e559cf4958611981969eef"
+            ],
+            "labelIds": ["l102", "l104", "l101"],
+            "createdAt": 1701480000000,
+            "dueDate": 1701900000000,
+            "byMember": {
+              "_id": "62e456e257b33f0b273e0b48",
+              "username": "emma_qa",
+              "fullname": "Emma Davis",
+              "imgUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&w=150&h=150&fit=crop&crop=face"
+            },
+            "style": {
+              "backgroundColor": "#eb5a46"
+            },
+            "groupId": "bugs001",
+            "attachments": [
+              {
+                "url": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400",
+                "title": "Memory Usage Analysis",
+                "createdAt": 1701630000000,
+                "id": "attach026"
+              }
+            ],
+            "checklists": [
+              {
+                "id": "checklist030",
+                "title": "Export Optimization",
+                "todos": [
+                  {
+                    "title": "Identify memory bottlenecks",
+                    "isDone": true,
+                    "id": "todo124"
+                  },
+                  {
+                    "title": "Server-side PDF generation",
+                    "isDone": false,
+                    "id": "todo125"
+                  },
+                  {
+                    "title": "Background job queue",
+                    "isDone": false,
+                    "id": "todo126"
+                  },
+                  {
+                    "title": "Progress notifications",
+                    "isDone": false,
+                    "id": "todo127"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "style": {},
+        "id": "bugs001"
+      }
+    ],
     "activities": [
       {
         "id": "szker",

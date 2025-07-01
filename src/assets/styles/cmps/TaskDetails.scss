@@ -49,7 +49,7 @@
   flex-wrap: wrap;
   gap: 6px;
   align-items: flex-start;
-  padding-left: 24px;
+  padding-left: 24px; /* Restore original padding */
 }
 
 .task-details-members-section,
@@ -272,7 +272,7 @@
 
   .task-title-display {
     flex: 1;
-    padding: 4px 8px;
+    padding: 4px 8px 4px 0px;
     border-radius: 4px;
     font-size: 28px;
     line-height: 32px;
@@ -296,7 +296,7 @@
 
   .task-title-input {
     flex: 1;
-    padding: 4px 8px;
+    padding: 4px 8px 4px 16px;
     border-radius: 4px;
     font-size: 28px;
     line-height: 32px;
@@ -336,6 +336,7 @@
     width: 24px;
     height: 24px;
     margin-right: 8px;
+    margin-left: -8px;
     padding: 4px;
     cursor: pointer;
     border-radius: 3px;
@@ -357,7 +358,7 @@
   display: flex;
   gap: 1px;
   margin-bottom: 8px;
-  padding-left: 32px;
+  padding-left: 24px; /* Align with Members section */
   button {
     display: flex;
     align-items: center;
@@ -490,6 +491,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      margin-left: -8px;
 
       .description-icon {
         width: 20px;
@@ -513,7 +515,7 @@
 
   .description-view,
   .description-edit {
-    margin-left: 22px;
+    margin-left: 12px;
   }
 }
 
@@ -843,6 +845,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      margin-left: -8px;
 
       .attachments-icon {
         width: 20px;
@@ -865,17 +868,7 @@
   }
 
   .attachment-section {
-    margin-left: 20px;
-    margin-bottom: 16px;
-
-    .attachment-section-title {
-      font-size: 12px;
-      font-weight: 600;
-      color: #5e6c84;
-      letter-spacing: 0.04em;
-      margin-bottom: 8px;
-      margin-top: 0;
-    }
+    margin-left: 12px;
   }
 
   .attachment-links {

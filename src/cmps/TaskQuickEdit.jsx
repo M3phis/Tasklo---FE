@@ -8,13 +8,6 @@ import {
 
 import ClockIcon from '@atlaskit/icon/core/clock'
 import DeleteIcon from '@atlaskit/icon/core/delete'
-// import ArrowRightIcon from '@atlaskit/icon/core/arrow-right'
-// import ArchiveBoxIcon from '@atlaskit/icon/core/archive-box';
-// import CardIcon from '@atlaskit/icon/core/card'
-// import TagIcon from '@atlaskit/icon/core/tag';
-// import PersonIcon from '@atlaskit/icon/core/person';
-// import ImageIcon from '@atlaskit/icon/core/image';
-// import CopyIcon from '@atlaskit/icon/core/copy';
 
 export function TaskQuickEdit({
   task,
@@ -38,12 +31,20 @@ export function TaskQuickEdit({
   const [menuSideClass, setMenuSideClass] = useState('')
   const [activeModal, setActiveModal] = useState(null)
   const [modalTriggerRef, setModalTriggerRef] = useState(null)
+  const [modalRef, setModalRef] = useState(null)
   const quickEditRef = useRef(null)
   const inputRef = useRef(null)
   const labelsButtonRef = useRef(null)
   const membersButtonRef = useRef(null)
   const datesButtonRef = useRef(null)
+  const coverButtonRef = useRef(null)
 
+  const ESTIMATED_MODAL_HEIGHTS = {
+    [MODAL_TYPES.LABELS]: 700,
+    [MODAL_TYPES.MEMBERS]: 700,
+    [MODAL_TYPES.DATES]: 690,
+    [MODAL_TYPES.COVER]: 703,
+  }
   useEffect(() => {
     function updateSize() {
       setWindowSize({
@@ -86,6 +87,26 @@ export function TaskQuickEdit({
     }
   }, [])
 
+  useEffect(() => {
+    if (activeModal && modalRef) {
+      const timer = setTimeout(() => {
+        recalculateModalPosition()
+      }, 50)
+
+      return () => clearTimeout(timer)
+    }
+  }, [activeModal, modalRef])
+
+  function handleSaveTitle() {
+    const updatedTask = { ...task, title: titleToEdit }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    onUpdateTask(updatedGroup)
+    onClose()
+  }
+
   function handleSaveTitle() {
     const updatedTask = { ...task, title: titleToEdit }
     const updatedGroup = {
@@ -104,18 +125,6 @@ export function TaskQuickEdit({
   function handleTitleChange(event) {
     setTitleToEdit(event.target.value)
     autoResizeTextarea(event.target)
-  }
-
-  function handleKeyDown(ev) {
-    if (ev.key === 'Escape') {
-      if (activeModal) {
-        setActiveModal(null)
-        setModalTriggerRef(null)
-      } else {
-        setTitleToEdit(task.title)
-        onClose()
-      }
-    }
   }
 
   function handleCancelEdit() {
@@ -139,29 +148,104 @@ export function TaskQuickEdit({
     event.stopPropagation()
   }
 
+  function calculateModalPosition(rect, modalHeight, modalWidth, viewportHeight, viewportWidth, gap) {
+    const spaceAbove = rect.top - gap
+    const spaceBelow = viewportHeight - rect.bottom - gap
+
+    let finalX = rect.left
+    let finalY = rect.bottom + gap
+    let alignAbove = false
+
+    if (modalHeight > 600) {
+      if (spaceAbove >= modalHeight) {
+        finalY = rect.top - gap
+        alignAbove = true
+      }
+      else if (spaceBelow >= modalHeight) {
+        finalY = rect.bottom + gap
+        alignAbove = false
+      }
+      else {
+        if (spaceAbove > spaceBelow) {
+          finalY = gap
+          alignAbove = false
+        } else {
+          finalY = Math.max(gap, viewportHeight - modalHeight - gap)
+          alignAbove = false
+        }
+      }
+    } else {
+      if (spaceBelow >= modalHeight) {
+        finalY = rect.bottom + gap
+        alignAbove = false
+      } else if (spaceAbove >= modalHeight) {
+        finalY = rect.top - gap
+        alignAbove = true
+      } else {
+        if (spaceBelow >= spaceAbove) {
+          finalY = Math.max(gap, viewportHeight - modalHeight - gap)
+          alignAbove = false
+        } else {
+          finalY = gap
+          alignAbove = true
+        }
+      }
+    }
+
+    if (rect.left + modalWidth > viewportWidth) {
+      finalX = Math.max(gap, rect.right - modalWidth)
+    } else if (rect.left < gap) {
+      finalX = gap
+    }
+
+    return {
+      x: finalX,
+      y: finalY,
+      alignAbove: alignAbove,
+    }
+  }
+
   function openModal(modalType, triggerRef) {
+    if (activeModal === modalType) {
+      closeModal()
+      return
+    }
+
     if (triggerRef && triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect()
       const viewportHeight = window.innerHeight
-      const buttonCenterY = rect.top + rect.height / 2
-      const isInBottomHalf = buttonCenterY > viewportHeight / 2
+      const viewportWidth = window.innerWidth
       const gap = 4
 
-      if (isInBottomHalf) {
-        setModalPosition({
-          x: rect.left,
-          y: rect.top - gap,
-          alignAbove: true,
-        })
-      } else {
-        setModalPosition({
-          x: rect.left,
-          y: rect.bottom + gap,
-        })
-      }
+      const estimatedHeight = ESTIMATED_MODAL_HEIGHTS[modalType] || 300
+      const modalWidth = 304
+
+      const position = calculateModalPosition(rect, estimatedHeight, modalWidth, viewportHeight, viewportWidth, gap)
+
+      setModalPosition(position)
     }
+
     setActiveModal(modalType)
     setModalTriggerRef(triggerRef)
+  }
+
+  function recalculateModalPosition() {
+    if (modalRef && modalRef.current && modalTriggerRef && modalTriggerRef.current) {
+      const actualHeight = modalRef.current.offsetHeight
+      const rect = modalTriggerRef.current.getBoundingClientRect()
+      const gap = 4
+
+      const newPosition = calculateModalPosition(
+        rect,
+        actualHeight,
+        304,
+        window.innerHeight,
+        window.innerWidth,
+        gap
+      )
+
+      setModalPosition(newPosition)
+    }
   }
 
   function closeModal(event) {
@@ -170,6 +254,7 @@ export function TaskQuickEdit({
     }
     setActiveModal(null)
     setModalTriggerRef(null)
+    setModalRef(null)
   }
 
   useEffect(() => {
@@ -229,7 +314,6 @@ export function TaskQuickEdit({
 
           <div className={`quick-edit-actions ${menuSideClass}`}>
             <button className="action-button" onClick={handleOpenCard}>
-              {/* <CardIcon label="Open card" color="currentColor" /> */}
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path
                   fillRule="evenodd"
@@ -243,12 +327,10 @@ export function TaskQuickEdit({
 
             <button
               ref={labelsButtonRef}
-              className={`action-button ${
-                activeModal === MODAL_TYPES.LABELS ? 'active' : ''
-              }`}
+              className={`action-button ${activeModal === MODAL_TYPES.LABELS ? 'active' : ''
+                }`}
               onClick={() => openModal(MODAL_TYPES.LABELS, labelsButtonRef)}
             >
-              {/* <TagIcon label="Edit labels" color="currentColor" /> */}
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path
                   fillRule="evenodd"
@@ -262,12 +344,10 @@ export function TaskQuickEdit({
 
             <button
               ref={membersButtonRef}
-              className={`action-button ${
-                activeModal === MODAL_TYPES.MEMBERS ? 'active' : ''
-              }`}
+              className={`action-button ${activeModal === MODAL_TYPES.MEMBERS ? 'active' : ''
+                }`}
               onClick={() => openModal(MODAL_TYPES.MEMBERS, membersButtonRef)}
             >
-              {/* <PersonIcon label="Change members" color="currentColor" /> */}
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path
                   fillRule="evenodd"
@@ -285,8 +365,12 @@ export function TaskQuickEdit({
               <span>Change members</span>
             </button>
 
-            <button className="action-button">
-              {/* <ImageIcon label="Change cover" color="currentColor" /> */}
+            <button
+              ref={coverButtonRef}
+              className={`action-button ${activeModal === MODAL_TYPES.COVER ? 'active' : ''
+                }`}
+              onClick={() => openModal(MODAL_TYPES.COVER, coverButtonRef)}
+            >
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path
                   fillRule="evenodd"
@@ -300,34 +384,17 @@ export function TaskQuickEdit({
 
             <button
               ref={datesButtonRef}
-              className={`action-button clock-icon ${
-                activeModal === MODAL_TYPES.DATES ? 'active' : ''
-              }`}
+              className={`action-button clock-icon ${activeModal === MODAL_TYPES.DATES ? 'active' : ''
+                }`}
               onClick={() => openModal(MODAL_TYPES.DATES, datesButtonRef)}
             >
               <ClockIcon label="Edit dates" color="172B4D" />
               <span>Edit dates</span>
             </button>
 
-            {/* <button className="action-button"><ArrowRightIcon label="Move" color="currentColor" /><span>Move</span></button> */}
-
-            {/* <button className="action-button">
-              <CopyIcon label="Copy card" color="currentColor" />
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M5 16V4.99188C5 3.8918 5.90195 3 7.00853 3H14.9915L15 3.00002V5H7V16H5ZM8 19C8 20.1046 8.89543 21 10 21H18C19.1046 21 20 20.1046 20 19V8C20 6.89543 19.1046 6 18 6H10C8.89543 6 8 6.89543 8 8V19ZM10 8V19H18V8H10Z"
-                  fill="172B4D"
-                ></path>
-              </svg>
-              <span>Copy card</span>
-            </button> */}
-
             <button
-              className={`action-button delete-icon ${
-                activeModal === 'DELETE' ? 'active' : ''
-              }`}
+              className={`action-button delete-icon ${activeModal === 'DELETE' ? 'active' : ''
+                }`}
               onClick={() => onRemoveTask(group.id, task.id)}
             >
               <DeleteIcon label="Delete" color="currentColor" />
@@ -339,6 +406,7 @@ export function TaskQuickEdit({
 
       {activeModal && (
         <TaskDetailsDynamic
+          ref={setModalRef}
           type={activeModal}
           task={task}
           board={board}
@@ -347,6 +415,7 @@ export function TaskQuickEdit({
           onUpdateTask={onUpdateTask}
           position={modalPosition}
           triggerRef={modalTriggerRef}
+          onHeightChange={recalculateModalPosition}
         />
       )}
     </>

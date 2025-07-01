@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useLayoutEffect } from 'react'
 import { utilService } from '../services/util.service'
 
 export function CreateLabelModal({ position, onClose, onSave }) {
+  const modalRef = useRef(null)
+  const [calculatedPosition, setCalculatedPosition] = useState({ x: 0, y: 0 })
   const [title, setTitle] = useState('')
   const [selectedColor, setSelectedColor] = useState('#61BD4F')
 
@@ -39,6 +41,51 @@ export function CreateLabelModal({ position, onClose, onSave }) {
     '#85929E',
   ]
 
+  useLayoutEffect(() => {
+    if (!position) return
+
+    const modalHeight = 400 // Estimated height of create label modal
+    const modalWidth = 304
+    const viewportHeight = window.innerHeight
+    const viewportWidth = window.innerWidth
+    const gap = 8
+
+    let finalX = position.x
+    let finalY = position.y
+
+    // Calculate available space
+    const spaceAbove = position.y - gap
+    const spaceBelow = viewportHeight - position.y - gap
+
+    // Smart vertical positioning
+    if (spaceBelow >= modalHeight) {
+      // Enough space below
+      finalY = position.y
+    } else if (spaceAbove >= modalHeight) {
+      // Not enough space below but enough above
+      finalY = position.y - modalHeight - gap
+    } else {
+      // Not enough space in either direction
+      if (spaceAbove > spaceBelow) {
+        // More space above - position at top of viewport
+        finalY = gap
+      } else {
+        // More space below - position to fit as much as possible
+        finalY = Math.max(gap, viewportHeight - modalHeight - gap)
+      }
+    }
+
+    // Horizontal positioning
+    if (finalX + modalWidth > viewportWidth) {
+      finalX = Math.max(gap, viewportWidth - modalWidth - gap)
+    }
+    if (finalX < gap) {
+      finalX = gap
+    }
+
+    setCalculatedPosition({ x: finalX, y: finalY })
+  }, [position])
+
   const handleCreate = () => {
     const newLabel = {
       id: utilService.makeId(),
@@ -57,11 +104,11 @@ export function CreateLabelModal({ position, onClose, onSave }) {
         style={
           position
             ? {
-                position: 'absolute',
-                top: position.y,
-                left: position.x,
-                transform: 'none',
-              }
+              position: 'absolute',
+              top: position.y,
+              left: position.x,
+              transform: position.alignAbove ? 'translateY(-100%)' : 'none',
+            }
             : {}
         }
       >
@@ -113,9 +160,8 @@ export function CreateLabelModal({ position, onClose, onSave }) {
               {colors.map((color, index) => (
                 <button
                   key={index}
-                  className={`color-option ${
-                    selectedColor === color ? 'selected' : ''
-                  }`}
+                  className={`color-option ${selectedColor === color ? 'selected' : ''
+                    }`}
                   style={{ backgroundColor: color }}
                   onClick={() => setSelectedColor(color)}
                 />

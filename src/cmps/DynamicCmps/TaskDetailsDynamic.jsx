@@ -1,16 +1,18 @@
-import { useState, useRef, useEffect, useLayoutEffect } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect, forwardRef } from 'react'
 import { createPortal } from 'react-dom'
 import { DatesModal } from '../DatesModal'
 import { LabelsModal } from '../LabelsModal'
 import { MembersModal } from '../MembersModal'
+import { CoverModal } from '../CoverModal'
 
 export const MODAL_TYPES = {
   LABELS: 'LABELS',
   MEMBERS: 'MEMBERS',
   DATES: 'DATES',
+  COVER: 'COVER'
 }
 
-export function TaskDetailsDynamic({
+export const TaskDetailsDynamic = forwardRef(({
   type,
   task,
   board,
@@ -19,7 +21,8 @@ export function TaskDetailsDynamic({
   onUpdateTask,
   position,
   triggerRef,
-}) {
+  onHeightChange
+}, ref) => {
   const modalRef = useRef(null)
   const [calculatedPosition, setCalculatedPosition] = useState(position)
   const [windowSize, setWindowSize] = useState({
@@ -38,9 +41,36 @@ export function TaskDetailsDynamic({
     return () => window.removeEventListener('resize', updateSize)
   }, [])
 
+  useEffect(() => {
+    if (ref && modalRef.current) {
+      ref(modalRef.current)
+    }
+  }, [ref, type])
+
+  useEffect(() => {
+    if (onHeightChange && modalRef.current) {
+      const timer = setTimeout(() => {
+        onHeightChange()
+      }, 10)
+
+      return () => clearTimeout(timer)
+    }
+  }, [task, onHeightChange, type])
+
   useLayoutEffect(() => {
     if (position && position.x !== undefined && position.y !== undefined) {
-      setCalculatedPosition(position)
+      let finalY = position.y
+
+      if (position.alignAbove && modalRef.current) {
+        const modalHeight = modalRef.current.offsetHeight
+        finalY = position.y - modalHeight
+      }
+
+      setCalculatedPosition({
+        x: position.x,
+        y: finalY,
+        alignAbove: position.alignAbove
+      })
       return
     }
 
@@ -83,6 +113,10 @@ export function TaskDetailsDynamic({
       tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
     }
     onUpdateTask(updatedGroup)
+
+    if (onHeightChange) {
+      setTimeout(onHeightChange, 50)
+    }
   }
 
   function handleToggleMember(memberId) {
@@ -97,10 +131,59 @@ export function TaskDetailsDynamic({
       tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
     }
     onUpdateTask(updatedGroup)
+
+    if (onHeightChange) {
+      setTimeout(onHeightChange, 50)
+    }
   }
 
   function handleUpdateDates(dateUpdates) {
     const updatedTask = { ...task, ...dateUpdates }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    onUpdateTask(updatedGroup)
+  }
+
+  function handleUpdateCover(coverData) {
+    const updatedTask = {
+      ...task,
+      style: {
+        ...task.style,
+        ...(coverData.type === 'color'
+          ? {
+            backgroundColor: coverData.value,
+            backgroundImage: undefined,
+            background: undefined,
+            coverSize: coverData.size,
+          }
+          : {
+            background: coverData.value,
+            backgroundColor: undefined,
+            backgroundImage: undefined,
+            coverSize: coverData.size,
+          }),
+      },
+    }
+    const updatedGroup = {
+      ...group,
+      tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
+    }
+    onUpdateTask(updatedGroup)
+  }
+
+  function handleRemoveCover() {
+    const updatedTask = {
+      ...task,
+      style: {
+        ...task.style,
+        backgroundColor: undefined,
+        backgroundImage: undefined,
+        background: undefined,
+        coverSize: undefined,
+      },
+    }
     const updatedGroup = {
       ...group,
       tasks: group.tasks.map((t) => (t.id === task.id ? updatedTask : t)),
@@ -142,6 +225,17 @@ export function TaskDetailsDynamic({
           />
         )
 
+      case MODAL_TYPES.COVER:
+        return (
+          <CoverModal
+            task={task}
+            position={calculatedPosition}
+            onClose={handleClose}
+            onUpdateCover={handleUpdateCover}
+            onRemoveCover={handleRemoveCover}
+          />
+        )
+
       default:
         return null
     }
@@ -166,4 +260,4 @@ export function TaskDetailsDynamic({
   )
 
   return createPortal(modalContent, document.body)
-}
+})

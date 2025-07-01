@@ -1,6 +1,6 @@
 import chroma from 'chroma-js'
 import ColorThief from 'colorthief'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useParams, useOutletContext } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -17,6 +17,20 @@ import {
 } from '../cmps/BoardHeader/BoardHeaderFilter'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { Outlet } from 'react-router-dom'
+import { store } from '../store/store'
+import {
+  socketService,
+  SOCKET_EVENT_GROUP_ADDED,
+  SOCKET_EVENT_GROUP_UPDATED,
+  SOCKET_EVENT_GROUP_DELETED,
+  SOCKET_EVENT_TASK_ADDED,
+  SOCKET_EVENT_TASK_UPDATED,
+  SOCKET_EVENT_TASK_DELETED,
+  SOCKET_EVENT_TASK_MOVED,
+  SOCKET_EVENT_BOARD_UPDATED,
+  SOCKET_EVENT_ACTIVITY_ADDED
+} from '../services/socket.service'
+import { BoardMenu } from '../cmps/BoardMenu'
 
 export function BoardDetails() {
   const { boardId } = useParams()
@@ -26,6 +40,9 @@ export function BoardDetails() {
   const [rsbIsOpen, setRsbIsOpen] = useState(false)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const filters = useSelector((state) => state.boardModule.filters)
+
+  // Cache for extracted colors to avoid re-processing same images
+  const colorCache = useRef(new Map())
 
   useEffect(() => {
     loadBoard(boardId)
@@ -37,17 +54,166 @@ export function BoardDetails() {
   }, [boardId])
 
   useEffect(() => {
+    if (!boardId) return
+
+    console.log('🔌 Setting up socket listeners for board:', boardId)
+
+    socketService.watchBoard(boardId)
+
+    const handleGroupAdded = (data) => {
+      if (data.boardId === boardId) {
+        showSuccessMsg(`New group "${data.title}" was added!`)
+        store.dispatch({
+          type: 'ADD_GROUP_SOCKET',
+          group: {
+            id: data.id || `g${Date.now()}`,
+            title: data.title || 'New Group',
+            tasks: data.tasks || [],
+            ...data,
+          },
+        })
+      }
+    }
+
+    const handleGroupUpdated = (data) => {
+      if (data.boardId === boardId) {
+        showSuccessMsg(`Group "${data.title}" was updated!`)
+        store.dispatch({
+          type: 'UPDATE_GROUP_SOCKET',
+          group: data,
+        })
+      }
+    }
+
+    const handleGroupDeleted = (data) => {
+      if (data.boardId === boardId) {
+        showSuccessMsg('Group was deleted!')
+        store.dispatch({
+          type: 'REMOVE_GROUP_SOCKET',
+          groupId: data.groupId,
+        })
+      }
+    }
+
+    const handleTaskAdded = (data) => {
+      if (data.boardId === boardId) {
+        showSuccessMsg(`New task "${data.title}" was added!`)
+        store.dispatch({
+          type: 'ADD_TASK_SOCKET',
+          groupId: data.groupId,
+          task: {
+            id: data.id || `c${Date.now()}`,
+            title: data.title || 'New Task',
+            ...data,
+          },
+        })
+      }
+    }
+
+    const handleTaskUpdated = (data) => {
+      if (data.boardId === boardId) {
+        showSuccessMsg(`Task was updated!`)
+        store.dispatch({
+          type: 'UPDATE_TASK_SOCKET',
+          taskId: data.taskId,
+          updates: data,
+        })
+      }
+    }
+
+    const handleTaskDeleted = (data) => {
+      if (data.boardId === boardId) {
+        showSuccessMsg('Task was deleted!')
+        store.dispatch({
+          type: 'REMOVE_TASK_SOCKET',
+          groupId: data.groupId,
+          taskId: data.taskId,
+        })
+      }
+    }
+
+    const handleTaskMoved = (data) => {
+      if (data.boardId === boardId) {
+        showSuccessMsg('A task was moved!')
+        store.dispatch({
+          type: 'MOVE_TASK_SOCKET',
+          taskId: data.taskId,
+          sourceGroupId: data.sourceGroupId,
+          targetGroupId: data.targetGroupId,
+        })
+      }
+    }
+
+    const handleBoardUpdated = (data) => {
+      if (data.boardId === boardId) {
+        showSuccessMsg('Board was updated by another user!')
+        store.dispatch({
+          type: 'UPDATE_BOARD_SOCKET',
+          boardId: data.boardId,
+          updates: data.updates,
+        })
+      }
+    }
+
+    const handleActivityAdded = (data) => {
+      if (data.boardId === boardId) {
+        console.log('📝 Activity added:', data.activity)
+        store.dispatch({
+          type: 'ADD_ACTIVITY',
+          boardId: data.boardId,
+          activity: data.activity
+        })
+      }
+    }
+
+    socketService.on(SOCKET_EVENT_GROUP_ADDED, handleGroupAdded)
+    socketService.on(SOCKET_EVENT_GROUP_UPDATED, handleGroupUpdated)
+    socketService.on(SOCKET_EVENT_GROUP_DELETED, handleGroupDeleted)
+
+    socketService.on(SOCKET_EVENT_TASK_ADDED, handleTaskAdded)
+    socketService.on(SOCKET_EVENT_TASK_UPDATED, handleTaskUpdated)
+    socketService.on(SOCKET_EVENT_TASK_DELETED, handleTaskDeleted)
+    socketService.on(SOCKET_EVENT_TASK_MOVED, handleTaskMoved)
+
+    socketService.on(SOCKET_EVENT_BOARD_UPDATED, handleBoardUpdated)
+    socketService.on(SOCKET_EVENT_ACTIVITY_ADDED, handleActivityAdded)
+
+    return () => {
+      console.log('🔌 Cleaning up socket listeners for board:', boardId)
+      socketService.unwatchBoard(boardId)
+      socketService.off(SOCKET_EVENT_GROUP_ADDED, handleGroupAdded)
+      socketService.off(SOCKET_EVENT_GROUP_UPDATED, handleGroupUpdated)
+      socketService.off(SOCKET_EVENT_GROUP_DELETED, handleGroupDeleted)
+
+      socketService.off(SOCKET_EVENT_TASK_ADDED, handleTaskAdded)
+      socketService.off(SOCKET_EVENT_TASK_UPDATED, handleTaskUpdated)
+      socketService.off(SOCKET_EVENT_TASK_DELETED, handleTaskDeleted)
+      socketService.off(SOCKET_EVENT_TASK_MOVED, handleTaskMoved)
+
+      socketService.off(SOCKET_EVENT_BOARD_UPDATED, handleBoardUpdated)
+      socketService.on(SOCKET_EVENT_ACTIVITY_ADDED, handleActivityAdded)
+    }
+  }, [boardId])
+
+  useEffect(() => {
     if (!board) return
 
     const root = document.documentElement
 
     if (board.style.background) {
-      root.style.setProperty(
-        '--dynamic-board-background',
-        `url(${board.style.background})`
-      )
-      extractColorsFromImage(board.style.background)
-      root.style.setProperty('--dynamic-board-background-color', 'none')
+      const backgroundUrl =
+        typeof board.style.background === 'string'
+          ? board.style.background
+          : board.style.background?.url
+
+      if (backgroundUrl) {
+        root.style.setProperty(
+          '--dynamic-board-background',
+          `url(${backgroundUrl})`
+        )
+        extractColorsFromImage(backgroundUrl)
+        root.style.setProperty('--dynamic-board-background-color', 'none')
+      }
     } else if (board.style.color) {
       root.style.setProperty(
         '--dynamic-board-background-color',
@@ -63,9 +229,9 @@ export function BoardDetails() {
 
       root.style.setProperty('--dynamic-boardheader-background', color1)
       root.style.setProperty('--dynamic-appheader-background', color2)
-      root.style.setProperty(' --dynamic-header-color', textColor)
+      root.style.setProperty('--dynamic-header-color', textColor)
     }
-  }, [])
+  }, [board?.style?.background, board?.style?.color])
 
   function onDragEnd(result) {
     if (!result.destination) {
@@ -81,6 +247,8 @@ export function BoardDetails() {
       const [group] = groups.splice(startIdx, 1)
       groups.splice(endIdx, 0, group)
       updateBoardOptimistic({ ...board, groups })
+
+      socketService.moveGroup(boardId, movedGroup.id, startIdx, endIdx)
     }
 
     if (result.type === 'task') {
@@ -93,6 +261,7 @@ export function BoardDetails() {
       const [task] = groupStart.tasks.splice(startIdx, 1)
       groupEnd.tasks.splice(endIdx, 0, task)
       updateBoardOptimistic({ ...board, groups })
+      socketService.moveTask(boardId, task.id, result.source.droppableId, result.destination.droppableId)
     }
   }
 
@@ -103,6 +272,8 @@ export function BoardDetails() {
       ...board,
       groups: [...board.groups, newGroup],
     }
+
+    socketService.addGroup(boardId, newGroup)
 
     return updateBoard(updatedBoard)
       .then(() => showSuccessMsg('List added successfully'))
@@ -123,6 +294,8 @@ export function BoardDetails() {
       groups: updatedGroups,
     }
 
+    socketService.updateGroup(boardId, updatedList.id, updatedList)
+
     updateBoard(updatedBoard)
       .then(() => showSuccessMsg('List updated'))
       .catch((err) => {
@@ -138,6 +311,8 @@ export function BoardDetails() {
       ...board,
       groups: updatedGroups,
     }
+
+    socketService.deleteGroup(boardId, listId)
 
     updateBoard(updatedBoard)
       .then(() => showSuccessMsg('List removed'))
@@ -156,6 +331,19 @@ export function BoardDetails() {
       ...board,
       groups: updatedGroups,
     }
+
+    const oldGroup = board.groups.find(g => g.id === updatedGroup.id)
+    const updatedTasks = updatedGroup.tasks.filter(task => {
+      const oldTask = oldGroup?.tasks.find(t => t.id === task.id)
+      return !oldTask || JSON.stringify(oldTask) !== JSON.stringify(task)
+    })
+
+    updatedTasks.forEach(task => {
+      socketService.updateTask(boardId, task.id, {
+        ...task,
+        groupId: updatedGroup.id,
+      })
+    })
 
     return updateBoard(updatedBoard)
       .then(() => showSuccessMsg('Task updated'))
@@ -180,6 +368,8 @@ export function BoardDetails() {
       ...board,
       groups: updatedGroups,
     }
+
+    socketService.deleteTask(boardId, taskId, groupId)
 
     return updateBoard(updatedBoard)
       .then(() => showSuccessMsg('Task removed successfully'))
@@ -206,10 +396,34 @@ export function BoardDetails() {
         console.log('Error updating board:', err)
         showErrorMsg('Cannot update board')
       })
+
+
   }
 
   async function extractColorsFromImage(imgUrl) {
     try {
+      // Check cache first
+      if (colorCache.current.has(imgUrl)) {
+        const cachedColors = colorCache.current.get(imgUrl)
+        const root = document.documentElement
+        root.style.setProperty(
+          '--dynamic-boardheader-background',
+          cachedColors.color1
+        )
+        root.style.setProperty(
+          '--dynamic-appheader-background',
+          cachedColors.color2
+        )
+        root.style.setProperty('--dynamic-header-color', cachedColors.textColor)
+        return
+      }
+
+      // Check if required libraries are available
+      if (typeof ColorThief === 'undefined' || typeof chroma === 'undefined') {
+        console.warn('ColorThief or chroma library not available')
+        return
+      }
+
       const img = new Image()
       img.crossOrigin = 'anonymous'
       img.src = imgUrl
@@ -229,12 +443,24 @@ export function BoardDetails() {
       const textColor =
         chroma.contrast(baseColor, 'white') > 4.5 ? 'white' : 'black'
 
+      // Cache the results (limit cache size to prevent memory leaks)
+      if (colorCache.current.size > 10) {
+        const firstKey = colorCache.current.keys().next().value
+        colorCache.current.delete(firstKey)
+      }
+      colorCache.current.set(imgUrl, { color1, color2, textColor })
+
       const root = document.documentElement
       root.style.setProperty('--dynamic-boardheader-background', color1)
       root.style.setProperty('--dynamic-appheader-background', color2)
       root.style.setProperty('--dynamic-header-color', textColor)
     } catch (err) {
       console.error('Error extracting colors from image:', err)
+      // Set fallback colors if extraction fails
+      const root = document.documentElement
+      root.style.setProperty('--dynamic-boardheader-background', '#f4f5f7')
+      root.style.setProperty('--dynamic-appheader-background', '#e4e6ea')
+      root.style.setProperty('--dynamic-header-color', '#172b4d')
     }
   }
 
@@ -281,6 +507,7 @@ export function BoardDetails() {
             onUpdateTask={handleUpdateTask}
             onRemoveTask={handleRemoveTask}
             onDragEnd={onDragEnd}
+            socketService={socketService}
           />
         </div>
       </div>
@@ -288,6 +515,14 @@ export function BoardDetails() {
       <BoardHeaderFilter
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
+      />
+
+      <BoardMenu
+        isOpen={rsbIsOpen}
+        onClose={() => setRsbIsOpen(false)}
+        onReopen={() => setRsbIsOpen(true)}
+        board={board}
+        onUpdateBoard={handleBoardUpdate}
       />
 
       <Outlet context={{ handleUpdateTask }} />

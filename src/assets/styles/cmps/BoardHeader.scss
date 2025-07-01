@@ -14,8 +14,8 @@
     display: flex;
     align-items: center;
     height: rem(32px);
-    // gap: rem(8px);
     flex: 1;
+    // gap: rem(8px);
 
     .board-title-display {
       background: transparent;
@@ -82,6 +82,14 @@
       span svg {
         color: var(--dynamic-header-color);
       }
+    }
+
+    .header-btn svg {
+      color: var(--dynamic-header-color);
+    }
+
+    .star-btn-active svg {
+      color: #f2d600 !important;
     }
 
     .header-btn,
@@ -153,6 +161,22 @@
       &:hover {
         background: var(--ds-background-neutral-subtle-hovered);
       }
+    }
+  }
+}
+
+@media (max-width: 570px) {
+  .board-header .header-right {
+    .users-section {
+      display: none;
+    }
+
+    .share-btn {
+      display: none; 
+    }
+
+    .star-button {
+      display: none;
     }
   }
 }

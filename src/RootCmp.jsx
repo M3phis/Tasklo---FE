@@ -8,7 +8,6 @@ import { BoardIndex } from './pages/BoardIndex.jsx'
 import { BoardDetails } from './pages/BoardDetails.jsx'
 import { ReviewIndex } from './pages/ReviewIndex.jsx'
 import { TaskDetails } from './cmps/TaskDetails.jsx'
-import { ChatApp } from './pages/Chat.jsx'
 import { AdminIndex } from './pages/AdminIndex.jsx'
 
 import { UserDetails } from './pages/UserDetails'
@@ -41,7 +40,6 @@ export function RootCmp() {
           </Route>
           <Route path="user/:id" element={<UserDetails />} />
           <Route path="review" element={<ReviewIndex />} />
-          <Route path="chat" element={<ChatApp />} />
           <Route
             path="admin"
             element={

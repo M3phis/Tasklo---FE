@@ -1,10 +1,10 @@
 .task-preview {
-  // width: rem(256px);
   height: 100%;
   border-radius: $group-border-radius-medium;
   box-shadow: var(--ds-box-shadow);
   overflow: hidden;
   position: relative;
+  // width: rem(256px);
 
   &:hover {
     outline: 2px solid var(--ds-border-focused);
@@ -31,9 +31,8 @@
         path {
           fill: var(--ds-icon-accent-green);
           fill-rule: evenodd;
-          d: path(
-            'M 0 8 a 8 8 0 1 1 16 0 A 8 8 0 0 1 0 8 m 12.326 -2.52 l -1.152 -0.96 L 6.75 9.828 L 4.826 7.52 l -1.152 0.96 l 2.5 3 a 0.75 0.75 0 0 0 1.152 0 Z'
-          );
+          d: path('M 0 8 a 8 8 0 1 1 16 0 A 8 8 0 0 1 0 8 m 12.326 -2.52 l -1.152 -0.96 L 6.75 9.828 L 4.826 7.52 l -1.152 0.96 l 2.5 3 a 0.75 0.75 0 0 0 1.152 0 Z'
+            );
           clip-rule: evenodd;
         }
       }
@@ -93,7 +92,7 @@
   }
 }
 
-.task-cover + .task-content {
+.task-cover+.task-content {
   border-radius: 0 0 $group-border-radius-medium $group-border-radius-medium;
 }
 
@@ -112,7 +111,7 @@
   }
 }
 
-.task-attachment-preview + .task-content {
+.task-attachment-preview+.task-content {
   border-radius: 0 0 $group-border-radius-medium $group-border-radius-medium;
 }
 
@@ -204,7 +203,6 @@
   border: none;
   // align-items: center;
   // position: relative;
-  // color: white;
 
   &.collapsed {
     height: rem(8px);
@@ -260,11 +258,14 @@
     text-shadow: none;
   }
 
-  transition: width 0.2s ease, height 0.2s ease, padding 0.2s ease,
-    margin 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  transition: width 0.2s ease,
+  height 0.2s ease,
+  padding 0.2s ease,
+  margin 0.2s ease,
+  transform 0.15s ease,
+  box-shadow 0.15s ease;
 }
 
-// Task Badges
 .task-badges {
   display: flex;
   align-items: center;
@@ -274,7 +275,6 @@
   min-height: rem(28px);
   max-height: rem(56px);
   column-gap: rem(4px);
-  // float: left;
   // flex: 1;
 }
 
@@ -294,14 +294,9 @@
   svg {
     width: rem(14px); ///16
     height: rem(14px); ///16
-    // flex-shrink: 0;
   }
 
-  // span {
-  //     white-space: nowrap;
-  // }
 
-  // All badges
   &:not(.date-badge) {
     background-color: transparent;
     color: var(--ds-text-accent-gray);
@@ -324,7 +319,6 @@
     }
   }
 
-  // Description badge
   &.description-badge {
     svg {
       width: rem(16px); ///16
@@ -332,7 +326,6 @@
     }
   }
 
-  // Date badge
   &.date-badge {
     background-color: transparent;
     color: var(--ds-text-accent-gray);
@@ -380,7 +373,6 @@
     }
   }
 
-  //Comments badge
   &.comments-badge {
     width: rem(36.48px);
     background-color: transparent;
@@ -397,7 +389,6 @@
     }
   }
 
-  // Attachment badge
   &.attachment-badge {
     width: rem(36px);
     background-color: transparent;
@@ -423,7 +414,6 @@
 
       svg {
         fill: var(--ds-text-inverse);
-        // color: var(--ds-text-inverse);
       }
 
       span {
@@ -433,17 +423,16 @@
   }
 }
 
-// Task Members
 .task-members {
   display: flex;
   flex-wrap: wrap;
-  // align-items: center;
   justify-content: right;
   float: right;
   margin-right: rem(-4px);
   margin-bottom: rem(4px);
   height: rem(24px);
   gap: rem(4px);
+  // align-items: center;
 
   .task-member-avatar {
     border: 0;
@@ -462,12 +451,5 @@
     & :hover {
       opacity: 0.8;
     }
-
-    // .member-initials {
-    //     font-size: rem(10px);
-    //     font-weight: $group-font-weight-regular;
-    //     color: var(--ds-text);
-    //     text-transform: uppercase;
-    // }
   }
 }
