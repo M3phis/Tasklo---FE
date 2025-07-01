@@ -8,11 +8,11 @@ import { userService } from '../services/user'
 import AddIcon from '@atlaskit/icon/glyph/add'
 import MoreIcon from '@atlaskit/icon/glyph/more'
 import CrossIcon from '@atlaskit/icon/glyph/cross'
+import { use } from 'react'
 
 export function GroupPreview({
   group,
   board,
-  boardId,
   onUpdateList,
   onRemoveList,
   onUpdateTask,
@@ -31,7 +31,9 @@ export function GroupPreview({
   const menuTriggerRef = useRef(null)
   const formRef = useRef(null)
   const containerRef = useRef(null)
+  const tasksContainerRef = useRef(null)
   const titleInputRef = useRef(null)
+  const taskInputRef = useRef(null)
 
   useClickAway(containerRef, (event) => {
     if (isEditing) {
@@ -74,8 +76,14 @@ export function GroupPreview({
   })
 
   useEffect(() => {
-    if (isAddingTask && containerRef.current) {
-      containerRef.current.scrollTop = containerRef.current.scrollHeight
+    if (isAddingTask && tasksContainerRef.current) {
+      tasksContainerRef.current.scrollTop = tasksContainerRef.current.scrollHeight
+    }
+  }, [isAddingTask])
+
+  useEffect(() => {
+    if (isAddingTask && taskInputRef.current) {
+      taskInputRef.current.focus()
     }
   }, [isAddingTask])
 
@@ -107,15 +115,17 @@ export function GroupPreview({
       checklists: [],
     }
     onAddTask(group.id, newTask)
-
-    if (containerRef.current) {
-      containerRef.current.scrollTo({
-        top: containerRef.current.scrollHeight,
-        behavior: 'smooth',
-      })
-    }
     setTaskTitle('')
-    setIsAddingTask(false)
+
+    setTimeout(() => {
+      if (tasksContainerRef.current) {
+        tasksContainerRef.current.scrollTop = tasksContainerRef.current.scrollHeight
+      }
+      if (taskInputRef.current) {
+        taskInputRef.current.focus()
+      }
+    }, 50)
+
   }
 
   function handleTitleClick(ev) {
@@ -223,7 +233,7 @@ export function GroupPreview({
         </button>
       </div>
 
-      <div className="tasks-container">
+      <div className={`tasks-container ${isAddingTask ? 'form-active' : ''}`} ref={tasksContainerRef}>
         <TaskList
           tasks={group.tasks}
           group={group}
@@ -244,6 +254,7 @@ export function GroupPreview({
               style={group.style || {}}
             >
               <input
+                ref={taskInputRef}
                 type="text"
                 value={taskTitle}
                 onChange={(ev) => setTaskTitle(ev.target.value)}

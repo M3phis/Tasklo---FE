@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react'
+
 import CrossIcon from '@atlaskit/icon/glyph/cross'
 
 export function GroupListMenu({

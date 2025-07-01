@@ -8,7 +8,6 @@ import {
 
 import ClockIcon from '@atlaskit/icon/core/clock'
 import DeleteIcon from '@atlaskit/icon/core/delete'
-// import ArchiveBoxIcon from '@atlaskit/icon/core/archive-box'
 
 export function TaskQuickEdit({
   task,
@@ -128,18 +127,6 @@ export function TaskQuickEdit({
     autoResizeTextarea(event.target)
   }
 
-  function handleKeyDown(ev) {
-    if (ev.key === 'Escape') {
-      if (activeModal) {
-        setActiveModal(null)
-        setModalTriggerRef(null)
-      } else {
-        setTitleToEdit(task.title)
-        onClose()
-      }
-    }
-  }
-
   function handleCancelEdit() {
     setTitleToEdit(task.title)
     onClose()
@@ -169,32 +156,25 @@ export function TaskQuickEdit({
     let finalY = rect.bottom + gap
     let alignAbove = false
 
-    // Special handling for very tall modals (like dates modal)
     if (modalHeight > 600) {
-      // Check if modal fits above
       if (spaceAbove >= modalHeight) {
         finalY = rect.top - gap
         alignAbove = true
       }
-      // Check if modal fits below
       else if (spaceBelow >= modalHeight) {
         finalY = rect.bottom + gap
         alignAbove = false
       }
-      // Modal doesn't fit in either direction - position for best visibility
       else {
         if (spaceAbove > spaceBelow) {
-          // More space above - position at top of viewport
           finalY = gap
           alignAbove = false
         } else {
-          // More space below or equal - position to show as much as possible
           finalY = Math.max(gap, viewportHeight - modalHeight - gap)
           alignAbove = false
         }
       }
     } else {
-      // Original logic for smaller modals
       if (spaceBelow >= modalHeight) {
         finalY = rect.bottom + gap
         alignAbove = false
@@ -212,7 +192,6 @@ export function TaskQuickEdit({
       }
     }
 
-    // Horizontal positioning logic
     if (rect.left + modalWidth > viewportWidth) {
       finalX = Math.max(gap, rect.right - modalWidth)
     } else if (rect.left < gap) {
@@ -238,11 +217,9 @@ export function TaskQuickEdit({
       const viewportWidth = window.innerWidth
       const gap = 4
 
-      // Use estimated height for initial positioning
       const estimatedHeight = ESTIMATED_MODAL_HEIGHTS[modalType] || 300
       const modalWidth = 304
 
-      // Calculate initial position
       const position = calculateModalPosition(rect, estimatedHeight, modalWidth, viewportHeight, viewportWidth, gap)
 
       setModalPosition(position)

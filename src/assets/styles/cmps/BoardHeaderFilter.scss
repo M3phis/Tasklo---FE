@@ -5,8 +5,8 @@
     width: rem(384px);
     max-height: rem(819px);
     background: var(--ds-background-input);
-    display: flex; 
-    flex-direction: column; 
+    display: flex;
+    flex-direction: column;
     box-shadow: var(--ds-box-shadow);
     z-index: 1000;
     border-radius: rem(8px);
@@ -25,7 +25,6 @@
     }
 }
 
-// Header section
 .filter-header {
     display: flex;
     align-items: center;
@@ -60,10 +59,6 @@
         justify-content: center;
         transition: background-color 0.1s ease;
 
-        // &:hover {
-        //   background: var(--ds-background-neutral-hovered);
-        // }
-
         svg {
             width: rem(16px);
             height: rem(16px);
@@ -71,7 +66,6 @@
     }
 }
 
-// Filter count bar
 .filter-count-inline {
     display: flex;
     align-items: center;
@@ -134,12 +128,11 @@
         margin: 0;
 
         &:hover {
-            text-decoration: underline;
+            background-color: var(--ds-background-neutral-subtle-hovered);
         }
     }
 }
 
-// Main content area
 .filter-content {
     flex: 1;
     overflow-y: auto;
@@ -156,14 +149,9 @@
     &::-webkit-scrollbar-thumb {
         background: var(--ds-background-accent-gray-subtle);
         border-radius: rem(4px);
-
-        // &:hover {
-        //   background: var(--ds-background-accent-gray-bolder);
-        // }
     }
 }
 
-// Filter sections
 .filter-section {
     margin-bottom: rem(24px);
 
@@ -182,7 +170,6 @@
     }
 }
 
-// Keyword input
 .filter-input-wrapper {
     position: relative;
     margin-bottom: rem(4px);
@@ -229,7 +216,6 @@
     line-height: rem(16px);
 }
 
-// Filter options
 .filter-options {
     display: flex;
     flex-direction: column;
@@ -246,10 +232,6 @@
     border-radius: rem(6px);
     transition: background-color 0.15s ease;
     position: relative;
-
-    //   &:hover {
-    //     background: var(--ds-background-neutral-subtle-hovered);
-    //   }
 
     .filter-checkbox {
         width: rem(16px);
@@ -269,17 +251,13 @@
                 position: absolute;
                 left: rem(3px);
                 top: rem(0px);
+                border-width: 0 rem(2px) rem(2px) 0;
+                transform: rotate(45deg);
                 // width: rem(6px);
                 // height: rem(10px);
                 // border: solid var(--ds-text-inverse);
-                border-width: 0 rem(2px) rem(2px) 0;
-                transform: rotate(45deg);
             }
         }
-
-        // &:hover {
-        //   border-color: var(--ds-border-brand);
-        // }
     }
 
     .filter-option-text {
@@ -290,7 +268,6 @@
     }
 }
 
-// Icons in options
 .filter-icon {
     width: rem(16px);
     height: rem(16px);
@@ -315,12 +292,10 @@
     }
 }
 
-// Member avatar
 .filter-member-avatar {
     width: rem(24px);
     height: rem(24px);
     border-radius: 50%;
-    // background: var(--ds-background-accent-blue-bolder);
     color: var(--ds-text-inverse);
     display: flex;
     align-items: center;
@@ -330,7 +305,6 @@
     flex-shrink: 0;
 }
 
-// Date indicators
 .filter-date-indicator {
     display: flex;
     align-items: center;
@@ -366,9 +340,7 @@
     padding: rem(8px) rem(12px);
     flex: 1;
     border-radius: rem(3px);
-    // display: block;
 
-    // For dropdown items
     &.dropdown-item {
         flex: 1;
         margin-left: rem(8px);
@@ -498,32 +470,6 @@
                     line-height: 1.2;
                 }
             }
-        }
-    }
-}
-
-// Actions section
-.filter-actions {
-    padding: rem(20px);
-    border-top: rem(1px) solid var(--ds-border);
-    background: var(--ds-background-accent-gray-subtlest);
-
-    .filter-clear-btn {
-        width: 100%;
-        padding: rem(12px);
-        background: none;
-        border: rem(2px) solid var(--ds-border-input);
-        border-radius: rem(6px);
-        color: var(--ds-text-subtle);
-        font-size: rem(14px);
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.15s ease;
-
-        &:hover {
-            background: var(--ds-background-input);
-            //   border-color: var(--ds-border-brand);
-            //   color: var(--ds-text-brand);
         }
     }
 }

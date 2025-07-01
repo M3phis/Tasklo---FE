@@ -6,8 +6,6 @@ import StarStarredIcon from '@atlaskit/icon/core/star-starred'
 import PersonAddIcon from '@atlaskit/icon/core/person-add'
 import ShowMoreHorizontalIcon from '@atlaskit/icon/core/show-more-horizontal'
 import FilterIcon from '@atlaskit/icon/core/filter'
-import CalendarIcon from '@atlaskit/icon/core/calendar'
-import AutomationIcon from '@atlaskit/icon/core/automation'
 
 export function BoardHeader({
   board,
@@ -52,9 +50,9 @@ export function BoardHeader({
   function handleKeyDown(ev) {
     if (ev.key === 'Enter') {
       ev.preventDefault()
-      ev.target.blur() // This will trigger handleTitleBlur
+      ev.target.blur()
     } else if (ev.key === 'Escape') {
-      setTitleToEdit(board.title) // Reset to original
+      setTitleToEdit(board.title)
       setIsEditingTitle(false)
     }
   }
@@ -100,10 +98,6 @@ export function BoardHeader({
           <div className="users-section">
             <AvatarList users={board.members || []} />
           </div>
-
-          {/* <button className="header-btn">
-                        <AutomationIcon label="Automation" color="#172B4D" />
-                    </button> */}
 
           {activeFilterCount > 0 ? (
             <div

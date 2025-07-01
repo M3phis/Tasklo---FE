@@ -14,8 +14,8 @@
     display: flex;
     align-items: center;
     height: rem(32px);
-    // gap: rem(8px);
     flex: 1;
+    // gap: rem(8px);
 
     .board-title-display {
       background: transparent;
@@ -84,7 +84,6 @@
       }
     }
 
-    // Override star icon color specifically
     .header-btn svg {
       color: var(--dynamic-header-color);
     }

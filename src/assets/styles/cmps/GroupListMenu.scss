@@ -1,22 +1,22 @@
 .group-list-menu {
-    // position: fixed;
     background-color: var(--ds-background-input);
     color: var(--ds-text);
-    // inset: rem(164px) auto auto rem(696px);
     width: rem(304px);
     overflow: hidden;
     border-radius: $group-border-radius-medium;
     outline: 0;
     box-shadow: rem(0px) rem(8px) rem(12px) rgba(9, 30, 66, 0.15), rem(0px) rem(0px) rem(1px) rgba(9, 30, 66, 0.31);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    // position: fixed;
+    // inset: rem(164px) auto auto rem(696px);
 
     .group-list-menu-header {
         display: grid;
         position: relative;
-        grid-template-columns: rem(32px) 1fr rem(32px);
-        align-items: center;
-        padding: rem(4px) rem(8px);
         text-align: center;
+        align-items: center;
+        grid-template-columns: rem(32px) 1fr rem(32px);
+        padding: rem(4px) rem(8px);
         line-height: $group-line-height-base;
 
         .group-list-menu-title {
@@ -46,19 +46,17 @@
             width: $group-button-size;
             height: $group-button-size;
             border-radius: $group-border-radius-medium;
+            background-color: var(--ds-background-input);
             color: var(--ds-icon-subtle);
-            font-size: $group-font-size-base;
-            line-height: $group-line-height-base;
             z-index: 2;
             margin: 0;
             padding: 0;
             border: none;
             outline: none;
-            background-color: var(--ds-background-input);
             transition: background-color 0.2s ease, color 0.2s ease;
 
             &:hover {
-                background-color: var(--ds-background-neutral-hovered); //check
+                background-color: var(--ds-background-neutral-hovered); 
                 color: var(--ds-icon);
                 text-decoration: none;
             }
@@ -66,7 +64,6 @@
             svg {
                 display: inline-block;
                 flex-shrink: 0;
-                line-height: 1;
                 width: $group-icon-size-small;
                 height: $group-icon-size-small;
             }
@@ -76,8 +73,8 @@
     .group-list-menu-content {
         width: rem(304px);
         padding: rem(12px);
-        padding-top: 0;
         color: var(--ds-text);
+        padding-top: 0;
         background-color: var(--ds-background-input);
         overflow-x: hidden;
         overflow-y: auto;
@@ -104,7 +101,6 @@
 
             &:hover {
                 border: none;
-                // background-color: transparent;
                 box-shadow: none;
                 background-color: var(--ds-background-neutral-subtle-hovered); 
                 color: var(--ds-text);
