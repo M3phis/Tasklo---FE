@@ -66,10 +66,9 @@ export function BoardDetails() {
         store.dispatch({
           type: 'ADD_GROUP_SOCKET',
           group: {
-            id: data.id || `g${Date.now()}`,
+            ...data,
             title: data.title || 'New Group',
             tasks: data.tasks || [],
-            ...data,
           },
         })
       }
@@ -102,9 +101,8 @@ export function BoardDetails() {
           type: 'ADD_TASK_SOCKET',
           groupId: data.groupId,
           task: {
-            id: data.id || `c${Date.now()}`,
-            title: data.title || 'New Task',
             ...data,
+            title: data.title || 'New Task',
           },
         })
       }
@@ -268,20 +266,21 @@ export function BoardDetails() {
   let taskIsOpen = true
 
   function handleAddGroup(newGroup) {
-    const updatedBoard = {
-      ...board,
-      groups: [...board.groups, newGroup],
-    }
+     console.log('🔵 Adding group via socket only')
+    // const updatedBoard = {
+    //   ...board,
+    //   groups: [...board.groups, newGroup],
+    // }
 
     socketService.addGroup(boardId, newGroup)
 
-    return updateBoard(updatedBoard)
-      .then(() => showSuccessMsg('List added successfully'))
-      .catch((err) => {
-        console.error('Error adding list:', err)
-        showErrorMsg('Failed to add list')
-        throw err
-      })
+    // return updateBoard(updatedBoard)
+    //   .then(() => showSuccessMsg('List added successfully'))
+    //   .catch((err) => {
+    //     console.error('Error adding list:', err)
+    //     showErrorMsg('Failed to add list')
+    //     throw err
+    //   })
   }
 
   function handleUpdateList(updatedList) {
@@ -305,21 +304,22 @@ export function BoardDetails() {
   }
 
   function handleRemoveList(listId) {
-    const updatedGroups = board.groups.filter((group) => group.id !== listId)
+    // const updatedGroups = board.groups.filter((group) => group.id !== listId)
 
-    const updatedBoard = {
-      ...board,
-      groups: updatedGroups,
-    }
+    // const updatedBoard = {
+    //   ...board,
+    //   groups: updatedGroups,
+    // }
 
     socketService.deleteGroup(boardId, listId)
 
-    updateBoard(updatedBoard)
-      .then(() => showSuccessMsg('List removed'))
-      .catch((err) => {
-        console.log('err', err)
-        showErrorMsg('Cannot remove list')
-      })
+    // updateBoard(updatedBoard)
+    //   .then(() => showSuccessMsg('List removed'))
+    //   .catch((err) => {
+    //     console.log('err', err)
+    //     showErrorMsg('Cannot remove list')
+    //   })
+     showSuccessMsg('List removed')
   }
 
   function handleUpdateTask(updatedGroup) {
@@ -355,29 +355,29 @@ export function BoardDetails() {
   }
 
   function handleRemoveTask(groupId, taskId) {
-    const updatedGroups = board.groups.map((group) => {
-      if (group.id === groupId) {
-        return {
-          ...group,
-          tasks: group.tasks.filter((task) => task.id !== taskId),
-        }
-      }
-      return group
-    })
-    const updatedBoard = {
-      ...board,
-      groups: updatedGroups,
-    }
+    // const updatedGroups = board.groups.map((group) => {
+    //   if (group.id === groupId) {
+    //     return {
+    //       ...group,
+    //       tasks: group.tasks.filter((task) => task.id !== taskId),
+    //     }
+    //   }
+    //   return group
+    // })
+    // const updatedBoard = {
+    //   ...board,
+    //   groups: updatedGroups,
+    // }
 
     socketService.deleteTask(boardId, taskId, groupId)
 
-    return updateBoard(updatedBoard)
-      .then(() => showSuccessMsg('Task removed successfully'))
-      .catch((err) => {
-        console.log('Error removing task:', err)
-        showErrorMsg('Cannot remove task')
-        throw err
-      })
+    // return updateBoard(updatedBoard)
+    //   .then(() => showSuccessMsg('Task removed successfully'))
+    //   .catch((err) => {
+    //     console.log('Error removing task:', err)
+    //     showErrorMsg('Cannot remove task')
+    //     throw err
+    //   })
   }
 
   function handleBoardUpdate(updatedBoard) {

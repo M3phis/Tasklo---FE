@@ -60,8 +60,21 @@ function createSocketService() {
 
     const socketService = {
         setup() {
-            socket = io(baseUrl)
             const user = userService.getLoggedinUser()
+
+            const loginToken = document.cookie
+                .split('; ')
+                .find(row => row.startsWith('loginToken='))
+                ?.split('=')[1]
+
+            console.log('Setting up socket with loginToken:', loginToken ? 'found' : 'not found')
+
+            socket = io(baseUrl, {
+                auth: {
+                    loginToken: loginToken
+                }
+            })
+
             if (user) this.login(user._id)
         },
         on(eventName, cb) {

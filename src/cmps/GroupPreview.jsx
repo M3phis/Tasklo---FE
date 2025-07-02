@@ -13,11 +13,13 @@ import { use } from 'react'
 export function GroupPreview({
   group,
   board,
+  boardId,
+  socketService,
   onUpdateList,
   onRemoveList,
   onUpdateTask,
   onRemoveTask,
-  onAddTask,
+  // onAddTask,
   onOpenQuickEdit,
   isLabelsExtended,
   setIsLabelsExtended
@@ -44,34 +46,8 @@ export function GroupPreview({
     }
 
     if (isAddingTask) {
-      if (taskTitle.trim()) {
-        const loggedInUser = userService.getLoggedinUser()
-
-        const newTask = {
-          id: utilService.makeId(),
-          title: taskTitle,
-          status: 'in-progress',
-          description: '',
-          comments: [],
-          memberIds: [],
-          labelIds: [],
-          createdAt: Date.now(),
-          dueDate: null,
-          byMember: loggedInUser || {
-            _id: 'guest',
-            username: 'guest',
-            fullname: 'Guest User',
-            imgUrl: 'https://cdn2.iconfinder.com/data/icons/audio-16/96/user_avatar_profile_login_button_account_member-1024.png',
-          },
-          style: {},
-          groupId: group.id,
-          attachments: [],
-          checklists: [],
-        }
-        onAddTask(group.id, newTask)
-        setTaskTitle('')
-      }
       setIsAddingTask(false)
+      setTaskTitle('')
     }
   })
 
@@ -93,8 +69,7 @@ export function GroupPreview({
 
     const loggedInUser = userService.getLoggedinUser()
 
-    const newTask = {
-      id: utilService.makeId(),
+    const taskData = {
       title: taskTitle,
       status: 'in-progress',
       description: '',
@@ -110,22 +85,19 @@ export function GroupPreview({
         imgUrl: 'https://cdn2.iconfinder.com/data/icons/audio-16/96/user_avatar_profile_login_button_account_member-1024.png',
       },
       style: {},
-      groupId: group.id,
       attachments: [],
       checklists: [],
     }
-    onAddTask(group.id, newTask)
+    socketService.addTask(boardId, group.id, taskData)
+
     setTaskTitle('')
+    setIsAddingTask(false)
 
     setTimeout(() => {
       if (tasksContainerRef.current) {
         tasksContainerRef.current.scrollTop = tasksContainerRef.current.scrollHeight
       }
-      if (taskInputRef.current) {
-        taskInputRef.current.focus()
-      }
     }, 50)
-
   }
 
   function handleTitleClick(ev) {

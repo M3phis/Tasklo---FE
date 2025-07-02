@@ -101,11 +101,12 @@ export function GroupList({
                       group={group}
                       board={board}
                       boardId={boardId}
+                      socketService={socketService}
                       onUpdateList={onUpdateList}
                       onRemoveList={onRemoveList}
                       onUpdateTask={onUpdateTask}
                       onRemoveTask={onRemoveTask}
-                      onAddTask={handleAddTask}
+                      // onAddTask={handleAddTask}
                       isLabelsExtended={isLabelsExtended}
                       setIsLabelsExtended={setIsLabelsExtended}
                     />

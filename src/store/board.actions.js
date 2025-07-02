@@ -168,10 +168,9 @@ export function handleSocketGroupAdded(data) {
         type: 'ADD_GROUP_SOCKET',
         boardId,
         group: {
-            id: group.id || `g${Date.now()}`,
+            ...group,
             title: group.title || 'New Group',
             tasks: group.tasks || [],
-            ...group
         }
     })
 }
@@ -183,9 +182,8 @@ export function handleSocketTaskAdded(data) {
         boardId,
         groupId,
         task: {
-            id: task.id || `c${Date.now()}`,
+            ...task,
             title: task.title || 'New Task',
-            ...task
         }
     })
 }
