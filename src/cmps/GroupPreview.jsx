@@ -91,7 +91,7 @@ export function GroupPreview({
     socketService.addTask(boardId, group.id, taskData)
 
     setTaskTitle('')
-    setIsAddingTask(false)
+    // setIsAddingTask(false)
 
     setTimeout(() => {
       if (tasksContainerRef.current) {
