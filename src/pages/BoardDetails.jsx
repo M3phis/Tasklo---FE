@@ -191,7 +191,7 @@ export function BoardDetails() {
       socketService.off(SOCKET_EVENT_TASK_MOVED, handleTaskMoved)
 
       socketService.off(SOCKET_EVENT_BOARD_UPDATED, handleBoardUpdated)
-      socketService.on(SOCKET_EVENT_ACTIVITY_ADDED, handleActivityAdded)
+      socketService.off(SOCKET_EVENT_ACTIVITY_ADDED, handleActivityAdded)
     }
   }, [boardId])
 
