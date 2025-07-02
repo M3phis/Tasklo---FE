@@ -41,10 +41,9 @@ export function GroupList({
       style: {},
     }
 
-    onAddGroup(newGroup).then(() => {
-      setGroupTitle('')
-      setIsAddingGroup(false)
-    })
+    onAddGroup(newGroup)
+    setGroupTitle('')
+    setIsAddingGroup(false)
   }
 
   function handleAddTask(groupId, taskData) {
