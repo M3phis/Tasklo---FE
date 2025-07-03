@@ -20,7 +20,8 @@
     padding: 0 8px;
     transition: border 0.2s;
     height: 30px;
-    width: 736px;
+    width: 768px;
+    margin-left: 16px;
 
     &:focus-within {
       border-color: #0079bf;

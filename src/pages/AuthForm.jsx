@@ -76,7 +76,13 @@ export function AuthForm({ mode = 'signup' }) {
         </div>
 
         <div className="social-login-buttons">
-          <button type="button" className="social-btn google">
+          <button
+            type="button"
+            className="social-btn google"
+            onClick={() =>
+              (window.location.href = 'https://tasklo.onrender.com/auth/google')
+            }
+          >
             <FcGoogle size={20} /> Google
           </button>
           <button type="button" className="social-btn microsoft">

@@ -37,7 +37,7 @@ export function CreateMenu({
 
   return (
     <div className="create-menu" ref={menuRef}>
-      <div className="menu-item" onClick={onCreateBoard}>
+      <div className="create-menu-item" onClick={onCreateBoard}>
         <div className="menu-item-header">
           <FaTrello className="icon" />
           <h4>Create board</h4>
@@ -48,7 +48,7 @@ export function CreateMenu({
         </p>
       </div>
 
-      <div className="menu-item" onClick={onCreateAI}>
+      <div className="create-menu-item" onClick={onCreateAI}>
         <div className="menu-item-header">
           <FaRobot className="icon" />
           <h4>Create with AI</h4>

@@ -22,9 +22,6 @@ export function HomePage() {
             Escape the clutter and chaos—unleash your productivity with Tasklo.
           </p>
           <form className="landing-signup-form">
-            <div className="input-wrapper">
-              <input name="email" type="email" placeholder="Email" />
-            </div>
             <Link to="/signup">
               <button type="submit">Sign up – it’s free!</button>
             </Link>

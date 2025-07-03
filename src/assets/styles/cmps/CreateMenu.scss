@@ -30,7 +30,7 @@
   z-index: 1;
 }
 
-.menu-item {
+.create-menu-item {
   margin-bottom: 12px;
   margin-inline: 6px;
   padding-block: 5px;
@@ -54,7 +54,7 @@
   align-items: center;
   gap: 5px;
 }
-.menu-item:hover {
+.create-menu-item:hover {
   cursor: pointer;
   background-color: rgba(9, 30, 66, 0.06);
 }
