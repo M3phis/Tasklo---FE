@@ -9,6 +9,7 @@
   background: #fff;
   box-sizing: border-box;
   border-bottom: none;
+  margin-top: 0;
   margin-bottom: 0;
 
   .header-left {
@@ -52,16 +53,15 @@
       font-size: 1.05em;
     }
     .cta-btn {
-      background: #0065ff;
+      background: rgb(0, 101, 255);
       color: #fff;
-      font-weight: 800;
+      font-weight: 700;
       border: none;
-      border-radius: 6px;
       padding: 0 32px;
       font-size: 1.18em;
       cursor: pointer;
       white-space: nowrap;
-      height: 52px;
+      height: 64px;
       display: flex;
       align-items: center;
       box-shadow: 0 2px 8px rgba(0, 82, 204, 0.08);
@@ -92,5 +92,46 @@
     text-decoration: underline;
     margin-left: 4px;
     font-weight: 500;
+  }
+}
+
+@media (max-width: 600px) {
+  .landing-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+    height: 56px;
+    .header-left {
+      flex: 0 0 auto;
+      .logo {
+        margin-right: 0;
+        svg {
+          width: 90px;
+          height: 36px;
+        }
+      }
+    }
+    .header-right {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      .login-link {
+        font-size: 1em;
+        margin-right: 0;
+        padding: 0 8px;
+      }
+      .cta-btn {
+        font-size: 1em;
+        padding: 0 12px;
+        height: 40px;
+        min-width: 90px;
+      }
+    }
+  }
+  .hide-on-mobile {
+    display: none !important;
   }
 }

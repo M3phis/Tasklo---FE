@@ -25,15 +25,15 @@ export function CreateBoardWithAI({
 
       let top, left;
 
-      // Responsive: On small screens, always open full width below trigger
+      // Responsive: On small screens, use absolute and allow page scroll
       if (screenWidth < 600) {
-        top = rect.bottom + 8;
-        left = 8;
-        panel.style.position = 'fixed';
-        panel.style.width = `calc(100vw - 16px)`;
-        panel.style.maxWidth = `95vw`;
-        panel.style.top = `${top}px`;
+        top = window.scrollY + rect.bottom + 8;
+        left = 0;
+        panel.style.position = 'absolute';
+        panel.style.width = '100vw';
+        panel.style.maxWidth = '100vw';
         panel.style.left = `${left}px`;
+        panel.style.top = `${top}px`;
         panel.style.zIndex = 9999;
         return;
       } else if (placement === 'right') {

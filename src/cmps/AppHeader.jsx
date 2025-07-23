@@ -27,7 +27,6 @@ export function AppHeader() {
     loadBoards(filterBy)
   }, [filterBy])
 
-  // Close menu on route change
   useEffect(() => {
     setIsMenuOpen(false)
   }, [location.pathname])
@@ -39,7 +38,7 @@ export function AppHeader() {
   async function onLogout() {
     try {
       await logout()
-      navigate('/') // Always go to home page after logout
+      navigate('/')
       showSuccessMsg(`Bye now`)
     } catch (err) {
       showErrorMsg('Cannot logout')
@@ -49,6 +48,79 @@ export function AppHeader() {
   if (hideHeaderPaths.includes(location.pathname)) return null
   if (isRootPath) return <LandingHeader />
 
+  // Use window width to determine layout
+  const isDesktop = typeof window !== 'undefined' && window.innerWidth > 600;
+
+  if (isDesktop) {
+    return (
+      <header className="app-header main-container full">
+        <div className="header-flex-row">
+          <div className="header-left">
+            <NavLink to="/board" className="logo">
+              <div className="tasklo-logo">
+                <div className="logo-icon">
+                  <div className="bar bar-left"></div>
+                  <div className="bar bar-right"></div>
+                </div>
+                <div className="logo-text">Tasklo</div>
+              </div>
+            </NavLink>
+          </div>
+          <div className="header-center-group">
+            <BoardFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
+          </div>
+          <div className="header-right">
+            <div className={`nav-buttons${isMenuOpen ? ' open' : ''}`}>
+              <button>
+                <MegaphoneIcon label="" color="#455570" />
+              </button>
+              <button>
+                <NotificationIcon label="" color="#455570" />
+              </button>
+              <button>
+                <QuestionCircleIcon label="" color="#455570" />
+              </button>
+              <div className="user-menu" onClick={() => setShowUserMenu((prev) => !prev)} style={{ cursor: 'pointer', position: 'relative' }}>
+                {user && (user.username || user.fullname)
+                  ? (user.username ? user.username[0] : user.fullname[0]).toUpperCase()
+                  : 'G'}
+                {showUserMenu && (
+                  <div className="user-menu-dropdown" style={{
+                    position: 'absolute',
+                    top: '110%',
+                    right: 0,
+                    background: '#fff',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+                    borderRadius: '8px',
+                    zIndex: 2000,
+                    minWidth: '120px',
+                    padding: '8px 0',
+                  }}>
+                    <button
+                      style={{
+                        width: '100%',
+                        background: 'none',
+                        border: 'none',
+                        padding: '10px 16px',
+                        textAlign: 'left',
+                        cursor: 'pointer',
+                        fontSize: '1em',
+                      }}
+                      onClick={onLogout}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+    )
+  }
+
+  // Mobile: original nav structure
   return (
     <header className="app-header main-container full">
       <nav className="">
@@ -61,11 +133,9 @@ export function AppHeader() {
             <div className="logo-text">Tasklo</div>
           </div>
         </NavLink>
-
         <div className="header-center-group">
           <BoardFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
         </div>
-
         <button
           className="hamburger-menu"
           aria-label="Open menu"
@@ -73,16 +143,13 @@ export function AppHeader() {
         >
           <span></span>
         </button>
-
         <div className={`nav-buttons${isMenuOpen ? ' open' : ''}`}>
           <button>
             <MegaphoneIcon label="" color="#455570" />
           </button>
-
           <button>
             <NotificationIcon label="" color="#455570" />
           </button>
-
           <button>
             <QuestionCircleIcon label="" color="#455570" />
           </button>

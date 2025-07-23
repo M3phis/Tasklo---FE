@@ -60,7 +60,7 @@ export function LandingHeader() {
       <header className="landing-header">
         <div className="header-left">
           <div className="logo">{LOGO}</div>
-          <nav className="main-nav">
+          <nav className="main-nav hide-on-mobile">
             <button className="nav-btn">
               Features <FaChevronDown />
             </button>
@@ -81,7 +81,7 @@ export function LandingHeader() {
             Log in
           </Link>
           <Link to="/board" className="cta-btn">
-            Try as a guest for free!
+            Try as guest
           </Link>
         </div>
       </header>
