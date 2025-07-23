@@ -43,8 +43,8 @@ async function addActivity(boardId, activity) {
   return httpService.post(`board/${boardId}/activity`, activity)
 }
 
-async function createBoardWithAI({ description, timeline }) {
-  return httpService.post('ai/board', { description, timeline })
+async function createBoardWithAI({ description, timeline, user }) {
+  return httpService.post('ai/board', { description, timeline, user })
 }
 
 async function moveCard(boardId, groupId, taskId, newGroupId) {

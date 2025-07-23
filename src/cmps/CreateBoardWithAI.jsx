@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { boardService } from '../services/board'
 import { addBoard } from '../store/board.actions.js'
+import { useSelector } from 'react-redux'
 
 export function CreateBoardWithAI({
   onClose,
@@ -13,6 +14,7 @@ export function CreateBoardWithAI({
   const [isLoading, setIsLoading] = useState(false)
   const panelRef = useRef()
   const navigate = useNavigate()
+  const user = useSelector((storeState) => storeState.userModule.user)
 
   useEffect(() => {
     if (anchorRef?.current && panelRef.current) {
@@ -25,7 +27,7 @@ export function CreateBoardWithAI({
 
       let top, left;
 
-      // Responsive: On small screens, use absolute and allow page scroll
+   
       if (screenWidth < 600) {
         top = window.scrollY + rect.bottom + 8;
         left = 0;
@@ -80,6 +82,7 @@ export function CreateBoardWithAI({
       const board = await boardService.createBoardWithAI({
         description,
         timeline,
+        user, 
       })
 
       const savedBoard = await addBoard(board)
