@@ -7,7 +7,7 @@ export function AvatarList({ users = [] }) {
 
     return (
         <div className="avatar-list">
-            {users.map(user => (
+            {users.filter(user => user && user._id).map(user => (
                 <div key={user._id} className="avatar-wrapper">
                     <AvatarPreview user={user} size="medium" showTooltip={true} />
                 </div>

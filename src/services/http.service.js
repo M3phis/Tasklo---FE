@@ -1,7 +1,6 @@
 import Axios from 'axios'
 
-const BASE_URL = import.meta.env.VITE_API_URL || '/api/'
-
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3031/api/'
 const axios = Axios.create({ withCredentials: true })
 
 export const httpService = {

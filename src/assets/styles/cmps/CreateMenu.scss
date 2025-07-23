@@ -21,13 +21,15 @@
 }
 
 .create-menu {
-  position: absolute;
-  top: 120%;
-  width: 300px;
+  position: fixed !important;
+  width: 320px !important;
+  max-width: 95vw !important;
   background-color: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
-  z-index: 1;
+  z-index: 9999;
+  left: 0; // JS will override
+  top: 0; // JS will override
 }
 
 .create-menu-item {
@@ -57,4 +59,13 @@
 .create-menu-item:hover {
   cursor: pointer;
   background-color: rgba(9, 30, 66, 0.06);
+}
+
+@media (max-width: 600px) {
+  .create-board-panel,
+  .create-board-with-ai-panel {
+    max-height: 80vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
 }

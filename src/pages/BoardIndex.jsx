@@ -17,8 +17,22 @@ import { FaS } from 'react-icons/fa6'
 export function BoardIndex() {
   const dispatch = useDispatch()
   const boards = useSelector((storeState) => storeState.boardModule.boards)
+  const user = useSelector((storeState) => storeState.userModule.user)
   const [filterBy, setFilterBy] = useState(boardService.getEmptyFilter())
-  const starredBoards = boards.filter((board) => board.isStarred)
+
+  // Robust null checks for user, user._id, board.createdBy, and board.members
+  const userBoardFilter = (board) => {
+    if (!user || !user._id) {
+      // Guest: only show demo boards (createdBy is null or missing _id)
+      return !board.createdBy || !board.createdBy._id;
+    }
+    // Logged-in: only show boards where user is owner or member
+    const isOwner = board.createdBy && board.createdBy._id && (board.createdBy._id === user._id)
+    const isMember = Array.isArray(board.members) && board.members.some(member => member && member._id && member._id === user._id)
+    return isOwner || isMember
+  }
+
+  const starredBoards = boards.filter((board) => board.isStarred).filter(userBoardFilter)
 
   useEffect(() => {
     loadBoards()
@@ -85,7 +99,8 @@ export function BoardIndex() {
     setFilterBy((prevFilter) => ({ ...prevFilter, ...filterBy }))
   }
 
-  const filteredBoards = boardService.getFilteredBoards(boards, filterBy)
+  // Robust null checks for user, user._id, board.createdBy, and board.members
+  const filteredBoards = boardService.getFilteredBoards(boards, filterBy).filter(userBoardFilter)
 
   return (
     <section className="board-index">

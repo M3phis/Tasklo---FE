@@ -63,3 +63,40 @@
     }
   }
 }
+
+@media (max-width: 600px) {
+  .workspace-nav-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 0 2px;
+  }
+  .workspace-header {
+    margin-bottom: 6px;
+    font-size: 1.1em;
+    span {
+      width: 28px;
+      height: 28px;
+      font-size: 1em;
+      margin: 0 10px 0 0;
+      padding: 6px;
+    }
+  }
+  .nav-bar-boards {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
+    a {
+      width: 100%;
+      justify-content: flex-start;
+      font-size: 1.08rem;
+      padding: 12px 10px;
+      border-radius: 10px;
+      margin: 0;
+    }
+    svg {
+      margin-right: 8px;
+    }
+  }
+}

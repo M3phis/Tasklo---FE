@@ -26,3 +26,26 @@
   margin-top: rem(-2px);
   margin-bottom: rem(8px);
 }
+
+@media (max-width: 600px) {
+  .board-details {
+    min-height: 100vh;
+    grid-template-rows: auto 1fr;
+    padding: 0;
+  }
+  .board-content {
+    margin-top: 0;
+    padding: 0 2px;
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+  .lists-container {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: visible;
+    display: flex;
+    padding: 4px 0 44px 0;
+    margin: 0;
+    gap: 8px;
+  }
+}

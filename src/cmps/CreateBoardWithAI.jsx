@@ -16,33 +16,59 @@ export function CreateBoardWithAI({
 
   useEffect(() => {
     if (anchorRef?.current && panelRef.current) {
-      const rect = anchorRef.current.getBoundingClientRect()
-      const panel = panelRef.current
-      const panelWidth = 320
-      const screenWidth = window.innerWidth
+      const rect = anchorRef.current.getBoundingClientRect();
+      const panel = panelRef.current;
+      const panelWidth = 320;
+      const panelHeight = panel.offsetHeight;
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
 
-      panel.style.position = 'fixed'
-      panel.style.zIndex = 9999
+      let top, left;
 
-      if (placement === 'right') {
-        const top = rect.top
-        const left = rect.right + 8
-        panel.style.top = `${top}px`
-        panel.style.left =
-          left + panelWidth > screenWidth
-            ? `${screenWidth - panelWidth - 16}px`
-            : `${left}px`
+      // Responsive: On small screens, always open full width below trigger
+      if (screenWidth < 600) {
+        top = rect.bottom + 8;
+        left = 8;
+        panel.style.position = 'fixed';
+        panel.style.width = `calc(100vw - 16px)`;
+        panel.style.maxWidth = `95vw`;
+        panel.style.top = `${top}px`;
+        panel.style.left = `${left}px`;
+        panel.style.zIndex = 9999;
+        return;
+      } else if (placement === 'right') {
+        top = rect.top;
+        left = rect.right + 8;
+        if (left + panelWidth > screenWidth) {
+          left = rect.left - panelWidth - 8;
+          if (left < 8) left = screenWidth - panelWidth - 8;
+        }
+        if (top + panelHeight > screenHeight) {
+          top = screenHeight - panelHeight - 8;
+          if (top < 8) top = 8;
+        }
+        panel.style.width = `${panelWidth}px`;
+        panel.style.maxWidth = `95vw`;
       } else {
-        const top = rect.bottom + 8
-        const left =
-          rect.left + panelWidth > screenWidth
-            ? screenWidth - panelWidth - 16
-            : rect.left
-        panel.style.top = `${top}px`
-        panel.style.left = `${left}px`
+        top = rect.bottom + 8;
+        left = rect.left;
+        if (left + panelWidth > screenWidth) {
+          left = screenWidth - panelWidth - 16;
+        }
+        if (top + panelHeight > screenHeight) {
+          top = screenHeight - panelHeight - 8;
+          if (top < 8) top = 8;
+        }
+        panel.style.width = `${panelWidth}px`;
+        panel.style.maxWidth = `95vw`;
       }
+
+      panel.style.position = 'fixed';
+      panel.style.zIndex = 9999;
+      panel.style.top = `${top}px`;
+      panel.style.left = `${left}px`;
     }
-  }, [anchorRef, placement])
+  }, [anchorRef, placement]);
 
   async function handleSubmit(ev) {
     ev.preventDefault()

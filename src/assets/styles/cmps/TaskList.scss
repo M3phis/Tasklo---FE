@@ -17,3 +17,11 @@
   // scroll-behavior: smooth;
   // flex: 1;
 }
+
+@media (max-width: 600px) {
+  .task-list {
+    width: 100%;
+    padding: 0 2px;
+    row-gap: 6px;
+  }
+}

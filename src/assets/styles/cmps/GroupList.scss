@@ -149,3 +149,26 @@
     cursor: grabbing;
   }
 }
+
+@media (max-width: 600px) {
+  .group-list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding: 0 2px;
+    gap: 8px;
+  }
+  .group-list-header,
+  .add-group-btn,
+  .add-group-form {
+    min-width: 85vw;
+    max-width: 95vw;
+    width: 95vw;
+  }
+  .group-list-item {
+    min-width: 85vw;
+    max-width: 95vw;
+    width: 95vw;
+    padding: 0 2px;
+  }
+}

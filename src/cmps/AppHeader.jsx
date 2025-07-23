@@ -13,17 +13,24 @@ import { LandingHeader } from './LandingHeader.jsx'
 import { boardService } from '../services/board'
 
 export function AppHeader() {
-  let userLoggedIn = true
   const location = useLocation()
-  const isRootPath = location.pathname === '/'
-  const hideHeaderPaths = ['/signup', '/login', '/signup/details']
+  const navigate = useNavigate()
   const user = useSelector((storeState) => storeState.userModule.user)
   const [filterBy, setFilterBy] = useState(boardService.getEmptyFilter())
-  const navigate = useNavigate()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [showUserMenu, setShowUserMenu] = useState(false)
+
+  const isRootPath = location.pathname === '/'
+  const hideHeaderPaths = ['/signup', '/login', '/signup/details']
 
   useEffect(() => {
     loadBoards(filterBy)
   }, [filterBy])
+
+  // Close menu on route change
+  useEffect(() => {
+    setIsMenuOpen(false)
+  }, [location.pathname])
 
   function onSetFilterBy(filterBy) {
     setFilterBy((prevFilterBy) => ({ ...prevFilterBy, ...filterBy }))
@@ -32,14 +39,14 @@ export function AppHeader() {
   async function onLogout() {
     try {
       await logout()
-      navigate('/')
+      navigate('/') // Always go to home page after logout
       showSuccessMsg(`Bye now`)
     } catch (err) {
       showErrorMsg('Cannot logout')
     }
   }
-  if (hideHeaderPaths.includes(location.pathname)) return null
 
+  if (hideHeaderPaths.includes(location.pathname)) return null
   if (isRootPath) return <LandingHeader />
 
   return (
@@ -55,9 +62,19 @@ export function AppHeader() {
           </div>
         </NavLink>
 
-        <BoardFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
+        <div className="header-center-group">
+          <BoardFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
+        </div>
 
-        <div className="nav-buttons">
+        <button
+          className="hamburger-menu"
+          aria-label="Open menu"
+          onClick={() => setIsMenuOpen((prev) => !prev)}
+        >
+          <span></span>
+        </button>
+
+        <div className={`nav-buttons${isMenuOpen ? ' open' : ''}`}>
           <button>
             <MegaphoneIcon label="" color="#455570" />
           </button>
@@ -69,17 +86,40 @@ export function AppHeader() {
           <button>
             <QuestionCircleIcon label="" color="#455570" />
           </button>
-          <div className="user-menu">M</div>
+          <div className="user-menu" onClick={() => setShowUserMenu((prev) => !prev)} style={{ cursor: 'pointer', position: 'relative' }}>
+            {user && (user.username || user.fullname)
+              ? (user.username ? user.username[0] : user.fullname[0]).toUpperCase()
+              : 'G'}
+            {showUserMenu && (
+              <div className="user-menu-dropdown" style={{
+                position: 'absolute',
+                top: '110%',
+                right: 0,
+                background: '#fff',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+                borderRadius: '8px',
+                zIndex: 2000,
+                minWidth: '120px',
+                padding: '8px 0',
+              }}>
+                <button
+                  style={{
+                    width: '100%',
+                    background: 'none',
+                    border: 'none',
+                    padding: '10px 16px',
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                    fontSize: '1em',
+                  }}
+                  onClick={onLogout}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-        {/* {user && (
-          <div className="user-info">
-            <Link to={`user/${user._id}`}>
-              {user.imgUrl && <img src={user.imgUrl} />}
-              {user.fullname}
-            </Link>
-            <button onClick={onLogout}>logout</button>
-          </div> */}
-        {/* )} */}
       </nav>
     </header>
   )

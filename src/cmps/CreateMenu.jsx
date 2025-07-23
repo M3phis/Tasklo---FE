@@ -11,27 +11,46 @@ export function CreateMenu({
 
   useEffect(() => {
     if (anchorRef?.current && menuRef?.current) {
-      const rect = anchorRef.current.getBoundingClientRect()
-      const menu = menuRef.current
-      const menuWidth = 320
-      const screenWidth = window.innerWidth
+      const rect = anchorRef.current.getBoundingClientRect();
+      const menu = menuRef.current;
+      const menuWidth = 320;
+      const menuHeight = menu.offsetHeight;
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
 
-      menu.style.position = 'fixed'
-      menu.style.zIndex = 9999
-
-      const top = rect.bottom + 8
-      let left = rect.left
+      let top, left;
 
       if (placement === 'right') {
-        menu.style.top = `${rect.top}px`
-        menu.style.left = `${rect.right + 8}px`
-      } else {
-        if (rect.left + menuWidth > screenWidth) {
-          left = screenWidth - menuWidth - 16
+        top = rect.top;
+        left = rect.right + 8;
+
+        // If menu would overflow right, align to left of trigger
+        if (left + menuWidth > screenWidth) {
+          left = rect.left - menuWidth - 8;
+          // If still off-screen, clamp to right edge
+          if (left < 8) left = screenWidth - menuWidth - 8;
         }
-        menu.style.top = `${top}px`
-        menu.style.left = `${left}px`
+        // If menu would overflow bottom, clamp
+        if (top + menuHeight > screenHeight) {
+          top = screenHeight - menuHeight - 8;
+          if (top < 8) top = 8;
+        }
+      } else {
+        top = rect.bottom + 8;
+        left = rect.left;
+        if (left + menuWidth > screenWidth) {
+          left = screenWidth - menuWidth - 16;
+        }
+        if (top + menuHeight > screenHeight) {
+          top = screenHeight - menuHeight - 8;
+          if (top < 8) top = 8;
+        }
       }
+
+      menu.style.position = 'fixed';
+      menu.style.zIndex = 9999;
+      menu.style.top = `${top}px`;
+      menu.style.left = `${left}px`;
     }
   }, [anchorRef, placement])
 

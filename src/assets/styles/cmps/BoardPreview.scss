@@ -25,3 +25,30 @@
   font-weight: 500;
   color: #1e293b;
 }
+
+@media (max-width: 600px) {
+  .board-preview-content {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+  }
+  .board-preview-img {
+    height: 80px;
+    border-radius: 16px 16px 0 0;
+    object-fit: cover;
+  }
+  .board-preview span {
+    font-size: 1.15rem;
+    padding: 1rem 1.2rem 1.1rem 1.2rem;
+    text-align: left;
+    width: 100%;
+    display: block;
+  }
+}

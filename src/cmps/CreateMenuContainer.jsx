@@ -1,43 +1,44 @@
-import { useState, useRef, useEffect } from 'react'
-import { CreateMenu } from './CreateMenu.jsx'
-import { CreateBoardPanel } from './CreateBoardPanel.jsx'
-import { CreateBoardWithAI } from './CreateBoardWithAI.jsx'
+import { useState, useRef, useEffect } from "react";
+import { CreateMenu } from "./CreateMenu.jsx";
+import { CreateBoardPanel } from "./CreateBoardPanel.jsx";
+import { CreateBoardWithAI } from "./CreateBoardWithAI.jsx";
 
-export function CreateMenuContainer({ trigger, placement = 'bottom' }) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [mode, setMode] = useState('menu')
-  const containerRef = useRef()
-  const anchorRef = useRef()
+export function CreateMenuContainer({ trigger, placement = "bottom" }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [mode, setMode] = useState("menu");
+
+  const containerRef = useRef();
+  const anchorRef = useRef();
 
   function handleCreateBoard() {
-    setMode('board')
+    setMode("board");
   }
 
   function handleClose() {
-    setIsOpen(false)
-    setMode('menu')
+    setIsOpen(false);
+    setMode("menu");
   }
 
   function handleCreateAI() {
-    setMode('ai')
+    setMode("ai");
   }
 
   useEffect(() => {
     function handleClickOutside(ev) {
       if (containerRef.current && !containerRef.current.contains(ev.target)) {
-        handleClose()
+        handleClose();
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <div className="create-container" ref={containerRef}>
       {trigger({ onClick: () => setIsOpen((prev) => !prev), ref: anchorRef })}
 
-      {isOpen && mode === 'menu' && (
+      {isOpen && mode === "menu" && (
         <div className="create-menu-wrapper">
           <CreateMenu
             onCreateBoard={handleCreateBoard}
@@ -48,7 +49,7 @@ export function CreateMenuContainer({ trigger, placement = 'bottom' }) {
         </div>
       )}
 
-      {isOpen && mode === 'board' && (
+      {isOpen && mode === "board" && (
         <div className="create-panel-wrapper">
           <CreateBoardPanel
             onClose={handleClose}
@@ -57,7 +58,7 @@ export function CreateMenuContainer({ trigger, placement = 'bottom' }) {
           />
         </div>
       )}
-      {isOpen && mode === 'ai' && (
+      {isOpen && mode === "ai" && (
         <div className="create-panel-wrapper">
           <CreateBoardWithAI
             onClose={handleClose}
@@ -67,5 +68,5 @@ export function CreateMenuContainer({ trigger, placement = 'bottom' }) {
         </div>
       )}
     </div>
-  )
+  );
 }
